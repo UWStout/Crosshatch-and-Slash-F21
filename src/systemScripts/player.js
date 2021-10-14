@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 class PlayerClass extends Phaser.Physics.Arcade.Sprite {
   constructor (scene, x, y) {
-    super(scene, x, y, 'playerIdleWalk', 0)
+    super(scene, x, y, 'playerWalkIdle', 0)
 
     if(!PlayerClass.animInitialize)
     {
@@ -15,6 +15,8 @@ class PlayerClass extends Phaser.Physics.Arcade.Sprite {
     this.body.setAllowGravity(false)
     this.body.setCollideWorldBounds(true)
 
+    this.setScale(0.25, 0.25)
+    this.anims.play('playerWalk')
     scene.add.existing(this)
   }
 }
@@ -22,10 +24,10 @@ class PlayerClass extends Phaser.Physics.Arcade.Sprite {
 PlayerClass.animInitialize = false
 PlayerClass.setupAnim = (scene) => {
   scene.anims.create({
-    key: 'playerIdleWalk',
+    key: 'playerWalk',
     frameRate: 8,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('playerWalk', { start: 0, end: 7 })
+    frames: scene.anims.generateFrameNumbers('playerWalkIdle', { start: 0, end: 7 })
   })
 }
 export default PlayerClass

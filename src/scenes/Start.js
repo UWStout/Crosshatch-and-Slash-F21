@@ -21,6 +21,8 @@ class StartScene extends Phaser.Scene {
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('red', 'assets/particles/red.png')
 
+    this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
+
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',
@@ -28,8 +30,6 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.mp3',
       'assets/audio/gameAudioSprite.ac3'
     ])
-
-    this.load.spritesheet('molotov', 'assets/sprites/player/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
 
     // DEBUG: Fake loading lots of data
     // for (let i = 0; i < 300; i++) {
@@ -41,14 +41,14 @@ class StartScene extends Phaser.Scene {
     // Remove loading text
     this.loadingText.destroy()
 
-    this.player = new PlayerClass(this, 100, 100)
-
     // Add background image
     const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
     startScreen.setScale(
       CONFIG.DEFAULT_WIDTH / startScreen.width,
       CONFIG.DEFAULT_HEIGHT / startScreen.height
     )
+
+    this.player = new PlayerClass(this, 100, 100)
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
