@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
+import PlayerClass from '../systemScripts/player.js'
 
 class StartScene extends Phaser.Scene {
   init () {
@@ -28,15 +29,19 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
+    this.load.spritesheet('molotov', 'assets/sprites/player/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
+
     // DEBUG: Fake loading lots of data
-    for (let i = 0; i < 300; i++) {
-      this.load.image('sky' + i, 'assets/skies/space3.png')
-    }
+    // for (let i = 0; i < 300; i++) {
+    //   this.load.image('sky' + i, 'assets/skies/space3.png')
+    // }
   }
 
   create () {
     // Remove loading text
     this.loadingText.destroy()
+
+    this.player = new PlayerClass(this, 100, 100)
 
     // Add background image
     const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
