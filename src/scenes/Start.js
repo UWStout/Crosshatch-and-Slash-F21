@@ -17,9 +17,11 @@ class StartScene extends Phaser.Scene {
     this.load.image('StartScreen', 'assets/StartScreen.png')
 
     // Load the image assets needed for 'ExampleScene'
-    this.load.image('sky', 'assets/skies/space3.png')
+    this.load.image('tutorialRoom', 'assets/tilemaps/rm_test1.png')
+    this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')
+    this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
-    this.load.image('red', 'assets/particles/red.png')
+
 
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
 

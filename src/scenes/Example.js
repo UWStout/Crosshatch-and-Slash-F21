@@ -12,24 +12,13 @@ class ExampleScene extends Phaser.Scene {
 
   create () {
     // Setup variables with world bounds
-    const worldWidth = CONFIG.DEFAULT_WIDTH * 1.5
-    const worldHeight = CONFIG.DEFAULT_HEIGHT
+    const worldWidth = CONFIG.DEFAULT_WIDTH * 5.65
+    const worldHeight = CONFIG.DEFAULT_HEIGHT * 13.4
 
     // Add background image
-    const sky = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'sky')
-    sky.setScale(
-      CONFIG.DEFAULT_WIDTH / sky.width,
-      CONFIG.DEFAULT_HEIGHT / sky.height
-    )
-
-    // Create and configure a particle emitter
-    const particles = this.add.particles('red')
-    const emitter = particles.createEmitter({
-      speed: 100,
-      scale: { start: 1, end: 0 },
-      blendMode: 'ADD'
-    })
-
+    const sky = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialRoom')
+    const collisionTest = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialCollision')
+    collisionTest.visible = false
     // Create and animate the logo
     const logo = this.physics.add.image(400, 100, 'logo')
     logo.setVelocity(100, 200)
@@ -44,10 +33,7 @@ class ExampleScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, worldWidth, worldHeight)
     this.cameras.main.setBounds(0, 0, worldWidth, worldHeight)
     this.cameras.main.startFollow(logo, false, 0.1)
-    this.cameras.main.setDeadzone(worldWidth * 0.25, worldHeight)
 
-    // Make the particle emitter follow the logo
-    emitter.startFollow(logo)
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
