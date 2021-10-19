@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
 
+import PlayerClass from '../systemScripts/player.js'
+
 class ExampleScene extends Phaser.Scene {
   preload () {
     // Loading is done in 'StartScene'
@@ -20,11 +22,13 @@ class ExampleScene extends Phaser.Scene {
     const collisionTest = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialCollision')
     collisionTest.visible = false
     // Create and animate the logo
-    const logo = this.physics.add.image(400, 100, 'logo')
-    logo.setVelocity(100, 200)
-    logo.setBounce(1, 1)
-    logo.setCollideWorldBounds(true)
-    logo.body.onWorldBounds = true
+    this.player = new PlayerClass(this, 100, 100)
+    this.player.setCollideWorldBounds(true)
+    this.canRotate = true
+
+    this.physics.world.setBounds(0, 0, worldWidth, worldHeight)
+    this.cameras.main.setBounds(0, 0, worldWidth, worldHeight)
+    this.cameras.main.startFollow(this.player, false, 0.1)
 
     // Play sound when we hit the world bounds
     this.physics.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
@@ -32,11 +36,35 @@ class ExampleScene extends Phaser.Scene {
     // Adjust world bounds for physics and camera
     this.physics.world.setBounds(0, 0, worldWidth, worldHeight)
     this.cameras.main.setBounds(0, 0, worldWidth, worldHeight)
-    this.cameras.main.startFollow(logo, false, 0.1)
+    this.cameras.main.startFollow(this.player, false, 0.1)
 
+    // player look
+    this.cursors = this.input.keyboard.createCursorKeys()
+    this.cursors = this.input.keyboard.addKeys(
+      {
+        up: Phaser.Input.Keyboard.KeyCodes.W,
+        down: Phaser.Input.Keyboard.KeyCodes.S,
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        right: Phaser.Input.Keyboard.KeyCodes.D
+      })
 
+    // mouse look
+    this.point = new Phaser.Math.Vector2(0, 0)
+    this.input.on('pointermove', function (pointer) {
+      // Copy world position of pointer and center on character
+      this.point.set(pointer.worldX, pointer.worldY)
+      // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
+      this.point.x -= this.player.x
+      this.point.y -= this.player.y
+
+      // Shorten to max 20 units
+      const length = this.point.length()
+      if (length > 20) {
+        this.point.scale(20 / length)
+      }
+    }, this)
     // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
+    // this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
@@ -46,6 +74,33 @@ class ExampleScene extends Phaser.Scene {
     this.sfx = this.sound.addAudioSprite('gameAudio')
 
     this.scene.run('HUDScene')
+
+    this.input.on('pointermove', function (pointer) {
+      this.point.set(pointer.worldX, pointer.worldY)
+      // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
+      this.point.x -= this.player.x
+      this.point.y -= this.player.y
+      this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
+      console.log(this.angle)
+      if (this.canRotate) {
+        this.player.setAngle((Phaser.Math.RAD_TO_DEG * this.angle) + 90)
+      }
+    }, this)
+
+    this.input.on('pointerup', (pointer) => {
+      if (pointer.leftButtonReleased()) {
+        this.canRotate = false
+        this.player.attack()
+      }
+
+      if (pointer.rightButtonReleased()) {
+        this.player.magicAttack(this.point.x, this.point.y)
+      }
+
+      setTimeout(() => {
+        this.canRotate = true
+      }, 625)
+    }, this)
   }
 
   keyReleased () {
@@ -53,6 +108,24 @@ class ExampleScene extends Phaser.Scene {
     this.scene.start('StartScene')
     this.scene.stop('HUDScene')
     this.music.stop()
+  }
+
+  update () {
+    const directon = { x: 0, y: 0 }
+    if (this.cursors.right.isDown) {
+      directon.x += 1
+    }
+    if (this.cursors.left.isDown) {
+      directon.x -= 1
+    }
+    if (this.cursors.up.isDown) {
+      directon.y -= 1
+    }
+    if (this.cursors.down.isDown) {
+      directon.y += 1
+    }
+
+    this.player.move(directon.x, directon.y)
   }
 }
 
