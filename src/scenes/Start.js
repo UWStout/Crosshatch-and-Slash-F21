@@ -22,8 +22,8 @@ class StartScene extends Phaser.Scene {
     this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial.json')
-
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
+    this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 900, frameHeight: 900 })
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
