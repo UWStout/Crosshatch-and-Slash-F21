@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
 
-import PlayerClass from '../systemScripts/player.js'
+import PlayerClass from '../spriteScripts/player.js'
 
 class ExampleScene extends Phaser.Scene {
   preload () {

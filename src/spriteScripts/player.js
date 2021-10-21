@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config'
+import FireBall from './projectiles/fireball'
 
 class PlayerClass extends Phaser.Physics.Arcade.Sprite {
   constructor (scene, x, y) {
@@ -25,7 +26,6 @@ class PlayerClass extends Phaser.Physics.Arcade.Sprite {
       () => {
         this.anims.play('playerIdle')
         this.canMove = true
-        
       },
       this)
     // this.on(
@@ -39,13 +39,29 @@ class PlayerClass extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this)
   }
 
-  attack () {
+  attack () { 
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
   }
 
   magicAttack (x, y) {
     this.canMove = false
+
+    const endX = this.x + x
+    const endY = this.y + y
+
+    const projectile = new FireBall(this.scene, this.x, this.y )
+    const newTween = this.scene.tweens.add({
+      targets: projectile,
+      x: endX,
+      y: endY,
+      ease: 'Power1',
+      duration: 250
+    })
+
+    newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
+      setTimeout(() => { projectile.destroy() }, 0)
+    })
     console.log('Magic Attack')
   }
 

@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
-import PlayerClass from '../systemScripts/player.js'
+import PlayerClass from '../spriteScripts/player.js'
 
 class StartScene extends Phaser.Scene {
   init () {
@@ -24,6 +24,8 @@ class StartScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_01.json')
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 900, frameHeight: 900 })
+    this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 512, frameHeight: 512 })
+
 
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
