@@ -15,7 +15,7 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen', 'assets/StartScreen.png')
-    this.load.image('wallTexture', 'assets/tilemaps/til_cobbleWall.png')
+    this.load.image('wallTexture', 'assets/tilemaps/tile_wall_help2.png')
     // Load the image assets needed for 'ExampleScene'
     this.load.image('room', 'assets/tilemaps/rm_test1.png')
     this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')

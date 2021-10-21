@@ -14,7 +14,7 @@ class ExampleScene extends Phaser.Scene {
 
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
-    const room = map.addTilesetImage('tile_dungeon1', 'wallTexture', 50, 50)
+    const room = map.addTilesetImage('tile_dungeon1', 'wallTexture')
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 5.65
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 13.4
