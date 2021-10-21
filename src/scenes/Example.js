@@ -16,8 +16,8 @@ class ExampleScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('tile_dungeon1', 'wallTexture')
     // Setup variables with world bounds
-    const worldWidth = CONFIG.DEFAULT_WIDTH * 5.65
-    const worldHeight = CONFIG.DEFAULT_HEIGHT * 13.4
+    const worldWidth = CONFIG.DEFAULT_WIDTH * 16
+    const worldHeight = CONFIG.DEFAULT_HEIGHT * 25
     const backLayer = map.createLayer('Tile Layer 1', room)
     backLayer.setCollisionBetween(3, 6)
     console.log(backLayer.originX)
@@ -25,7 +25,7 @@ class ExampleScene extends Phaser.Scene {
     // const collisionTest = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialRoom')
     // collisionTest.visible = false
     // Create and animate the logo
-    this.player = new PlayerClass(this, 5000, 7800)
+    this.player = new PlayerClass(this, 7000, 10000)
     this.player.setCollideWorldBounds(true)
     this.physics.add.collider(this.player, backLayer)
     this.canRotate = true
@@ -84,7 +84,7 @@ class ExampleScene extends Phaser.Scene {
       this.point.x -= this.player.x
       this.point.y -= this.player.y
       this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
-      console.log(this.angle)
+      // console.log(this.angle)
       if (this.canRotate) {
         this.player.setAngle((Phaser.Math.RAD_TO_DEG * this.angle) + 90)
       }
