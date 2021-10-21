@@ -18,13 +18,16 @@ class ExampleScene extends Phaser.Scene {
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 5.65
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 13.4
-    const backLayer = map.createLayer('Tile Layer 1', room, 0, 0)
+    const backLayer = map.createLayer('Tile Layer 1', room)
+    backLayer.setCollisionBetween(3, 6)
+    console.log(backLayer.originX)
     // Add background image
     // const collisionTest = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialRoom')
     // collisionTest.visible = false
     // Create and animate the logo
-    this.player = new PlayerClass(this, 100, 100)
+    this.player = new PlayerClass(this, 5000, 7800)
     this.player.setCollideWorldBounds(true)
+    this.physics.add.collider(this.player, backLayer)
     this.canRotate = true
 
     this.physics.world.setBounds(0, 0, worldWidth, worldHeight)

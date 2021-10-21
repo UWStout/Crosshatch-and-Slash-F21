@@ -15,13 +15,13 @@ class StartScene extends Phaser.Scene {
   preload () {
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen', 'assets/StartScreen.png')
-    this.load.image('wallTexture', 'assets/tilemaps/tile_wall_help2.png')
+    this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
     // Load the image assets needed for 'ExampleScene'
     this.load.image('room', 'assets/tilemaps/rm_test1.png')
     this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')
     this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
-    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial.json')
+    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_01.json')
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheetSmall.png', { frameWidth: 900, frameHeight: 900 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 900, frameHeight: 900 })
 
