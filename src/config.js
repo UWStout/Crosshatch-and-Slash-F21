@@ -2,7 +2,7 @@ const CONFIG = {
   DEFAULT_HEIGHT: 666,
   DEFAULT_WIDTH: 1000,
 
-  WALK_SPEED: 10
+  WALK_SPEED: 7
 }
 
 export default CONFIG

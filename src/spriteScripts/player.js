@@ -19,6 +19,8 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     // this.body.setCollideWorldBounds(true)
     // this.body.setSize(200, 200)
     this.setScale(0.25, 0.25)
+    this.setCircle(50)
+    this.setFixedRotation()
     this.anims.play('playerIdle')
 
     this.on(
