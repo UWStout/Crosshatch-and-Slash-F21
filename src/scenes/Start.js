@@ -26,7 +26,6 @@ class StartScene extends Phaser.Scene {
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 900, frameHeight: 900 })
     this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 512, frameHeight: 512 })
 
-
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',

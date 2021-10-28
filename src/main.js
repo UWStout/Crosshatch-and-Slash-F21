@@ -21,9 +21,9 @@ const config = {
 
   // Configure physics settings
   physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: CONFIG.DEFAULT_GRAVITY },
+    default: 'matter',
+    matter: {
+      gravity: { x: 0, y: 0 },
       debug: __DEV__
     }
   }

@@ -15,31 +15,25 @@ class ExampleScene extends Phaser.Scene {
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('tile_dungeon1', 'wallTexture')
+
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
-    const worldHeight = CONFIG.DEFAULT_HEIGHT * 25
+    const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
     const backLayer = map.createLayer('Tile Layer 1', room)
     backLayer.setCollisionBetween(3, 6)
+    this.matter.world.convertTilemapLayer(backLayer)
     console.log(backLayer.originX)
-    // Add background image
-    // const collisionTest = this.add.image(CONFIG.DEFAULT_WIDTH + 3600, CONFIG.DEFAULT_HEIGHT + 4200, 'tutorialRoom')
-    // collisionTest.visible = false
-    // Create and animate the logo
+
+    // Create the player object
     this.player = new PlayerClass(this, 7000, 10000)
-    this.player.setCollideWorldBounds(true)
-    this.physics.add.collider(this.player, backLayer)
     this.canRotate = true
 
-    this.physics.world.setBounds(0, 0, worldWidth, worldHeight)
-    this.cameras.main.setBounds(0, 0, worldWidth, worldHeight)
-    this.cameras.main.startFollow(this.player, false, 0.1)
-
     // Play sound when we hit the world bounds
-    this.physics.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
+    this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
     // Adjust world bounds for physics and camera
-    this.physics.world.setBounds(0, 0, worldWidth, worldHeight)
-    this.cameras.main.setBounds(0, 0, worldWidth, worldHeight)
+    this.matter.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     this.cameras.main.startFollow(this.player, false, 0.1)
 
     // player look
@@ -115,6 +109,10 @@ class ExampleScene extends Phaser.Scene {
     this.scene.start('StartScene')
     this.scene.stop('HUDScene')
     this.music.stop()
+  }
+
+  generateCollision () {
+
   }
 
   update () {

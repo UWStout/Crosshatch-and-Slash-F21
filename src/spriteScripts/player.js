@@ -2,9 +2,9 @@ import Phaser from 'phaser'
 import CONFIG from '../config'
 import FireBall from './projectiles/fireball'
 
-class PlayerClass extends Phaser.Physics.Arcade.Sprite {
+class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
-    super(scene, x, y, 'playerWalkIdle', 0)
+    super(scene.matter.world, x, y, 'playerWalkIdle', 0)
 
     this.canMove = true
 
@@ -13,11 +13,11 @@ class PlayerClass extends Phaser.Physics.Arcade.Sprite {
     }
 
     // enabling physics on player
-    scene.physics.world.enableBody(this, Phaser.Physics.Arcade.DYNAMIC_BODY)
-    this.setImmovable(true)
-    this.body.setAllowGravity(false)
-    this.body.setCollideWorldBounds(true)
-
+    this.setOrigin(0.5, 0.6)
+    // this.setImmovable(true)
+    // this.body.setAllowGravity(false)
+    // this.body.setCollideWorldBounds(true)
+    // this.body.setSize(200, 200)
     this.setScale(0.25, 0.25)
     this.anims.play('playerIdle')
 

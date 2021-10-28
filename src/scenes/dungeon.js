@@ -1,4 +1,4 @@
-import PHASER from 'phaser'
+import Phaser from 'phaser'
 
 class Dungeon extends Phaser.Tilemaps.Tilemap {
 
