@@ -22,6 +22,7 @@ class ExampleScene extends Phaser.Scene {
     const spawnLayer = map.createLayer('til_spawn', room)
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
+    const tilemapBodies = this.fixFlippedColliders(backLayer)
     console.log(backLayer.originX)
     // Create the player object
     this.player = new PlayerClass(this, 7000, 1000)
@@ -45,9 +46,7 @@ class ExampleScene extends Phaser.Scene {
       }
     })
 
-    this.raycaster.mapGameObjects(backLayer, false, {
-      collisionTiles: [3, 6]
-    })
+    this.raycaster.mapGameObjects(tilemapBodies)
 
     this.intersections = this.ray.castCircle()
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
@@ -55,10 +54,10 @@ class ExampleScene extends Phaser.Scene {
     this.createFOV(this)
 
     this.fow.setDepth(1)
-    //backLayer.setDepth(2)
+    // backLayer.setDepth(2)
     this.graphics.setDepth(3)
 
-    this.draw()
+    // this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -135,10 +134,6 @@ class ExampleScene extends Phaser.Scene {
     this.music.stop()
   }
 
-  generateCollision () {
-
-  }
-
   update () {
     const directon = { x: 0, y: 0 }
     if (this.cursors.right.isDown) {
@@ -159,7 +154,7 @@ class ExampleScene extends Phaser.Scene {
     // cast ray in all directions
     this.intersections = this.ray.castCircle()
     // redraw
-    this.draw()
+    // this.draw()
 
     this.ray.setOrigin(this.player.x, this.player.y)
   }
@@ -216,6 +211,33 @@ class ExampleScene extends Phaser.Scene {
     this.fow = scene.add.graphics({ fillStyle: { color: 0x000000, alpha: 0.6 } }).setDepth(29)
     this.fow.setMask(this.mask)
     this.fow.fillRect(0, 0, 800, 600)
+  }
+
+  fixFlippedColliders (main) {
+    const tileMapBodies = []
+    main.layer.data.forEach((row) => {
+      const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
+      allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body); console.log(tile.index) })
+      allBodies.filter((tile) => tile.index === 3 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
+        .forEach((tile) => {
+          console.log('had body ' + tile.index)
+          const matterBody = tile.physics.matterBody.body
+          const rotationPoint = { x: tile.getCenterX(), y: tile.getCenterY() }
+          if (tile.rotation > 0) {
+            Phaser.Physics.Matter.Matter.Body.rotate(matterBody, tile.rotation, rotationPoint)
+          }
+
+          if (tile.flipX || tile.flipY || tile.index === 3) {
+            Phaser.Physics.Matter.Matter.Body.scale(
+              matterBody,
+              (tile.flipX ? -1 : 1),
+              (tile.flipY || tile.index === 3 ? -1 : 1),
+              rotationPoint
+            )
+          }
+        })
+    })
+    return tileMapBodies
   }
 }
 
