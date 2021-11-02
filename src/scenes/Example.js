@@ -14,18 +14,18 @@ class ExampleScene extends Phaser.Scene {
 
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
-    const room = map.addTilesetImage('tile_dungeon1', 'wallTexture')
-
+    const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
-    const backLayer = map.createLayer('Tile Layer 1', room)
+    const backLayer = map.createLayer('til_map', room)
+    const spawnLayer = map.createLayer('til_spawn', room)
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     console.log(backLayer.originX)
 
     // Create the player object
-    this.player = new PlayerClass(this, 7000, 10000)
+    this.player = new PlayerClass(this, spawnLayer.x, spawnLayer.y)
     this.canRotate = true
 
     // Play sound when we hit the world bounds
