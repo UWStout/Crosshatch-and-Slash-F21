@@ -25,7 +25,7 @@ class ExampleScene extends Phaser.Scene {
     console.log(backLayer.originX)
 
     // Create the player object
-    this.player = new PlayerClass(this, spawnLayer.x, spawnLayer.y)
+    this.player = new PlayerClass(this, 7000, 1000)
     this.canRotate = true
 
     // Play sound when we hit the world bounds
