@@ -1,6 +1,6 @@
 // Bring in the phaser library
 import Phaser from 'phaser'
-
+import PhaserRaycaster from 'phaser-raycaster'
 import CONFIG from './config.js'
 
 // Bringing in our base example scene
@@ -17,6 +17,17 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     width: CONFIG.DEFAULT_WIDTH,
     height: CONFIG.DEFAULT_HEIGHT
+  },
+
+  // configue  plugins
+  plugins: {
+    scene: [
+      {
+        key: 'PhaserRaycaster',
+        plugin: PhaserRaycaster,
+        mapping: 'raycasterPlugin'
+      }
+    ]
   },
 
   // Configure physics settings

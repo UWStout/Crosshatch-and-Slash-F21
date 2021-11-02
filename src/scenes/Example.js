@@ -15,6 +15,7 @@ class ExampleScene extends Phaser.Scene {
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('tile_dungeon1', 'wallTexture')
+   
 
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
@@ -23,7 +24,6 @@ class ExampleScene extends Phaser.Scene {
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     console.log(backLayer.originX)
-
     // Create the player object
     this.player = new PlayerClass(this, 7000, 10000)
     this.canRotate = true
@@ -35,6 +35,31 @@ class ExampleScene extends Phaser.Scene {
     this.matter.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     this.cameras.main.startFollow(this.player, false, 0.1)
+
+    // RAYCAST VARIABLES
+    
+    this.raycaster = this.raycasterPlugin.createRaycaster()
+    this.ray = this.raycaster.createRay({
+      origin: {
+        x: 400,
+        y: 300
+      }
+    })
+
+    this.raycaster.mapGameObjects(backLayer, false, {
+      collisionTiles: [3, 6]
+    })
+
+    this.intersections = this.ray.castCircle()
+    this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
+
+    this.createFOV(this)
+
+    this.fow.setDepth(1)
+    //backLayer.setDepth(2)
+    this.graphics.setDepth(3)
+
+    this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -131,6 +156,67 @@ class ExampleScene extends Phaser.Scene {
     }
 
     this.player.move(directon.x, directon.y)
+
+    // cast ray in all directions
+    this.intersections = this.ray.castCircle()
+    // redraw
+    this.draw()
+
+    this.ray.setOrigin(this.player.x, this.player.y)
+  }
+
+  // draw rays intersections
+  draw () {
+  // clear ray visualisation
+    this.graphics.clear()
+
+    // clear field of view mask
+    this.maskGraphics.clear()
+    // draw fov mask
+    this.maskGraphics.fillPoints(this.intersections)
+
+    /*
+  graphics.fillStyle(0xffffff, 0.3);
+  graphics.fillPoints(intersections);
+  */
+    // draw rays
+    this.graphics.lineStyle(1, 0x00ff00)
+    for (const intersection of this.intersections) {
+      this.graphics.strokeLineShape({
+        x1: this.ray.origin.x,
+        y1: this.ray.origin.y,
+        x2: intersection.x,
+        y2: intersection.y
+      })
+    }
+    /*
+  let raycasterMap = tilemapLayer.data.get('raycasterMap');
+  //draw tilemap's segments
+  graphics.lineStyle(1, 0xff0000);
+  let segments = raycasterMap.getSegments(ray);
+  for(let segment of segments) {
+    graphics.strokeLineShape(segment);
+  }
+  */
+    this.graphics.fillStyle(0xff00ff)
+    /*
+  //draw tilemap's points
+  let points = raycasterMap.getPoints(ray);
+  for(let point of points) {
+    graphics.fillPoint(point.x, point.y, 3);
+  }
+  */
+    // draw ray origin
+    this.graphics.fillPoint(this.ray.origin.x, this.ray.origin.y, 3)
+  }
+
+  createFOV (scene) {
+    this.maskGraphics = scene.add.graphics({ fillStyle: { color: 0xffffff, alpha: 0 } })
+    this.mask = new Phaser.Display.Masks.GeometryMask(scene, this.maskGraphics)
+    this.mask.setInvertAlpha()
+    this.fow = scene.add.graphics({ fillStyle: { color: 0x000000, alpha: 0.6 } }).setDepth(29)
+    this.fow.setMask(this.mask)
+    this.fow.fillRect(0, 0, 800, 600)
   }
 }
 

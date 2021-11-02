@@ -41,7 +41,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     scene.add.existing(this)
   }
 
-  attack () { 
+  attack () {
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
   }
@@ -52,7 +52,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     const endX = this.x + x
     const endY = this.y + y
 
-    const projectile = new FireBall(this.scene, this.x, this.y )
+    const projectile = new FireBall(this.scene, this.x, this.y)
     const newTween = this.scene.tweens.add({
       targets: projectile,
       x: endX,
