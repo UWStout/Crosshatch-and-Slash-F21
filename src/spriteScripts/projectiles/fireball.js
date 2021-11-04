@@ -8,8 +8,6 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
       FireBall.setupAnim(scene)
     }
     this.setCircle(10)
-    const cat = this.world.nextCategory()
-    this.setCollidesWith(cat)
     this.setSensor(true)
     scene.add.existing(this)
   }

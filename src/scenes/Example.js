@@ -37,6 +37,30 @@ class ExampleScene extends Phaser.Scene {
     this.enemy.setOnCollideWith(this.player, function collide (gameObject) {
       console.log('Collided with enemy')
     })
+    this.matter.world.on('collisionstart', function (event) {
+      const pairs = event.pairs
+      const playerBody = ''
+      const colliderBody = ''
+      const body1 = pairs[0]
+      const body2 = pairs[1]
+      for (let i = 0; i < pairs.length; i++) {
+        if (pairs[i].isSensor) {
+          if (body1.isSensor) {
+            const playerBody = body1
+            const colliderBody = body2
+          }
+          else if (body2.isSensor) {
+            const playerBody = body2
+            const colliderBody = body1
+          }
+          const playerSprite = playerBody.gameObject
+          const colliderSprite = colliderBody.gameObject
+          console.log(colliderSprite)
+          console.log(playerBody.gameObject)
+          console.log(playerBody)
+        }
+      }
+    })
     // this.player.setOnCollide(function (gameObject) {
     //   if (gameObject === this.enemy) {
     //     console.log('enemy attacked you')
@@ -60,7 +84,7 @@ class ExampleScene extends Phaser.Scene {
       }
     })
 
-    this.raycaster.mapGameObjects(tilemapBodies)
+    // this.raycaster.mapGameObjects(tilemapBodies)
 
     this.intersections = this.ray.castCircle()
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
