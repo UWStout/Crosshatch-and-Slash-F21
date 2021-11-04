@@ -6,13 +6,6 @@ import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
 
 class ExampleScene extends Phaser.Scene {
-  preload () {
-    // Loading is done in 'StartScene'
-    // - 'sky' is background image
-    // - 'red' is our particle
-    // - 'logo' is the phaser3 logo
-  }
-
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
