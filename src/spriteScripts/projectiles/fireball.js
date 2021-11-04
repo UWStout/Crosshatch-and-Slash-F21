@@ -3,11 +3,14 @@ import Phaser from 'phaser'
 
 class FireBall extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
-    super(scene.matter.world, x, y, 'fireball', 0)
+    super(scene.matter.world, x, y, 'fire', 0)
     if (!FireBall.animInitialize) {
       FireBall.setupAnim(scene)
     }
-    this.scene.matter.world.disableGravity()
+    this.setCircle(10)
+    const cat = this.world.nextCategory()
+    this.setCollidesWith(cat)
+    this.setSensor(true)
     scene.add.existing(this)
   }
 }

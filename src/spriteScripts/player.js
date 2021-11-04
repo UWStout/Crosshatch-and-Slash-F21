@@ -20,7 +20,9 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     // this.body.setSize(200, 200)
     this.setScale(0.6, 0.6)
     this.setCircle(50)
+    this.setBounce(0)
     this.setFixedRotation()
+    
     this.anims.play('playerIdle')
 
     this.on(
@@ -104,5 +106,4 @@ PlayerClass.setupAnim = (scene) => {
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 0, end: 4 })
   })
 }
-
 export default PlayerClass
