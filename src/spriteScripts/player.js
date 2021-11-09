@@ -7,20 +7,25 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
 
     this.canMove = true
+    this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
     // enabling physics on player
-    this.setOrigin(0.5, 0.6)
     // this.setImmovable(true)
     // this.body.setAllowGravity(false)
     // this.body.setCollideWorldBounds(true)
     // this.body.setSize(200, 200)
+    const bodies = Phaser.Physics.Matter.Matter.Bodies
+    const circleA = bodies.circle(50, -250, 120, { isSensor: true, label: 'combat' })
+    const circleB = bodies.circle(0, 0, 100, { label: 'collide' })
+    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleA, circleB] })
+    this.setExistingBody(compoundBody)
+    this.setPosition(x, y)
+    this.setOrigin(0.5, 0.6)
     this.setScale(0.6, 0.6)
-    this.setCircle(50)
     this.setBounce(0)
     this.setFixedRotation()
-    // const swordSensor = Phaser.Physics.Matter.Factory.circle(x, y-20, 70, { isSensor: true })
     this.anims.play('playerIdle')
 
     this.on(
@@ -42,6 +47,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   attack () {
+    this.isAttacking = true
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
   }
