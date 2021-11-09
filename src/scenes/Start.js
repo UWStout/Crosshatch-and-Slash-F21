@@ -24,7 +24,8 @@ class StartScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
-    this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 500, frameHeight: 500 })
+    this.load.spritesheet('rat', 'assets/sprites/Rat300x300.png', { frameWidth: 300, frameHeight: 300 })
+    this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 100, frameHeight: 100 })
     // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [

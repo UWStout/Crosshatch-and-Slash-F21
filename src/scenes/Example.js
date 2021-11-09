@@ -4,6 +4,7 @@ import Phaser from 'phaser'
 import CONFIG from '../config.js'
 
 import PlayerClass from '../spriteScripts/player.js'
+import RatEnemy from '../spriteScripts/rat.js'
 
 class ExampleScene extends Phaser.Scene {
   preload () {
@@ -24,11 +25,48 @@ class ExampleScene extends Phaser.Scene {
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     const tilemapBodies = this.fixFlippedColliders(backLayer)
-    console.log(backLayer.originX)
     // Create the player object
-    this.player = new PlayerClass(this, 7000, 1000)
+    this.player = new PlayerClass(this, 7000, 1500)
     this.canRotate = true
-
+    this.enemy = new RatEnemy(this, 8000, 1500)
+    this.enemy.canRotate = true
+    const cat1 = this.matter.world.nextCategory()
+    const cat2 = this.matter.world.nextCategory()
+    this.enemy.setCollisionCategory(cat1)
+    this.player.setCollisionCategory(cat1)
+    this.enemy.setCollidesWith([cat1, cat2])
+    this.enemy.setOnCollideWith(this.player, function collide (gameObject) {
+      console.log('Collided with enemy')
+    })
+    this.matter.world.on('collisionstart', function (event) {
+      const pairs = event.pairs
+      const playerBody = ''
+      const colliderBody = ''
+      const body1 = pairs[0]
+      const body2 = pairs[1]
+      for (let i = 0; i < pairs.length; i++) {
+        if (pairs[i].isSensor) {
+          if (body1.isSensor) {
+            const playerBody = body1
+            const colliderBody = body2
+          }
+          else if (body2.isSensor) {
+            const playerBody = body2
+            const colliderBody = body1
+          }
+          const playerSprite = playerBody.gameObject
+          const colliderSprite = colliderBody.gameObject
+          console.log(colliderSprite)
+          console.log(playerBody.gameObject)
+          console.log(playerBody)
+        }
+      }
+    })
+    // this.player.setOnCollide(function (gameObject) {
+    //   if (gameObject === this.enemy) {
+    //     console.log('enemy attacked you')
+    //   }
+    // })
     // Play sound when we hit the world bounds
     this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
@@ -130,10 +168,6 @@ class ExampleScene extends Phaser.Scene {
     }, this)
   }
 
-  collisionTrue () {
-    console.log('collision')
-  }
-
   keyReleased () {
     console.log('Key released')
     this.scene.start('StartScene')
@@ -224,10 +258,9 @@ class ExampleScene extends Phaser.Scene {
     const tileMapBodies = []
     main.layer.data.forEach((row) => {
       const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
-      allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body); console.log(tile.index) })
+      allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body) })
       allBodies.filter((tile) => tile.index === 3 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
         .forEach((tile) => {
-          console.log('had body ' + tile.index)
           const matterBody = tile.physics.matterBody.body
           const rotationPoint = { x: tile.getCenterX(), y: tile.getCenterY() }
           if (tile.rotation > 0) {

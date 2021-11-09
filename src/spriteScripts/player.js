@@ -7,11 +7,9 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
 
     this.canMove = true
-
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
-
     // enabling physics on player
     this.setOrigin(0.5, 0.6)
     // this.setImmovable(true)
@@ -20,7 +18,9 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     // this.body.setSize(200, 200)
     this.setScale(0.6, 0.6)
     this.setCircle(50)
+    this.setBounce(0)
     this.setFixedRotation()
+    // const swordSensor = Phaser.Physics.Matter.Factory.circle(x, y-20, 70, { isSensor: true })
     this.anims.play('playerIdle')
 
     this.on(
@@ -104,5 +104,4 @@ PlayerClass.setupAnim = (scene) => {
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 0, end: 4 })
   })
 }
-
 export default PlayerClass
