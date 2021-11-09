@@ -1,3 +1,4 @@
+import EasyStar from 'easystarjs/src/easystar'
 import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
@@ -36,8 +37,14 @@ class ExampleScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     this.cameras.main.startFollow(this.player, false, 0.1)
 
+    this.matter.add.rectangle(this.player.x, this.player.y)
+
+    // EasyStar Pathfinding
+    this.finder = new EasyStar()
+
+    //this.finder.setGrid(grid)
+
     // RAYCAST VARIABLES
-    
     this.raycaster = this.raycasterPlugin.createRaycaster()
     this.ray = this.raycaster.createRay({
       origin: {
@@ -46,7 +53,7 @@ class ExampleScene extends Phaser.Scene {
       }
     })
 
-    this.raycaster.mapGameObjects(tilemapBodies)
+    // this.raycaster.mapGameObjects(tilemapBodies)
 
     this.intersections = this.ray.castCircle()
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
