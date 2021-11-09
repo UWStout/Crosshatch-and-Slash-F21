@@ -10,7 +10,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     }
     // this.stats.setHp(5)
     // this.stats.setName('Rat')
-    this.setRectangle(70, 250)
+    this.setRectangle(70, 250, { label: 'rat' })
     this.setBounce(0)
     this.setFixedRotation()
     this.setFrictionAir(1)

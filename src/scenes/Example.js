@@ -10,7 +10,10 @@ class ExampleScene extends Phaser.Scene {
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
-    const playerSprite = null
+    this.playerSprite = null
+    this.colliderSprite = null
+    this.playerBody = null
+    this.colliderBody = null
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
@@ -45,15 +48,18 @@ class ExampleScene extends Phaser.Scene {
             this.playerBody = body2
             this.colliderBody = body1
           }
-          const playerSprite = this.playerBody.gameObject
-          const colliderSprite = this.colliderBody.gameObject
+          this.playerSprite = this.playerBody.gameObject
+          this.colliderSprite = this.colliderBody.gameObject
         }
       }
     })
     this.matter.world.on('collisionactive', function () {
-      if (playerSprite) {
-        if (playerSprite.getIsAttacking()) {
-          console.log('hit enemy')
+      if (this.playerSprite && this.colliderSprite) {
+        console.log('E')
+        if (this.colliderBody) {
+          if (this.playerSprite.getIsAttacking() && this.colliderBody.label === 'rat') {
+            console.log('hit enemy')
+          }
         }
       }
     })
