@@ -1,6 +1,7 @@
 // Bring in the phaser library
 import Phaser from 'phaser'
 import PhaserRaycaster from 'phaser-raycaster'
+import EasyStar from 'easystarjs/src/easystar'
 import CONFIG from './config.js'
 
 // Bringing in our base example scene
@@ -27,6 +28,16 @@ const config = {
         plugin: PhaserRaycaster,
         mapping: 'raycasterPlugin'
       }
+    ],
+
+    global: [
+      {
+        key: 'easystarjs',
+        plugin: EasyStar,
+        mapping: 'easystarPlugin'
+
+      }
+
     ]
   },
 

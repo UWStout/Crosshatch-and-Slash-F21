@@ -1,3 +1,4 @@
+import EasyStar from 'easystarjs/src/easystar'
 import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
@@ -17,12 +18,13 @@ class ExampleScene extends Phaser.Scene {
     const spawnLayer = map.createLayer('til_spawn', room)
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
-    const tilemapBodies = this.fixFlippedColliders(backLayer)
+    this.tilemapBodies = this.fixFlippedColliders(backLayer)
     // Create the player object
     this.player = new PlayerClass(this, 7000, 1500)
     this.canRotate = true
     this.enemy = new RatEnemy(this, 8000, 1500)
     this.enemy.canRotate = true
+
     const cat1 = this.matter.world.nextCategory()
     const cat2 = this.matter.world.nextCategory()
     this.enemy.setCollisionCategory(cat1)
@@ -68,8 +70,21 @@ class ExampleScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
     this.cameras.main.startFollow(this.player, false, 0.1)
 
+    this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
+
+    //this.activeWallGroup = this.add.group()
+    this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
+
+    // for (const wall of this.activeTileBodies) {
+    //   this.activeWallGroup.add(wall)
+    // }
+
+    // EasyStar Pathfinding
+    // this.finder = new EasyStar()
+
+    // this.finder.setGrid(grid)
+
     // RAYCAST VARIABLES
-    
     this.raycaster = this.raycasterPlugin.createRaycaster()
     this.ray = this.raycaster.createRay({
       origin: {
@@ -77,9 +92,7 @@ class ExampleScene extends Phaser.Scene {
         y: 300
       }
     })
-
-    // this.raycaster.mapGameObjects(tilemapBodies)
-
+    //this.raycaster.mapGameObjects(this.activeWallGroup.getChildren(), true)
     this.intersections = this.ray.castCircle()
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
 
@@ -89,7 +102,7 @@ class ExampleScene extends Phaser.Scene {
     // backLayer.setDepth(2)
     this.graphics.setDepth(3)
 
-    // this.draw()
+    this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -128,8 +141,8 @@ class ExampleScene extends Phaser.Scene {
     this.scene.run('HUDScene')
 
     this.input.on('pointermove', function (pointer) {
-      this.point.set(pointer.worldX, pointer.worldY)
       // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
+      this.point.set(pointer.worldX, pointer.worldY)
       this.point.x -= this.player.x
       this.point.y -= this.player.y
       this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
@@ -178,11 +191,17 @@ class ExampleScene extends Phaser.Scene {
     }
 
     this.player.move(directon.x, directon.y)
+    if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
+      this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })
+      this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
+      this.raycaster.mappedObjects = []
+      this.raycaster.mapGameObjects(this.activeTileBodies, true)
+    }
 
     // cast ray in all directions
     this.intersections = this.ray.castCircle()
     // redraw
-    // this.draw()
+    this.draw()
 
     this.ray.setOrigin(this.player.x, this.player.y)
   }
