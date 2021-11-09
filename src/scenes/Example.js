@@ -9,6 +9,7 @@ class ExampleScene extends Phaser.Scene {
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
+    const playerSprite = null
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
@@ -27,30 +28,30 @@ class ExampleScene extends Phaser.Scene {
     this.enemy.setCollisionCategory(cat1)
     this.player.setCollisionCategory(cat1)
     this.enemy.setCollidesWith([cat1, cat2])
-    this.enemy.setOnCollideWith(this.player, function collide (gameObject) {
-      console.log('Collided with enemy')
-    })
     this.matter.world.on('collisionstart', function (event) {
       const pairs = event.pairs
-      const playerBody = ''
-      const colliderBody = ''
-      const body1 = pairs[0]
-      const body2 = pairs[1]
       for (let i = 0; i < pairs.length; i++) {
+        const body1 = pairs[i].bodyA
+        const body2 = pairs[i].bodyB
         if (pairs[i].isSensor) {
           if (body1.isSensor) {
-            const playerBody = body1
-            const colliderBody = body2
+       
+            this.playerBody = body1
+            this.colliderBody = body2
           }
           else if (body2.isSensor) {
-            const playerBody = body2
-            const colliderBody = body1
+            this.playerBody = body2
+            this.colliderBody = body1
           }
-          const playerSprite = playerBody.gameObject
-          const colliderSprite = colliderBody.gameObject
-          console.log(colliderSprite)
-          console.log(playerBody.gameObject)
-          console.log(playerBody)
+          const playerSprite = this.playerBody.gameObject
+          const colliderSprite = this.colliderBody.gameObject
+        }
+      }
+    })
+    this.matter.world.on('collisionactive', function () {
+      if (playerSprite) {
+        if (playerSprite.getIsAttacking()) {
+          console.log('hit enemy')
         }
       }
     })

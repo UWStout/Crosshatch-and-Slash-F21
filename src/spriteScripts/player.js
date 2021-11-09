@@ -19,7 +19,10 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     const bodies = Phaser.Physics.Matter.Matter.Bodies
     const circleA = bodies.circle(50, -250, 120, { isSensor: true, label: 'combat' })
     const circleB = bodies.circle(0, 0, 100, { label: 'collide' })
-    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleA, circleB] })
+    console.log(this.x + ' ' + this.y)
+    console.log(circleA)
+    console.log(circleB)
+    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleA, circleB], inertia: Infinity })
     this.setExistingBody(compoundBody)
     this.setPosition(x, y)
     this.setOrigin(0.5, 0.6)
@@ -50,6 +53,11 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.isAttacking = true
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
+    setTimeout(() => { this.isAttacking = false }, 1)
+  }
+
+  getIsAttacking () {
+    return this.isAttacking
   }
 
   magicAttack (x, y) {
