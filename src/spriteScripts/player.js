@@ -32,13 +32,13 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         this.canMove = true
       },
       this)
-    // this.on(
-    //   Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'playerAttackMagical',
-    //   () => {
-    //     this.anims.play('playerIdle')
-    //     this.canMove = true
-    //   },
-    //   this)
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'playerAttackMagical',
+      () => {
+        this.anims.play('playerIdle')
+        this.canMove = true
+      },
+      this)
 
     scene.add.existing(this)
     this.setUpCollision(scene)
@@ -116,7 +116,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
   magicAttack (x, y) {
     this.canMove = false
-
+    this.anims.play('playerAttackMagical', true)
     const endX = this.x + x
     const endY = this.y + y
 
@@ -170,6 +170,12 @@ PlayerClass.setupAnim = (scene) => {
     frameRate: 8,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 0, end: 4 })
+  })
+  scene.anims.create({
+    key: 'playerAttackMagical',
+    frameRate: 8,
+    repeat: 0,
+    frames: scene.anims.generateFrameNumbers('playerAttack', { start: 10, end: 14 })
   })
 }
 export default PlayerClass
