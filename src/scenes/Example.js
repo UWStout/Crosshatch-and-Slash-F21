@@ -8,6 +8,7 @@ import RatEnemy from '../spriteScripts/rat.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
+    this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
 
@@ -27,9 +28,9 @@ class ExampleScene extends Phaser.Scene {
 
     const cat1 = this.matter.world.nextCategory()
     const cat2 = this.matter.world.nextCategory()
-    this.enemy.setCollisionCategory(cat1)
-    this.player.setCollisionCategory(cat1)
-    this.enemy.setCollidesWith([cat1, cat2])
+    // this.enemy.setCollisionCategory(cat1)
+    // this.player.setCollisionCategory(cat1)
+    // this.enemy.setCollidesWith([cat1, cat2])
     // this.player.setOnCollide(function (gameObject) {
     //   if (gameObject === this.enemy) {
     //     console.log('enemy attacked you')

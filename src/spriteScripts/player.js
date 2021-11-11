@@ -1,11 +1,13 @@
 import Phaser from 'phaser'
 import CONFIG from '../config'
+import DataManaging from '../scenes/DataManaging'
 import FireBall from './projectiles/fireball'
 
 class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
     this.canMove = true
+    this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0)
     this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
@@ -55,11 +57,11 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       for (let i = 0; i < pairs.length; i++) {
         const body1 = pairs[i].bodyA
         const body2 = pairs[i].bodyB
-        if (body1.label === 'hitbox' && body2.label === 'enemy') {
+        if ((body1.label === 'hitbox' || body1.label === 'fire') && body2.label === 'enemy') {
           this.overlapping.add(body2)
           this.isInEnemy = true
         }
-        if (body2.label === 'hitbox' && body1.label === 'enemy') {
+        if ((body2.label === 'hitbox' || body2.label === 'fire') && body1.label === 'enemy') {
           this.overlapping.add(body1)
           this.isInEnemy = true
         }
@@ -102,10 +104,12 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
     this.overlapping.forEach((body) => {
-      console.log('Hit', body.gameObject)
-      body.gameObject.updateHp()
-      if (body.gameObject.stats.getHp() === 0) {
-        body.gameObject.destroy()
+      if (body.gameObject) {
+        console.log('Hit', body.gameObject)
+        body.gameObject.updateHp()
+        if (body.gameObject.stats.getHp() <= 0) {
+          body.gameObject.destroy()
+        }
       }
     })
   }

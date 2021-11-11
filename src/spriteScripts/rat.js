@@ -8,6 +8,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
     }
+    this.cooldownActive = false
     // this.stats.setHp(5)
     // this.stats.setName('Rat')
     this.stats = new EnemyStats(5, 'Rat')
@@ -20,8 +21,15 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   updateHp () {
-    this.stats.setHp(this.stats.getHp() - 1)
-    console.log(this.stats.getHp())
+    if (!this.cooldownActive) {
+      this.cooldownActive = true
+      this.stats.setHp(this.stats.getHp() - 1)
+      console.log(this.stats.getHp())
+      setTimeout(() => {
+        this.cooldownActive = false
+        console.log('cooldown over')
+      }, 1000)
+    }
   }
 }
 // function getHP() {
