@@ -1,34 +1,37 @@
 import Phaser from 'phaser'
 
-class DataManaging extends Phaser.Data.DataManager {
-  create () {
-    this.dataManage = new this.DataManager()
-    this.dataManage.setFreeze(false)
-    this.dataManage.set({ name: 'Character', HP: '10', level: '1', STR: '1', INT: '1', CHA: '1', Gold: '0' })
+class DataManaging {
+  constructor (hp, level, str, int, cha, gold) {
+    this.HP = hp
+    this.level = level
+    this.STR = str
+    this.INT = int
+    this.CHA = cha
+    this.gold = gold
   }
 
   setHp () {
-    this.dataManage.HP++
+    this.HP++
   }
 
   setStr () {
-    this.dataManage.STR++
+    this.STR++
   }
 
   setInt () {
-    this.dataManage.INT++
+    this.INT++
   }
 
   setChar () {
-    this.dataManage.CHA++
+    this.CHA++
   }
 
   setGold (collectedGold) {
-    this.dataManage.Gold += collectedGold
+    this.gold += collectedGold
   }
 
   setLevel () {
-    this.dataManage.level++
+    this.level++
   }
 }
 

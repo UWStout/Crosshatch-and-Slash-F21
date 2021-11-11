@@ -1,26 +1,22 @@
 import Phaser from 'phaser'
 
-class EnemyStats extends Phaser.Data.DataManager {
-  create () {
-    this.dataManage = new this.DataManager()
-    this.dataManage.setFreeze(false)
-    this.dataManage.set({ name: '', HP: 5 })
+class EnemyStats {
+  constructor (hp, name) {
+    this.HP = hp
+    this.name = name
   }
 
   setHp (hp) {
-    this.dataManage.HP = hp
+    this.HP = hp
+    this.name = name
   }
 
   getHp () {
-    return this.dataManage.HP
+    return this.HP
   }
 
-  setName (name) {
-    this.dataManage.name = name
-  }
-
-  getName() {
-    return this.dataManage.name
+  getName () {
+    return this.name
   }
 }
 

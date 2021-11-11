@@ -6,6 +6,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
     this.canMove = true
+    this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
@@ -48,6 +49,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.colliderBody = null
 
     this.overlapping = new Set()
+    this.isInEnemy = false
     scene.matter.world.on('collisionstart', (event) => {
       const pairs = event.pairs
       for (let i = 0; i < pairs.length; i++) {
@@ -55,12 +57,14 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         const body2 = pairs[i].bodyB
         if (body1.label === 'hitbox' && body2.label === 'enemy') {
           this.overlapping.add(body2)
+          this.isInEnemy = true
         }
         if (body2.label === 'hitbox' && body1.label === 'enemy') {
           this.overlapping.add(body1)
+          this.isInEnemy = true
         }
       }
-      console.log('Collision Start', this.overlapping)
+      // console.log('Collision Start', this.overlapping)
     }, this)
 
     scene.matter.world.on('collisionend', (event) => {
@@ -70,15 +74,16 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         const body2 = pairs[i].bodyB
         if (this.overlapping.has(body1)) {
           this.overlapping.delete(body1)
+          this.isInEnemy = false
         }
 
         if (this.overlapping.has(body2)) {
           this.overlapping.delete(body2)
+          this.isInEnemy = false
         }
       }
-      console.log('Collision End', this.overlapping)
+      // console.log('Collision End', this.overlapping)
     }, this)
-
     // scene.matter.world.on('collisionactive', function () {
     //   if (this.playerSprite && this.colliderSprite) {
     //     console.log('E')
@@ -98,6 +103,10 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.anims.play('playerAttackPhysical', true)
     this.overlapping.forEach((body) => {
       console.log('Hit', body.gameObject)
+      body.gameObject.updateHp()
+      if (body.gameObject.stats.getHp() === 0) {
+        body.gameObject.destroy()
+      }
     })
   }
 
