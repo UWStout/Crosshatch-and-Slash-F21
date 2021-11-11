@@ -5,30 +5,21 @@ import FireBall from './projectiles/fireball'
 class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
-
     this.canMove = true
-    this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
-    // enabling physics on player
-    // this.setImmovable(true)
-    // this.body.setAllowGravity(false)
-    // this.body.setCollideWorldBounds(true)
-    // this.body.setSize(200, 200)
-    const bodies = Phaser.Physics.Matter.Matter.Bodies
-    const circleA = bodies.circle(50, -250, 120, { isSensor: true, label: 'combat' })
-    const circleB = bodies.circle(0, 0, 100, { label: 'collide' })
-    console.log(this.x + ' ' + this.y)
-    console.log(circleA)
-    console.log(circleB)
-    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleA, circleB], inertia: Infinity })
-    this.setExistingBody(compoundBody)
-    this.setPosition(x, y)
-    this.setOrigin(0.5, 0.6)
     this.setScale(0.6, 0.6)
-    this.setBounce(0)
+    const bodies = Phaser.Physics.Matter.Matter.Bodies
+    const circleA = bodies.circle(x+20, y-120, 120, { isSensor: true, label: 'hitbox' })
+    const circleB = bodies.circle(x, y, 100, { label: 'player' })
+    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleB, circleA] })
+    compoundBody.restitution = 0
+    this.setExistingBody(compoundBody)
+    this.setOrigin(0.5, 0.6)
     this.setFixedRotation()
+    this.setPosition(x, y)
+    // const swordSensor = Phaser.Physics.Matter.Factory.circle(x, y-20, 70, { isSensor: true })
     this.anims.play('playerIdle')
 
     this.on(
@@ -47,17 +38,67 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     //   this)
 
     scene.add.existing(this)
+    this.setUpCollision(scene)
+  }
+
+  setUpCollision (scene) {
+    this.playerSprite = null
+    this.colliderSprite = null
+    this.playerBody = null
+    this.colliderBody = null
+
+    this.overlapping = new Set()
+    scene.matter.world.on('collisionstart', (event) => {
+      const pairs = event.pairs
+      for (let i = 0; i < pairs.length; i++) {
+        const body1 = pairs[i].bodyA
+        const body2 = pairs[i].bodyB
+        if (body1.label === 'hitbox' && body2.label === 'enemy') {
+          this.overlapping.add(body2)
+        }
+        if (body2.label === 'hitbox' && body1.label === 'enemy') {
+          this.overlapping.add(body1)
+        }
+      }
+      console.log('Collision Start', this.overlapping)
+    }, this)
+
+    scene.matter.world.on('collisionend', (event) => {
+      const pairs = event.pairs
+      for (let i = 0; i < pairs.length; i++) {
+        const body1 = pairs[i].bodyA
+        const body2 = pairs[i].bodyB
+        if (this.overlapping.has(body1)) {
+          this.overlapping.delete(body1)
+        }
+
+        if (this.overlapping.has(body2)) {
+          this.overlapping.delete(body2)
+        }
+      }
+      console.log('Collision End', this.overlapping)
+    }, this)
+
+    // scene.matter.world.on('collisionactive', function () {
+    //   if (this.playerSprite && this.colliderSprite) {
+    //     console.log('E')
+    //     if (this.colliderBody && this.playerBody) {
+    //       if (this.colliderBody.label === 'rat' && this.playerBody.label === 'combat') {
+    //         if (this.player.getIsAttacking()) {
+    //           console.log('hit enemy')
+    //         }
+    //       }
+    //     }
+    //   }
+    // })
   }
 
   attack () {
-    this.isAttacking = true
     this.canMove = false
     this.anims.play('playerAttackPhysical', true)
-    setTimeout(() => { this.isAttacking = false }, 1)
-  }
-
-  getIsAttacking () {
-    return this.isAttacking
+    this.overlapping.forEach((body) => {
+      console.log('Hit', body.gameObject)
+    })
   }
 
   magicAttack (x, y) {

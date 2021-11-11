@@ -10,10 +10,7 @@ class ExampleScene extends Phaser.Scene {
   create () {
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
-    this.playerSprite = null
-    this.colliderSprite = null
-    this.playerBody = null
-    this.colliderBody = null
+
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
@@ -33,36 +30,6 @@ class ExampleScene extends Phaser.Scene {
     this.enemy.setCollisionCategory(cat1)
     this.player.setCollisionCategory(cat1)
     this.enemy.setCollidesWith([cat1, cat2])
-    this.matter.world.on('collisionstart', function (event) {
-      const pairs = event.pairs
-      for (let i = 0; i < pairs.length; i++) {
-        const body1 = pairs[i].bodyA
-        const body2 = pairs[i].bodyB
-        if (pairs[i].isSensor) {
-          if (body1.isSensor) {
-       
-            this.playerBody = body1
-            this.colliderBody = body2
-          }
-          else if (body2.isSensor) {
-            this.playerBody = body2
-            this.colliderBody = body1
-          }
-          this.playerSprite = this.playerBody.gameObject
-          this.colliderSprite = this.colliderBody.gameObject
-        }
-      }
-    })
-    this.matter.world.on('collisionactive', function () {
-      if (this.playerSprite && this.colliderSprite) {
-        console.log('E')
-        if (this.colliderBody) {
-          if (this.playerSprite.getIsAttacking() && this.colliderBody.label === 'rat') {
-            console.log('hit enemy')
-          }
-        }
-      }
-    })
     // this.player.setOnCollide(function (gameObject) {
     //   if (gameObject === this.enemy) {
     //     console.log('enemy attacked you')
