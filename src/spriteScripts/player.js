@@ -14,10 +14,11 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     }
     this.setScale(0.6, 0.6)
     const bodies = Phaser.Physics.Matter.Matter.Bodies
-    const circleA = bodies.circle(x+20, y-120, 120, { isSensor: true, label: 'hitbox' })
+    const circleA = bodies.circle(x + 10, y - 60, 120, { isSensor: true, label: 'hitbox' })
     const circleB = bodies.circle(x, y, 100, { label: 'player' })
     const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [circleB, circleA] })
     compoundBody.restitution = 0
+    compoundBody.position = { x, y }
     this.setExistingBody(compoundBody)
     this.setOrigin(0.5, 0.6)
     this.setFixedRotation()
