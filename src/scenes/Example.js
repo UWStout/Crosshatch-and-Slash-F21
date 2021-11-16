@@ -27,10 +27,10 @@ class ExampleScene extends Phaser.Scene {
     this.enemy.canRotate = true
 
     const targetsCategory = this.matter.world.nextCategory()
-    this.enemies.push(this.enemy)
+    //this.enemies.push(this.enemy)
     this.enemy = new RatEnemy(this, 6000, 1500)
     this.enemy.canRotate = true
-    this.enemies.push(this.enemy)
+    //this.enemies.push(this.enemy)
 
     this.enemy.setCollisionCategory(targetsCategory)
 
