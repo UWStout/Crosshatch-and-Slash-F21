@@ -20,31 +20,32 @@ class ExampleScene extends Phaser.Scene {
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
+
     // Create the player object
     this.player = new PlayerClass(this, 6000, 6500)
     this.canRotate = true
-    this.enemy = new RatEnemy(this, 6500, 6500)
-    this.enemy.canRotate = true
 
+    // Create enemy objects in the scene 
+    // Enemies array that holds all enemies
+    this.enemies = []
+
+    // Create the category used for tracking enemies
     const targetsCategory = this.matter.world.nextCategory()
-    //this.enemies.push(this.enemy)
-    this.enemy = new RatEnemy(this, 6000, 1500)
-    this.enemy.canRotate = true
+
+    const rat1 = new RatEnemy(this, 6500, 6500)
+    this.enemies.push(rat1)
+    
+    const rat2 = new RatEnemy(this, 6000, 6500)
+    this.enemies.push(rat2)
+
+    this.enemies.forEach(enemy => {
+      enemy.setCollisionCategory(targetsCategory)
+      enemy.canRotate = true
+    })
     //this.enemies.push(this.enemy)
 
-    this.enemy.setCollisionCategory(targetsCategory)
+    //this.enemy.setCollisionCategory(targetsCategory)
 
-    const cat1 = this.matter.world.nextCategory()
-    const cat2 = this.matter.world.nextCategory()
-    // this.enemy.setCollisionCategory(cat1)
-    // this.player.setCollisionCategory(cat1)
-    // this.enemy.setCollidesWith([cat1, cat2])
-    // this.player.setOnCollide(function (gameObject) {
-    //   if (gameObject === this.enemy) {
-    //     console.log('enemy attacked you')
-    //   }
-    // })
-    // Play sound when we hit the world bounds
 
     this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
@@ -85,21 +86,25 @@ class ExampleScene extends Phaser.Scene {
     this.ray.setOnCollide((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       console.log(collisionInfo)
+      console.log(target)
+      if (target.moveTowards) {
+        target.moveTowards()
+      }
 
-      const toX = Math.floor(this.player.x / 300)
-      const toY = Math.floor(this.player.y /300)
-      const fromX = Math.floor(target.x /300)
-      const fromY = Math.floor(target.y /300)
-      console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
-      this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-        if (path === null) {
-          console.warn('Path was not found')
-        } else {
-          console.log(path)
-          this.moveCharacter(path)
-        }
-      })
-      this.finder.calculate()
+      // const toX = Math.floor(this.player.x / 300)
+      // const toY = Math.floor(this.player.y /300)
+      // const fromX = Math.floor(target.x /300)
+      // const fromY = Math.floor(target.y /300)
+      // console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
+      // this.finder.findPath(fromX, fromY, toX, toY, (path) => {
+      //   if (path === null) {
+      //     console.warn('Path was not found')
+      //   } else {
+      //     console.log(path)
+      //     this.moveCharacter(path, target)
+      //   }
+      // })
+      // this.finder.calculate()
     })
 
     this.ray.setOnCollideEnd((collisionInfo) => {
@@ -214,13 +219,13 @@ class ExampleScene extends Phaser.Scene {
     this.ray.setOrigin(this.player.x, this.player.y)
   }
 
-  moveCharacter (path) {
+  moveCharacter (path, enemy) {
     const tweens = []
     for (let i = 0; i < path.length - 1; i++) {
       const ex = path[i + 1].x
       const ey = path[i + 1].y
       tweens.push({
-        targets: this.enemy,
+        targets: enemy,
         x: { value: ex * 300, duration: 2000 },
         y: { value: ey * 300, duration: 2000 }
       })
