@@ -8,16 +8,26 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
     }
+    this.isInPlayer = false
     this.cooldownActive = false
     // this.stats.setHp(5)
     // this.stats.setName('Rat')
     this.stats = new EnemyStats(5, 'Rat')
-    this.setRectangle(70, 250, { label: 'enemy' })
+    const bodies = Phaser.Physics.Matter.Matter.Bodies
+    const rectA = bodies.rectangle(x, y - 130, 150, 150, { isSensor: true, label: 'enemyhitbox' })
+    const rectB = bodies.rectangle(x, y, 100, 300, { label: 'enemy' })
+    const compoundBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [rectB, rectA] })
+    compoundBody.position = { x, y }
+    compoundBody.restitution = 0
+    this.setExistingBody(compoundBody)
     this.setBounce(0)
+    this.setPosition(x, y)
+    this.setOrigin(0.5, 0.5)
     this.setFixedRotation()
     this.setFrictionAir(1)
     this.setIgnoreGravity(false)
     scene.add.existing(this)
+    this.setUpCollision(scene)
   }
 
   updateHp () {
@@ -30,6 +40,51 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         console.log('cooldown over')
       }, 1000)
     }
+  }
+
+  attack () {
+    this.anims.play('ratAttack')
+    console.log('Rat attacks')
+  }
+
+  setUpCollision (scene) {
+    this.overlapping = new Set()
+    scene.matter.world.on('collisionstart', (event) => {
+      const pairs = event.pairs
+      for (let i = 0; i < pairs.length; i++) {
+        const body1 = pairs[i].bodyA
+        const body2 = pairs[i].bodyB
+        if (body1.label === 'enemyhitbox' && body2.label === 'player') {
+          this.overlapping.add(body2)
+          this.isInPlayer = true
+        }
+        if (body2.label === 'enemyhitbox' && body1.label === 'player') {
+          this.overlapping.add(body1)
+          this.isInPlayer = true
+        }
+      }
+      // if (this.overlapping) {
+      //   console.log('Collision Start', this.overlapping)
+      // }
+    }, this)
+
+    scene.matter.world.on('collisionend', (event) => {
+      const pairs = event.pairs
+      for (let i = 0; i < pairs.length; i++) {
+        const body1 = pairs[i].bodyA
+        const body2 = pairs[i].bodyB
+        if (this.overlapping.has(body1)) {
+          this.overlapping.delete(body1)
+          this.isInPlayer = false
+        }
+
+        if (this.overlapping.has(body2)) {
+          this.overlapping.delete(body2)
+          this.isInPlayer = false
+        }
+      }
+      // console.log('Collision End', this.overlapping)
+    }, this)
   }
 }
 // function getHP() {

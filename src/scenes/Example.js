@@ -21,10 +21,9 @@ class ExampleScene extends Phaser.Scene {
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
     // Create the player object
-    this.enemies = [] 
-    this.player = new PlayerClass(this, 7000, 1500)
+    this.player = new PlayerClass(this, 6000, 6500)
     this.canRotate = true
-    this.enemy = new RatEnemy(this, 8000, 1500)
+    this.enemy = new RatEnemy(this, 6500, 6500)
     this.enemy.canRotate = true
 
     const targetsCategory = this.matter.world.nextCategory()
@@ -164,7 +163,6 @@ class ExampleScene extends Phaser.Scene {
 
     this.input.on('pointerup', (pointer) => {
       if (pointer.leftButtonReleased()) {
-        this.canRotate = false
         this.player.attack()
       }
 
@@ -172,9 +170,9 @@ class ExampleScene extends Phaser.Scene {
         this.player.magicAttack(this.point.x, this.point.y)
       }
 
-      setTimeout(() => {
-        this.canRotate = true
-      }, 625)
+      // setTimeout(() => {
+      //   this.canRotate = true
+      // }, 625)
     }, this)
   }
 

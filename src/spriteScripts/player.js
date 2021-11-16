@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser, { Scenes } from 'phaser'
 import CONFIG from '../config'
 import DataManaging from '../scenes/DataManaging'
 import FireBall from './projectiles/fireball'
@@ -7,11 +7,12 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
     this.canMove = true
-    this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0)
+    this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0, 0)
     this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
+    this.levelUpExp = 5
     this.setScale(0.6, 0.6)
     const bodies = Phaser.Physics.Matter.Matter.Bodies
     const circleA = bodies.circle(x + 10, y - 60, 120, { isSensor: true, label: 'hitbox' })
@@ -31,13 +32,21 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       () => {
         this.anims.play('playerIdle')
         this.canMove = true
+        if (this.scene.canRotate !== null) {
+          this.scene.canRotate = true
+        }
       },
       this)
     this.on(
       Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'playerAttackMagical',
       () => {
-        this.anims.play('playerIdle')
-        this.canMove = true
+        setTimeout(() => {
+          this.anims.play('playerIdle')
+          this.canMove = true
+          if (this.scene.canRotate !== null) {
+            this.scene.canRotate = true
+          }
+        }, 250)
       },
       this)
 
@@ -103,6 +112,9 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
   attack () {
     this.canMove = false
+    if (this.scene.canRotate !== null) {
+      this.scene.canRotate = false
+    }
     this.anims.play('playerAttackPhysical', true)
     this.overlapping.forEach((body) => {
       if (body.gameObject) {
@@ -110,30 +122,51 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         body.gameObject.updateHp()
         if (body.gameObject.stats.getHp() <= 0) {
           body.gameObject.destroy()
+          this.dataManaging.setExp(2)
+          if (this.dataManaging.getExp() >= this.levelUpExp) {
+            this.levelUp(this.levelUpExp)
+            this.levelUpExp += (this.levelUpExp * 0.25)
+          }
         }
       }
     })
   }
 
+  levelUp (expHad) {
+    console.log('level')
+    this.dataManaging.setExp(-expHad)
+  }
+
   magicAttack (x, y) {
-    this.canMove = false
-    this.anims.play('playerAttackMagical', true)
-    const endX = this.x + x
-    const endY = this.y + y
+    if (this.dataManaging.getInt() > 0) {
+      if (this.scene.canRotate !== null) {
+        this.scene.canRotate = false
+      }
+      this.canMove = false
+      this.anims.play('playerAttackMagical', true)
+      const endX = this.x + x
+      const endY = this.y + y
 
-    const projectile = new FireBall(this.scene, this.x, this.y)
-    const newTween = this.scene.tweens.add({
-      targets: projectile,
-      x: endX,
-      y: endY,
-      ease: 'Power1',
-      duration: 250
-    })
+      const projectile = new FireBall(this.scene, this.x, this.y)
+      const newTween = this.scene.tweens.add({
+        targets: projectile,
+        x: endX,
+        y: endY,
+        ease: 'Power1',
+        duration: 250
+      })
 
-    newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
-      setTimeout(() => { projectile.destroy() }, 0)
-    })
-    console.log('Magic Attack')
+      newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
+        setTimeout(() => { projectile.destroy() }, 0)
+      })
+      console.log('Magic Attack')
+      setTimeout(() => {
+        this.dataManaging.setInt(1)
+        console.log('Mana +1')
+        // Change 2000 to 15000 or higher depending on what is chosen as a regeneration time
+      }, 2000)
+      this.dataManaging.setInt(-1)
+    }
   }
 
   move (x, y) {
@@ -168,15 +201,21 @@ PlayerClass.setupAnim = (scene) => {
 
   scene.anims.create({
     key: 'playerAttackPhysical',
-    frameRate: 8,
+    frameRate: 12,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 0, end: 4 })
   })
   scene.anims.create({
     key: 'playerAttackMagical',
-    frameRate: 8,
+    frameRate: 12,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 10, end: 14 })
   })
+  // scene.anims.create({
+  //   key: 'holdMagicAttack',
+  //   frameRate: 0.01,
+  //   repeat: 0,
+  //   frames: scene.anims.generateFrameNumbers('playerAttack', { start: 14, end: 14 })
+  // })
 }
 export default PlayerClass
