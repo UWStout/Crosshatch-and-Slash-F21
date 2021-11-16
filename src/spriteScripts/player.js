@@ -163,6 +163,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       setTimeout(() => {
         this.dataManaging.setInt(1)
         console.log('Mana +1')
+        // Change 2000 to 15000 or higher depending on what is chosen as a regeneration time
       }, 2000)
       this.dataManaging.setInt(-1)
     }
