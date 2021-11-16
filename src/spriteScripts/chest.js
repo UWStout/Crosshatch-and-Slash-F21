@@ -52,11 +52,11 @@ class Chest extends Phaser.Physics.Matter.Sprite {
       for (let i = 0; i < pairs.length; i++) {
         const body1 = pairs[i].bodyA
         const body2 = pairs[i].bodyB
-        if (body1.label === 'chestOpens' && body2.label === 'player') {
+        if (body1.label === 'chestOpens' && body2.label === 'hitbox') {
           this.overlapping.add(body2)
           this.isInPlayer = true
         }
-        if (body2.label === 'chestOpens' && body1.label === 'player') {
+        if (body2.label === 'chestOpens' && body1.label === 'hitbox') {
           this.overlapping.add(body1)
           this.isInPlayer = true
         }
