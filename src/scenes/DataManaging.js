@@ -19,8 +19,8 @@ class DataManaging {
     this.STR++
   }
 
-  setInt () {
-    this.INT++
+  setInt (intToChange) {
+    this.INT += intToChange
   }
 
   setChar () {
@@ -53,6 +53,10 @@ class DataManaging {
 
   getExp () {
     return this.exp
+  }
+
+  getInt () {
+    return this.INT
   }
 }
 

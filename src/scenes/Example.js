@@ -146,7 +146,6 @@ class ExampleScene extends Phaser.Scene {
 
     this.input.on('pointerup', (pointer) => {
       if (pointer.leftButtonReleased()) {
-        this.canRotate = false
         this.player.attack()
       }
 
@@ -154,9 +153,9 @@ class ExampleScene extends Phaser.Scene {
         this.player.magicAttack(this.point.x, this.point.y)
       }
 
-      setTimeout(() => {
-        this.canRotate = true
-      }, 625)
+      // setTimeout(() => {
+      //   this.canRotate = true
+      // }, 625)
     }, this)
   }
 
