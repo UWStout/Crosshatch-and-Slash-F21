@@ -2,6 +2,7 @@ import EasyStar from 'easystarjs/src/easystar'
 import Phaser from 'phaser'
 
 import CONFIG from '../config.js'
+import Chest from '../spriteScripts/chest.js'
 
 import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
@@ -125,7 +126,8 @@ class ExampleScene extends Phaser.Scene {
         up: Phaser.Input.Keyboard.KeyCodes.W,
         down: Phaser.Input.Keyboard.KeyCodes.S,
         left: Phaser.Input.Keyboard.KeyCodes.A,
-        right: Phaser.Input.Keyboard.KeyCodes.D
+        right: Phaser.Input.Keyboard.KeyCodes.D,
+        open: Phaser.Input.Keyboard.KeyCodes.E
       })
 
     // mouse look
@@ -202,7 +204,12 @@ class ExampleScene extends Phaser.Scene {
     if (this.cursors.down.isDown) {
       directon.y += 1
     }
-
+    if (this.cursors.open.isDown) {
+      console.log('Bruh.json', this.chest.isInRange(), this.chest.isOpen())
+      if (this.chest.isInRange() && !this.chest.isOpen()) {
+        this.chest.onOpen(this)
+      }
+    }
     this.player.move(directon.x, directon.y)
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
       this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })

@@ -21,6 +21,8 @@ class StartScene extends Phaser.Scene {
     this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')
     this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
+    this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 300, frameHeight: 300 })
+    this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 200, frameHeight: 200 })
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
