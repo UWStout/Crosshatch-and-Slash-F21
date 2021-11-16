@@ -28,16 +28,6 @@ const config = {
         plugin: PhaserRaycaster,
         mapping: 'raycasterPlugin'
       }
-    ],
-
-    global: [
-      {
-        key: 'easystarjs',
-        plugin: EasyStar,
-        mapping: 'easystarPlugin'
-
-      }
-
     ]
   },
 

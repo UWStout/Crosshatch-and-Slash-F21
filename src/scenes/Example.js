@@ -26,6 +26,11 @@ class ExampleScene extends Phaser.Scene {
     this.enemy = new RatEnemy(this, 8000, 1500)
     this.enemy.canRotate = true
 
+    const targetsCategory = this.matter.world.nextCategory()
+
+   
+    this.enemy.setCollisionCategory(targetsCategory)
+
     const cat1 = this.matter.world.nextCategory()
     const cat2 = this.matter.world.nextCategory()
     // this.enemy.setCollisionCategory(cat1)
@@ -37,6 +42,7 @@ class ExampleScene extends Phaser.Scene {
     //   }
     // })
     // Play sound when we hit the world bounds
+
     this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
     // Adjust world bounds for physics and camera
@@ -46,7 +52,7 @@ class ExampleScene extends Phaser.Scene {
 
     this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
 
-    //this.activeWallGroup = this.add.group()
+    // this.activeWallGroup = this.add.group()
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
     // for (const wall of this.activeTileBodies) {
@@ -54,9 +60,9 @@ class ExampleScene extends Phaser.Scene {
     // }
 
     // EasyStar Pathfinding
-    // this.finder = new EasyStar()
+    this.finder = new EasyStar.js()
 
-    // this.finder.setGrid(grid)
+    //this.finder.setGrid(grid)
 
     // RAYCAST VARIABLES
     this.raycaster = this.raycasterPlugin.createRaycaster()
@@ -64,17 +70,29 @@ class ExampleScene extends Phaser.Scene {
       origin: {
         x: 400,
         y: 300
-      }
+      },
+      autoSlice: true,
+      collisionRange: 500
     })
-    //this.raycaster.mapGameObjects(this.activeWallGroup.getChildren(), true)
+
+    this.ray.enablePhysics('matter')
+    this.ray.setCollidesWith(targetsCategory)
+
+   
+
+    this.ray.setOnCollide(function (collisionInfo) {
+      const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
+      console.log("in range: " + target)
+    })
+
+    this.ray.setOnCollideEnd(function (collisionInfo) {
+      const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
+      console.log("left range: " + target)
+    })
+
     this.intersections = this.ray.castCircle()
+
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
-
-    this.createFOV(this)
-
-    this.fow.setDepth(1)
-    // backLayer.setDepth(2)
-    this.graphics.setDepth(3)
 
     this.draw()
 
@@ -186,9 +204,9 @@ class ExampleScene extends Phaser.Scene {
     this.graphics.clear()
 
     // clear field of view mask
-    this.maskGraphics.clear()
-    // draw fov mask
-    this.maskGraphics.fillPoints(this.intersections)
+    // this.maskGraphics.clear()
+    // // draw fov mask
+    // this.maskGraphics.fillPoints(this.intersections)
 
     /*
   graphics.fillStyle(0xffffff, 0.3);
@@ -236,7 +254,10 @@ class ExampleScene extends Phaser.Scene {
 
   fixFlippedColliders (main) {
     const tileMapBodies = []
+    const col = []
     main.layer.data.forEach((row) => {
+      
+      col.push(row.tile)
       const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
       allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body) })
       allBodies.filter((tile) => tile.index === 3 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
@@ -257,6 +278,10 @@ class ExampleScene extends Phaser.Scene {
           }
         })
     })
+    this.grid = []
+    this.grid.push(col)
+    console.log(col)
+    console.log(this.grid)
     return tileMapBodies
   }
 }
