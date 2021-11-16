@@ -7,11 +7,12 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
     this.canMove = true
-    this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0)
+    this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0, 0)
     this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
+    this.levelUpExp = 5
     this.setScale(0.6, 0.6)
     const bodies = Phaser.Physics.Matter.Matter.Bodies
     const circleA = bodies.circle(x + 10, y - 60, 120, { isSensor: true, label: 'hitbox' })
@@ -110,9 +111,19 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         body.gameObject.updateHp()
         if (body.gameObject.stats.getHp() <= 0) {
           body.gameObject.destroy()
+          this.dataManaging.setExp(2)
+          if (this.dataManaging.getExp() >= this.levelUpExp) {
+            this.levelUp(this.levelUpExp)
+            this.levelUpExp += (this.levelUpExp * 0.25)
+          }
         }
       }
     })
+  }
+
+  levelUp (expHad) {
+    console.log('level')
+    this.dataManaging.setExp(-expHad)
   }
 
   magicAttack (x, y) {
