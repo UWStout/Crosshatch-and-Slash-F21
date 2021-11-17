@@ -26,6 +26,8 @@ class ExampleScene extends Phaser.Scene {
     this.player = new PlayerClass(this, 6000, 6500)
     this.canRotate = true
 
+    // Create the chest object
+    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
     // Create enemy objects in the scene 
     // Enemies array that holds all enemies
     this.enemies = []
@@ -205,9 +207,9 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
     if (this.cursors.open.isDown) {
-      console.log('Bruh.json', this.chest.isInRange(), this.chest.isOpen())
+      console.log(this.chest.isInRange(), this.chest.isOpen())
       if (this.chest.isInRange() && !this.chest.isOpen()) {
-        this.chest.onOpen(this)
+        this.chest.onOpen()
       }
     }
     this.player.move(directon.x, directon.y)

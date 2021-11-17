@@ -27,13 +27,13 @@ class Chest extends Phaser.Physics.Matter.Sprite {
     this.setUpCollision(scene)
   }
 
-  onOpen (scene) {
+  onOpen () {
     this.isOpened = true
     if (this.chestChosen === Chest.FRONT_CHEST) {
-      this.play('frontChestOpen', true)
+      this.play('frontChestOpen')
     }
     else {
-      this.play('sideChestOpen', true)
+      this.play('sideChestOpen')
     }
   }
 
@@ -93,17 +93,17 @@ Chest.animInitialized = false
 Chest.setupAnim = (scene) => {
   scene.anims.create({
     key: 'sideChestOpen',
-    frameRate: 8,
+    frameRate: 4,
     repeat: 0,
-    frame: scene.anims.generateFrameNumbers('sideChest', { start: 0, end: 2 })
+    frames: scene.anims.generateFrameNumbers('sideChest', { start: 0, end: 2 })
   })
   scene.anims.create({
     key: 'frontChestOpen',
-    frameRate: 8,
+    frameRate: 4,
     repeat: 0,
-    frame: scene.anims.generateFrameNumbers('frontChest', { start: 0, end: 2 })
+    frames: scene.anims.generateFrameNumbers('frontChest', { start: 0, end: 2 })
   })
-  // Chest.animInitialized = true
+  Chest.animInitialized = true
 }
 
 export default Chest
