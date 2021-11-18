@@ -35,12 +35,12 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     const toY = Math.floor(this.scene.player.y / 300)
     const fromX = Math.floor(this.x / 300)
     const fromY = Math.floor(this.y / 300)
-    console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
+    // console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
     this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
       if (path === null) {
         console.warn('Path was not found')
       } else {
-        console.log(path)
+        // console.log(path)
         this.scene.moveCharacter(path, this)
       }
     })

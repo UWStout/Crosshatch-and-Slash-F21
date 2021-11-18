@@ -120,6 +120,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       if (body.gameObject) {
         console.log('Hit', body.gameObject)
         body.gameObject.updateHp()
+        console.log(body.gameObject.stats.getHp())
         if (body.gameObject.stats.getHp() <= 0) {
           body.gameObject.destroy()
           this.dataManaging.setExp(2)
