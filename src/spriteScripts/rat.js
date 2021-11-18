@@ -45,7 +45,6 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     switch (this.currentState) {
       case EnemyStates.GUARDING:
         console.log('Currently standing guard')
-        this.moveBack()
         break
 
       case EnemyStates.PURSUING:
@@ -63,6 +62,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
       case EnemyStates.RETURNING:
         console.log('Currently returning to guard point')
+        this.moveBack()
         break
 
       case EnemyStates.DYING:
@@ -85,7 +85,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         console.warn('Path was not found')
       } else {
         // console.log(path)
-        this.scene.moveCharacter(path, this)
+        this.scene.moveCharacterBack(path, this)
       }
     })
     this.scene.finder.calculate()

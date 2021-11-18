@@ -3,6 +3,7 @@ const EnemyStates = Object.freeze({
   PURSUING: 'PURSUING',
   ENGAGING: 'ENGAGING',
   RECOVERING: 'RECOVERING',
+  RETURNING: 'RETURNING',
   DYING: 'DYING',
   UNKNOWN: 'UNKNOWN'
 })

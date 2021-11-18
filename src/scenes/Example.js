@@ -50,7 +50,10 @@ class ExampleScene extends Phaser.Scene {
         if (index >= 0) {
           this.enemies.splice(index, 1)
         }
-        this.tweens.killAll()
+        enemy.updateState('DYING')
+        this.tweens.pauseAll()
+        this.tweens.killTweensOf(enemy)
+        this.tweens.resumeAll()
       }, this)
     })
     // this.enemies.push(this.enemy)
@@ -65,7 +68,6 @@ class ExampleScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, false, 0.1)
 
     this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
-
 
     // Set the HUD for the game
     this.scene.run('HUDScene')
@@ -107,7 +109,7 @@ class ExampleScene extends Phaser.Scene {
 
     this.ray.setOnCollideEnd((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
-     target.updateState('GUARDING')
+      target.updateState('RETURNING')
     })
 
     this.intersections = this.ray.castCircle()
@@ -151,12 +153,11 @@ class ExampleScene extends Phaser.Scene {
     this.sfx = this.sound.addAudioSprite('gameAudio')
 
     this.input.on('pointermove', function (pointer) {
-      
       this.point.set(pointer.worldX, pointer.worldY)
       this.point.x -= this.player.x
       this.point.y -= this.player.y
       this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
-     
+
       if (this.canRotate) {
         this.player.setAngle((Phaser.Math.RAD_TO_DEG * this.angle) + 90)
       }
@@ -209,10 +210,9 @@ class ExampleScene extends Phaser.Scene {
 
     if (this.enemies) {
       this.enemies.forEach((enemy) => {
-          enemy.updateAI()
-          const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
-          enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
-        
+        enemy.updateAI()
+        const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
+        enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
       })
     }
 
@@ -241,12 +241,29 @@ class ExampleScene extends Phaser.Scene {
     })
   }
 
+  moveCharacterBack (path, enemy) {
+    const tweens = []
+    for (let i = 0; i < path.length - 1; i++) {
+      const ex = path[i + 1].x
+      const ey = path[i + 1].y
+      tweens.push({
+        targets: enemy,
+        x: { value: ex * 300, duration: 2000 },
+        y: { value: ey * 300, duration: 2000 }
+      })
+    }
+
+    this.tweens.timeline({
+      tweens: tweens,
+      onComplete: () => { enemy.updateState('GUARDING') }
+    })
+  }
+
   // draw rays intersections
   draw () {
   // clear ray visualisation
     this.graphics.clear()
 
-    
     this.graphics.lineStyle(1, 0x00ff00)
     for (const intersection of this.intersections) {
       this.graphics.strokeLineShape({
@@ -256,9 +273,9 @@ class ExampleScene extends Phaser.Scene {
         y2: intersection.y
       })
     }
-  
+
     this.graphics.fillStyle(0xff00ff)
- 
+
     this.graphics.fillPoint(this.ray.origin.x, this.ray.origin.y, 3)
   }
 
