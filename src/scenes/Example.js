@@ -6,6 +6,7 @@ import Chest from '../spriteScripts/chest.js'
 
 import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
+import HUDScene from './HUD.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
@@ -25,7 +26,6 @@ class ExampleScene extends Phaser.Scene {
     // Create the player object
     this.player = new PlayerClass(this, 6000, 6500)
     this.canRotate = true
-
     // Create the chest object
     this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
     // Create enemy objects in the scene
@@ -57,6 +57,11 @@ class ExampleScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, false, 0.1)
 
     this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
+
+
+    // Set the HUD for the game
+    this.scene.run('HUDScene')
+    this.HUD = this.scene.get('HUDScene')
 
     // this.activeWallGroup = this.add.group()
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
@@ -164,7 +169,6 @@ class ExampleScene extends Phaser.Scene {
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
-    this.scene.run('HUDScene')
 
     this.input.on('pointermove', function (pointer) {
       // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
@@ -196,7 +200,6 @@ class ExampleScene extends Phaser.Scene {
   keyReleased () {
     console.log('Key released')
     this.scene.start('StartScene')
-    this.scene.stop('HUDScene')
     this.music.stop()
   }
 
