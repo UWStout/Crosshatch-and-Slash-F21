@@ -23,11 +23,50 @@ class StartScene extends Phaser.Scene {
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
 
     // Load the image assets needed for 'ExampleScene'
-    this.load.image('room', 'assets/tilemaps/rm_test1.png')
-    this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')
-    this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
+    this.load.image('mana0', 'assets/sprites/mana/spr_UI_Mana1.png')
+    this.load.image('mana1', 'assets/sprites/mana/spr_UI_Mana2.png')
+    this.load.image('mana2', 'assets/sprites/mana/spr_UI_Mana3.png')
+    this.load.image('mana3', 'assets/sprites/mana/spr_UI_Mana4.png')
+    this.load.image('mana4', 'assets/sprites/mana/spr_UI_Mana5.png')
+    this.load.image('mana5', 'assets/sprites/mana/spr_UI_Mana6.png')
+    this.load.image('mana6', 'assets/sprites/mana/spr_UI_Mana7.png')
+    this.load.image('mana7', 'assets/sprites/mana/spr_UI_Mana8.png')
+    this.load.image('mana8', 'assets/sprites/mana/spr_UI_Mana9.png')
+    this.load.image('mana9', 'assets/sprites/mana/spr_UI_Mana10.png')
+    this.load.image('mana10', 'assets/sprites/mana/spr_UI_Mana11.png')
+    this.load.image('mana11', 'assets/sprites/mana/spr_UI_Mana12.png')
+    this.load.image('mana12', 'assets/sprites/mana/spr_UI_Mana13.png')
+    this.load.image('mana13', 'assets/sprites/mana/spr_UI_Mana14.png')
+    this.load.image('mana14', 'assets/sprites/mana/spr_UI_Mana15.png')
+    this.load.image('mana15', 'assets/sprites/mana/spr_UI_Mana16.png')
+    this.load.image('mana16', 'assets/sprites/mana/spr_UI_Mana17.png')
+    this.load.image('mana17', 'assets/sprites/mana/spr_UI_Mana18.png')
+    this.load.image('mana18', 'assets/sprites/mana/spr_UI_Mana19.png')
+    this.load.image('mana19', 'assets/sprites/mana/spr_UI_Mana20.png')
+    this.load.image('mana20', 'assets/sprites/mana/spr_UI_Mana21.png')
+    this.load.image('exp0', 'assets/sprites/exp/spr_UI_Exp1.png')
+    this.load.image('exp1', 'assets/sprites/exp/spr_UI_Exp2.png')
+    this.load.image('exp2', 'assets/sprites/exp/spr_UI_Exp3.png')
+    this.load.image('exp3', 'assets/sprites/exp/spr_UI_Exp4.png')
+    this.load.image('exp4', 'assets/sprites/exp/spr_UI_Exp5.png')
+    this.load.image('exp5', 'assets/sprites/exp/spr_UI_Exp6.png')
+    this.load.image('exp6', 'assets/sprites/exp/spr_UI_Exp7.png')
+    this.load.image('exp7', 'assets/sprites/exp/spr_UI_Exp8.png')
+    this.load.image('exp8', 'assets/sprites/exp/spr_UI_Exp9.png')
+    this.load.image('exp9', 'assets/sprites/exp/spr_UI_Exp10.png')
+    this.load.image('exp10', 'assets/sprites/exp/spr_UI_Exp11.png')
+    this.load.image('exp11', 'assets/sprites/exp/spr_UI_Exp12.png')
+    this.load.image('exp12', 'assets/sprites/exp/spr_UI_Exp13.png')
+    this.load.image('exp13', 'assets/sprites/exp/spr_UI_Exp14.png')
+    this.load.image('exp14', 'assets/sprites/exp/spr_UI_Exp15.png')
+    this.load.image('exp15', 'assets/sprites/exp/spr_UI_Exp16.png')
+    this.load.image('exp16', 'assets/sprites/exp/spr_UI_Exp17.png')
+    this.load.image('exp17', 'assets/sprites/exp/spr_UI_Exp18.png')
+    this.load.image('exp18', 'assets/sprites/exp/spr_UI_Exp19.png')
+    this.load.image('exp19', 'assets/sprites/exp/spr_UI_Exp20.png')
+    this.load.image('exp20', 'assets/sprites/exp/spr_UI_Exp21.png')
 
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
 
@@ -50,7 +89,7 @@ class StartScene extends Phaser.Scene {
     this.fontsLoaded = false
     webFontLoader({
       custom: {
-        families: ['versal']
+        families: ['hamlet']
       },
       active: () => {
         this.fontsLoaded = true
@@ -73,16 +112,16 @@ class StartScene extends Phaser.Scene {
     this.loadingText.destroy()
 
     // Add background image
-    // const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    // startScreen.setScale(
-    //   CONFIG.DEFAULT_WIDTH / startScreen.width,
-    //   CONFIG.DEFAULT_HEIGHT / startScreen.height
-    // )
+    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
+    startScreen.setScale(
+      CONFIG.DEFAULT_WIDTH / startScreen.width,
+      CONFIG.DEFAULT_HEIGHT / startScreen.height
+    )
 
-    this.add.text(32, 32,
-      'The face of the\nmoon was in\nshadow.',
-      { fontFamily: 'versal', fontSize: 80, color: '#ff0000' }
-    ).setShadow(2, 2, '#333333', 2, false, true)
+    // this.add.text(32, 32,
+    //   'The face of the\nmoon was in\nshadow.',
+    //   { fontFamily: 'versal', fontSize: 80, color: '#ff0000' }
+    // ).setShadow(2, 2, '#333333', 2, false, true)
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
