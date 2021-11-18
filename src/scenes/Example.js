@@ -28,16 +28,16 @@ class ExampleScene extends Phaser.Scene {
     this.canRotate = true
     // Create the chest object
     this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
-    // Create enemy objects in the scene 
+    // Create enemy objects in the scene
     // Enemies array that holds all enemies
     this.enemies = []
-
+    this.activeEnemies = []
     // Create the category used for tracking enemies
     const targetsCategory = this.matter.world.nextCategory()
 
     const rat1 = new RatEnemy(this, 6500, 6500)
     this.enemies.push(rat1)
-    
+
     const rat2 = new RatEnemy(this, 6000, 6500)
     this.enemies.push(rat2)
 
@@ -45,10 +45,9 @@ class ExampleScene extends Phaser.Scene {
       enemy.setCollisionCategory(targetsCategory)
       enemy.canRotate = true
     })
-    //this.enemies.push(this.enemy)
+    // this.enemies.push(this.enemy)
 
-    //this.enemy.setCollisionCategory(targetsCategory)
-
+    // this.enemy.setCollisionCategory(targetsCategory)
 
     this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
@@ -75,7 +74,9 @@ class ExampleScene extends Phaser.Scene {
     this.finder = new EasyStar.js()
 
     this.finder.setGrid(this.grid)
-    this.finder.setAcceptableTiles([1,2])
+    this.finder.setAcceptableTiles([1, 2])
+    this.finder.enableDiagonals()
+    this.finder.enableCornerCutting(0)
 
     // RAYCAST VARIABLES
     this.raycaster = this.raycasterPlugin.createRaycaster()
@@ -93,11 +94,15 @@ class ExampleScene extends Phaser.Scene {
 
     this.ray.setOnCollide((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
-      console.log(collisionInfo)
-      console.log(target)
-      if (target.moveTowards) {
-        target.moveTowards()
-      }
+      this.activeEnemies.push(target)
+      target.on('destroy', () => {
+        const index = this.activeEnemies.findIndex((item) => (item === target))
+        if (index >= 0) {
+          this.activeEnemies.splice(index, 1)
+        }
+        
+          this.tweens.killAll()
+      }, this)
 
       // const toX = Math.floor(this.player.x / 300)
       // const toY = Math.floor(this.player.y /300)
@@ -117,7 +122,10 @@ class ExampleScene extends Phaser.Scene {
 
     this.ray.setOnCollideEnd((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
-      console.log('left range: ' + target)
+      const index = this.activeEnemies.findIndex((item) => (item === target))
+      if (index >= 0) {
+        this.activeEnemies.splice(index, 1)
+      }
     })
 
     this.intersections = this.ray.castCircle()
@@ -221,6 +229,16 @@ class ExampleScene extends Phaser.Scene {
       this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
       this.raycaster.mappedObjects = []
       this.raycaster.mapGameObjects(this.activeTileBodies, true)
+    }
+
+    if (this.activeEnemies) {
+      this.activeEnemies.forEach((enemy) => {
+        if (enemy.moveTowards) {
+          enemy.moveTowards()
+          const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
+          enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
+        }
+      })
     }
 
     // cast ray in all directions
