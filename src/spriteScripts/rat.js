@@ -1,6 +1,7 @@
 
 import Phaser from 'phaser'
 import EnemyStats from '../scenes/EnemyStats'
+import EnemyStates from '../spriteScripts/EnemyStateMachines/enemyStates'
 
 class RatEnemy extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
@@ -28,6 +29,66 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.setIgnoreGravity(false)
     scene.add.existing(this)
     this.setUpCollision(scene)
+    this.CurrentState = EnemyStates.GUARDING
+  }
+
+  updateState (newstate) {
+    this.currentState = newstate
+  }
+
+  setOriginXY (x, y) {
+    this.originX = x
+    this.originY = y
+  }
+
+  updateAI () {
+    switch (this.currentState) {
+      case EnemyStates.GUARDING:
+        console.log('Currently standing guard')
+        this.moveBack()
+        break
+
+      case EnemyStates.PURSUING:
+        console.log('Currently pursuing the player')
+        this.moveTowards()
+        break
+
+      case EnemyStates.ENGAGING:
+        console.log('Currently battling')
+        break
+
+      case EnemyStates.RECOVERING:
+        console.log('Currently recovering')
+        break
+
+      case EnemyStates.RETURNING:
+        console.log('Currently returning to guard point')
+        break
+
+      case EnemyStates.DYING:
+        console.log('Currently dying')
+        break
+
+      default:
+        console.error('Unknown state')
+        break
+    }
+  }
+
+  moveBack () {
+    const toX = Math.floor(this.originX / 300)
+    const toY = Math.floor(this.originY / 300)
+    const fromX = Math.floor(this.x / 300)
+    const fromY = Math.floor(this.y / 300)
+    this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
+      if (path === null) {
+        console.warn('Path was not found')
+      } else {
+        // console.log(path)
+        this.scene.moveCharacter(path, this)
+      }
+    })
+    this.scene.finder.calculate()
   }
 
   moveTowards () {

@@ -44,6 +44,14 @@ class ExampleScene extends Phaser.Scene {
     this.enemies.forEach(enemy => {
       enemy.setCollisionCategory(targetsCategory)
       enemy.canRotate = true
+      enemy.setOriginXY(enemy.x, enemy.y)
+      enemy.on('destroy', () => {
+        const index = this.enemies.findIndex((item) => (item === enemy))
+        if (index >= 0) {
+          this.enemies.splice(index, 1)
+        }
+        this.tweens.killAll()
+      }, this)
     })
     // this.enemies.push(this.enemy)
 
@@ -89,38 +97,12 @@ class ExampleScene extends Phaser.Scene {
 
     this.ray.setOnCollide((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
-      this.activeEnemies.push(target)
-      target.on('destroy', () => {
-        const index = this.activeEnemies.findIndex((item) => (item === target))
-        if (index >= 0) {
-          this.activeEnemies.splice(index, 1)
-        }
-        
-          this.tweens.killAll()
-      }, this)
-
-      // const toX = Math.floor(this.player.x / 300)
-      // const toY = Math.floor(this.player.y /300)
-      // const fromX = Math.floor(target.x /300)
-      // const fromY = Math.floor(target.y /300)
-      // console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
-      // this.finder.findPath(fromX, fromY, toX, toY, (path) => {
-      //   if (path === null) {
-      //     console.warn('Path was not found')
-      //   } else {
-      //     console.log(path)
-      //     this.moveCharacter(path, target)
-      //   }
-      // })
-      // this.finder.calculate()
+      target.updateState('PURSUING')
     })
 
     this.ray.setOnCollideEnd((collisionInfo) => {
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
-      const index = this.activeEnemies.findIndex((item) => (item === target))
-      if (index >= 0) {
-        this.activeEnemies.splice(index, 1)
-      }
+     target.updateState('GUARDING')
     })
 
     this.intersections = this.ray.castCircle()
@@ -155,8 +137,6 @@ class ExampleScene extends Phaser.Scene {
         this.point.scale(20 / length)
       }
     }, this)
-    // Add a callback when a key is released
-    // this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
@@ -167,12 +147,12 @@ class ExampleScene extends Phaser.Scene {
     this.scene.run('HUDScene')
 
     this.input.on('pointermove', function (pointer) {
-      // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
+      
       this.point.set(pointer.worldX, pointer.worldY)
       this.point.x -= this.player.x
       this.point.y -= this.player.y
       this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
-      // console.log(this.angle)
+     
       if (this.canRotate) {
         this.player.setAngle((Phaser.Math.RAD_TO_DEG * this.angle) + 90)
       }
@@ -186,10 +166,6 @@ class ExampleScene extends Phaser.Scene {
       if (pointer.rightButtonReleased()) {
         this.player.magicAttack(this.point.x, this.point.y)
       }
-
-      // setTimeout(() => {
-      //   this.canRotate = true
-      // }, 625)
     }, this)
   }
 
@@ -228,13 +204,12 @@ class ExampleScene extends Phaser.Scene {
       this.raycaster.mapGameObjects(this.activeTileBodies, true)
     }
 
-    if (this.activeEnemies) {
-      this.activeEnemies.forEach((enemy) => {
-        if (enemy.moveTowards) {
-          enemy.moveTowards()
+    if (this.enemies) {
+      this.enemies.forEach((enemy) => {
+          enemy.updateAI()
           const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
           enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
-        }
+        
       })
     }
 
@@ -268,16 +243,7 @@ class ExampleScene extends Phaser.Scene {
   // clear ray visualisation
     this.graphics.clear()
 
-    // clear field of view mask
-    // this.maskGraphics.clear()
-    // // draw fov mask
-    // this.maskGraphics.fillPoints(this.intersections)
-
-    /*
-  graphics.fillStyle(0xffffff, 0.3);
-  graphics.fillPoints(intersections);
-  */
-    // draw rays
+    
     this.graphics.lineStyle(1, 0x00ff00)
     for (const intersection of this.intersections) {
       this.graphics.strokeLineShape({
@@ -287,24 +253,9 @@ class ExampleScene extends Phaser.Scene {
         y2: intersection.y
       })
     }
-    /*
-  let raycasterMap = tilemapLayer.data.get('raycasterMap');
-  //draw tilemap's segments
-  graphics.lineStyle(1, 0xff0000);
-  let segments = raycasterMap.getSegments(ray);
-  for(let segment of segments) {
-    graphics.strokeLineShape(segment);
-  }
-  */
+  
     this.graphics.fillStyle(0xff00ff)
-    /*
-  //draw tilemap's points
-  let points = raycasterMap.getPoints(ray);
-  for(let point of points) {
-    graphics.fillPoint(point.x, point.y, 3);
-  }
-  */
-    // draw ray origin
+ 
     this.graphics.fillPoint(this.ray.origin.x, this.ray.origin.y, 3)
   }
 
