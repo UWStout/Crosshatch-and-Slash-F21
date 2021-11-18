@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "easystarjs": "^0.4.4",
+    "google-webfont-loader": "^1.0.1",
     "kaboom": "^2000.0.0",
     "phaser-raycaster": "^0.9.4"
   }

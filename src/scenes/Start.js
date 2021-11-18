@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import CONFIG from '../config.js'
-import PlayerClass from '../spriteScripts/player.js'
+
+import { webFontLoader } from 'google-webfont-loader'
 
 class StartScene extends Phaser.Scene {
   init () {
@@ -13,17 +14,25 @@ class StartScene extends Phaser.Scene {
   }
 
   preload () {
+    this.loadingFinished = false
+    this.loadEvents = new Phaser.Events.EventEmitter()
+    this.loadEvents.once('sceneReady', this.sceneReady, this)
+
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen', 'assets/StartScreen.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
+
     // Load the image assets needed for 'ExampleScene'
     this.load.image('room', 'assets/tilemaps/rm_test1.png')
     this.load.image('tutorialCollision', 'assets/tilemaps/rm_testCollision1.png')
     this.load.image('tutorialInteract', 'assets/tilemaps/rm_testInteract1.png')
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
+    this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
+
+    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
+
     this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 200, frameHeight: 200 })
-    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('rat', 'assets/sprites/Rat300x300.png', { frameWidth: 300, frameHeight: 300 })
@@ -37,24 +46,43 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
-    // DEBUG: Fake loading lots of data
-    // for (let i = 0; i < 300; i++) {
-    //   this.load.image('sky' + i, 'assets/skies/space3.png')
-    // }
+    // Load web fonts
+    this.fontsLoaded = false
+    webFontLoader({
+      custom: {
+        families: ['versal']
+      },
+      active: () => {
+        this.fontsLoaded = true
+        if (this.fontsLoaded && this.loadingFinished) {
+          this.loadEvents.emit('sceneReady')
+        }
+      }
+    })
   }
 
   create () {
+    this.loadingFinished = true
+    if (this.fontsLoaded && this.loadingFinished) {
+      this.loadEvents.emit('sceneReady')
+    }
+  }
+
+  sceneReady () {
     // Remove loading text
     this.loadingText.destroy()
 
     // Add background image
-    const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
-    startScreen.setScale(
-      CONFIG.DEFAULT_WIDTH / startScreen.width,
-      CONFIG.DEFAULT_HEIGHT / startScreen.height
-    )
+    // const startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, 'StartScreen')
+    // startScreen.setScale(
+    //   CONFIG.DEFAULT_WIDTH / startScreen.width,
+    //   CONFIG.DEFAULT_HEIGHT / startScreen.height
+    // )
 
-    this.player = new PlayerClass(this, 100, 100)
+    this.add.text(32, 32,
+      'The face of the\nmoon was in\nshadow.',
+      { fontFamily: 'versal', fontSize: 80, color: '#ff0000' }
+    ).setShadow(2, 2, '#333333', 2, false, true)
 
     // Add a callback when a key is released
     this.input.keyboard.on('keyup', this.keyReleased, this)
