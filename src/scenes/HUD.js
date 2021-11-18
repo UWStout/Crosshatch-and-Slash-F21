@@ -10,6 +10,8 @@ class HUDScene extends Phaser.Scene {
   create () {
     const ui = this.add.image(970, 960, 'uiOutline')
     ui.setScale(0.844, 0.844)
+    this.dice = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 50, CONFIG.DEFAULT_HEIGHT - 80, '')
+    HUDScene.animInitialized(this)
     this.loadingText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2 + 50,
       CONFIG.DEFAULT_HEIGHT - 80,
@@ -33,6 +35,14 @@ class HUDScene extends Phaser.Scene {
   updateMana (newMana) {
 
   }
+}
+HUDScene.animInitialized = (scene) => {
+  scene.anims.create({
+    key: 'roll',
+    frameRate: 4,
+    repeat: 0,
+    frames: scene.anims.generateFrameNumbers('dice', { start: 0, end: 7 })
+  })
 }
 
 export default HUDScene
