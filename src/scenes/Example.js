@@ -72,7 +72,6 @@ class ExampleScene extends Phaser.Scene {
     // Set the HUD for the game
     this.scene.run('HUDScene')
     this.HUD = this.scene.get('HUDScene')
-
     // this.activeWallGroup = this.add.group()
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -99,6 +98,18 @@ class ExampleScene extends Phaser.Scene {
       collisionRange: 1000
     })
 
+    // this.time.addEvent({
+    //   delay: 5000,
+    //   loop: true,
+    //   callbackScope: this,
+    //   callback: this.player.setMana(1)
+    // })
+    // this.time.addEvent({
+    //   delay: 5000,
+    //   loop: true,
+    //   callbackScope: this,
+    //   callback: this.HUD.updateMana(this.player.getMana())
+    // })
     this.ray.enablePhysics('matter')
     this.ray.setCollidesWith(targetsCategory)
 
@@ -169,7 +180,8 @@ class ExampleScene extends Phaser.Scene {
       }
 
       if (pointer.rightButtonReleased()) {
-        this.player.magicAttack(this.point.x, this.point.y)
+        this.player.magicAttack(this.point.x, this.point.y, this.HUD)
+        this.HUD.updateMana(this.player.getMana())
       }
     }, this)
   }

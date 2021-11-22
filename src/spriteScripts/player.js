@@ -1,13 +1,16 @@
 import Phaser, { Scenes } from 'phaser'
 import CONFIG from '../config'
 import DataManaging from '../scenes/DataManaging'
+import HUDScene from '../scenes/HUD'
 import FireBall from './projectiles/fireball'
 
 class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
+    this.hud = scene.scene.get('HUDScene')
     this.canMove = true
     this.dataManaging = new DataManaging(20, 1, 1, 10, 1, 0, 0)
+    this.currentMana = 10
     this.isAttacking = false
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
@@ -26,7 +29,6 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.setPosition(x, y)
     // const swordSensor = Phaser.Physics.Matter.Factory.circle(x, y-20, 70, { isSensor: true })
     this.anims.play('playerIdle')
-
     this.on(
       Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'playerAttackPhysical',
       () => {
@@ -122,7 +124,13 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         body.gameObject.updateHp()
         console.log(body.gameObject.stats.getHp())
         if (body.gameObject.stats.getHp() <= 0) {
-          body.gameObject.destroy()
+          body.gameObject.setActive(false)
+          setTimeout(
+            () => {
+              body.gameObject.setActive(true)
+              body.gameObject.setPosition(body.gameObject.getStartX(), body.gameObject.getStartY())
+              console.log(body.gameObject.active)
+            }, 5000)
           this.dataManaging.setExp(2)
           if (this.dataManaging.getExp() >= this.levelUpExp) {
             this.levelUp(this.levelUpExp)
@@ -133,16 +141,27 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     })
   }
 
-  levelUp (expHad) {
+  levelUp (expHad, scene) {
+    const hud = scene.get('HUDScene')
     console.log('level')
     this.dataManaging.setExp(-expHad)
+    hud.updateExp(this.dataManaging.getExp())
   }
 
-  magicAttack (x, y) {
+  getMana () {
+    return this.currentMana
+  }
+
+  setMana (newMana) {
+    this.currentMana += newMana
+  }
+
+  magicAttack (x, y, scene) {
     if (this.dataManaging.getInt() > 0) {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
+      this.regenerationActive = false
       this.canMove = false
       this.anims.play('playerAttackMagical', true)
       const endX = this.x + x
@@ -161,13 +180,19 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         setTimeout(() => { projectile.destroy() }, 0)
       })
       console.log('Magic Attack')
-      setTimeout(() => {
-        this.dataManaging.setInt(1)
-        console.log('Mana +1')
+
+      if (!this.regenerationActive) {
+        setTimeout(() => {
+          this.regenerationActive = false
+          this.setMana(1)
+          this.hud.updateMana(this.currentMana)
+          console.log('Mana +1')
         // Change 2000 to 15000 or higher depending on what is chosen as a regeneration time
-      }, 2000)
-      this.dataManaging.setInt(-1)
+        }, 5000)
+        this.regenerationActive = true
+      }
     }
+    this.setMana(-1)
   }
 
   move (x, y) {

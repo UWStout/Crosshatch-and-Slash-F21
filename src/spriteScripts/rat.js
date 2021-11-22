@@ -10,6 +10,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       RatEnemy.setupAnim(scene)
     }
     this.isInPlayer = false
+    this.startX = x
+    this.startY = y
     this.cooldownActive = false
     // this.stats.setHp(5)
     // this.stats.setName('Rat')
@@ -36,6 +38,14 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.currentState = newstate
   }
 
+  getStartX () {
+    return this.startX
+  }
+
+  getStartY () {
+    return this.startY
+  }
+
   setOriginXY (x, y) {
     this.originX = x
     this.originY = y
@@ -44,33 +54,33 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   updateAI () {
     switch (this.currentState) {
       case EnemyStates.GUARDING:
-        console.log('Currently standing guard')
+        // console.log('Currently standing guard')
         break
 
       case EnemyStates.PURSUING:
-        console.log('Currently pursuing the player')
+        // console.log('Currently pursuing the player')
         this.moveTowards()
         break
 
       case EnemyStates.ENGAGING:
-        console.log('Currently battling')
+        // console.log('Currently battling')
         break
 
       case EnemyStates.RECOVERING:
-        console.log('Currently recovering')
+        // console.log('Currently recovering')
         break
 
       case EnemyStates.RETURNING:
-        console.log('Currently returning to guard point')
+        // console.log('Currently returning to guard point')
         this.moveBack()
         break
 
       case EnemyStates.DYING:
-        console.log('Currently dying')
+        // console.log('Currently dying')
         break
 
       default:
-        console.error('Unknown state')
+        // console.error('Unknown state')
         break
     }
   }
