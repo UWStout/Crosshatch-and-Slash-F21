@@ -64,7 +64,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         break
 
       case EnemyStates.PURSUING:
-        //console.log('Currently pursuing the player')
+        // console.log('Currently pursuing the player')
         this.moveTowards()
         this.overlapping.forEach((body) => {
           if (body.label === 'player') {
@@ -74,11 +74,11 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         })
         break
       case EnemyStates.RECOVERING:
-       // console.log('Currently recovering')
+        // console.log('Currently recovering')
         break
 
       case EnemyStates.RETURNING:
-        //console.log('Currently returning to guard point')
+        // console.log('Currently returning to guard point')
         this.moveBack()
         break
 
@@ -134,8 +134,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   attack () {
-    //this.anims.play('ratAttack')
-   console.log('Rat attacks')
+    // this.anims.play('ratAttack')
+    console.log('Rat attacks')
   }
 
   setUpCollision (scene) {
