@@ -35,7 +35,13 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   updateState (newstate) {
-    this.currentState = newstate
+    if (this.currentState === EnemyStates.RECOVERING) {
+      setTimeout(() => {
+        this.currentState = newstate
+      }, 1000)
+    } else {
+      this.currentState = newstate
+    }
   }
 
   getStartX () {
@@ -72,12 +78,13 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       case EnemyStates.PURSUING:
         // console.log('Currently pursuing the player')
         this.moveTowards()
+        this.overlapping.forEach((body) => {
+          if (body.label === 'player') {
+            this.attack()
+            console.log('Hit', body.gameObject)
+          }
+        })
         break
-
-      case EnemyStates.ENGAGING:
-        // console.log('Currently battling')
-        break
-
       case EnemyStates.RECOVERING:
         // console.log('Currently recovering')
         break
@@ -85,10 +92,6 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       case EnemyStates.RETURNING:
         // console.log('Currently returning to guard point')
         this.moveBack()
-        break
-
-      case EnemyStates.DYING:
-        // console.log('Currently dying')
         break
 
       default:
@@ -143,7 +146,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   attack () {
-    this.anims.play('ratAttack')
+    // this.anims.play('ratAttack')
     console.log('Rat attacks')
   }
 
