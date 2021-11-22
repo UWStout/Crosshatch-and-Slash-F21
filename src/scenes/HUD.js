@@ -57,6 +57,7 @@ class HUDScene extends Phaser.Scene {
       this.dice.setFrame(0)
       this.healthText.setText(newHealth)
     }, 950)
+    console.log(newHealth)
     this.dice.play('roll')
   }
 

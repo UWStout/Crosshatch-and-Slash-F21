@@ -9,6 +9,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
     }
+    this.canAttack = true
     this.isInPlayer = false
     this.startX = x
     this.startY = y
@@ -69,7 +70,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       }, 5000)
   }
 
-  updateAI () {
+  updateAI (deltaTime) {
+    const self = this
     switch (this.currentState) {
       case EnemyStates.GUARDING:
         // console.log('Currently standing guard')
@@ -78,12 +80,19 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       case EnemyStates.PURSUING:
         // console.log('Currently pursuing the player')
         this.moveTowards()
+        console.log(this.canAttack)
+
         this.overlapping.forEach((body) => {
           if (body.label === 'player') {
-            this.attack()
-            console.log('Hit', body.gameObject)
+            if (this.canAttack) {
+              this.attack(body.gameObject)
+              this.canAttack = false
+              this.cooldown()
+              console.log('Hit', body.gameObject)
+            }
           }
         })
+
         break
       case EnemyStates.RECOVERING:
         // console.log('Currently recovering')
@@ -98,6 +107,13 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         // console.error('Unknown state')
         break
     }
+  }
+
+  cooldown () {
+    const self = this
+    setTimeout(() => {
+      self.canAttack = true
+    }, 2000)
   }
 
   moveBack () {
@@ -145,8 +161,9 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     }
   }
 
-  attack () {
+  attack (player) {
     // this.anims.play('ratAttack')
+    player.adjustHealth(-1)
     console.log('Rat attacks')
   }
 
