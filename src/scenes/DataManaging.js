@@ -31,7 +31,7 @@ class DataManaging {
     this.gold += collectedGold
   }
 
-  setLevel () {
+  addLevel () {
     this.level++
   }
 

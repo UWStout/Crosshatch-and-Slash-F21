@@ -61,7 +61,7 @@ class Chest extends Phaser.Physics.Matter.Sprite {
           this.isInPlayer = true
         }
       }
-      console.log(this.isInPlayer)
+      // console.log(this.isInPlayer)
       // if (this.overlapping) {
       //   console.log('Collision Start', this.overlapping)
       // }

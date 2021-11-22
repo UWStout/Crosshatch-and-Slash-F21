@@ -192,7 +192,7 @@ class ExampleScene extends Phaser.Scene {
     this.music.stop()
   }
 
-  update () {
+  update (time, deltaTime) {
     const directon = { x: 0, y: 0 }
     if (this.cursors.right.isDown) {
       directon.x += 1
@@ -213,6 +213,8 @@ class ExampleScene extends Phaser.Scene {
       }
     }
     this.player.move(directon.x, directon.y)
+    this.player.updateMana(deltaTime / 1000)
+    this.player.updateHealth(deltaTime / 1000)
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
       this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })
       this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
@@ -222,9 +224,11 @@ class ExampleScene extends Phaser.Scene {
 
     if (this.enemies) {
       this.enemies.forEach((enemy) => {
-        enemy.updateAI()
-        const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
-        enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
+        if (enemy.visible) {
+          enemy.updateAI()
+          const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
+          enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
+        }
       })
     }
 

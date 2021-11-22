@@ -51,6 +51,18 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.originY = y
   }
 
+  enemyDieRespawn () {
+    const self = this
+    self.setVisible(false)
+    setTimeout(
+      () => {
+        self.setVisible(true)
+        self.setPosition(self.getStartX(), self.getStartY())
+        self.stats.setHp(5)
+        console.log(self.active)
+      }, 5000)
+  }
+
   updateAI () {
     switch (this.currentState) {
       case EnemyStates.GUARDING:
@@ -92,7 +104,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     const fromY = Math.floor(this.y / 300)
     this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
       if (path === null) {
-        console.warn('Path was not found')
+        // console.warn('Path was not found')
       } else {
         // console.log(path)
         this.scene.moveCharacterBack(path, this)
@@ -109,7 +121,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     // console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
     this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
       if (path === null) {
-        console.warn('Path was not found')
+        // console.warn('Path was not found')
       } else {
         // console.log(path)
         this.scene.moveCharacter(path, this)
@@ -125,7 +137,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       console.log(this.stats.getHp())
       setTimeout(() => {
         this.cooldownActive = false
-        console.log('cooldown over')
+        // console.log('cooldown over')
       }, 1000)
     }
   }
@@ -191,13 +203,13 @@ RatEnemy.setupAnim = (scene) => {
     key: 'ratWalk',
     frameRate: 12,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 0, end: 8 })
+    frames: scene.anims.generateFrameNumbers('rat', { start: 0, end: 7 })
   })
   scene.anims.create({
     key: 'ratAttack',
     frameRate: 12,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 9, end: 13 })
+    frames: scene.anims.generateFrameNumbers('rat', { start: 8, end: 12 })
   })
   RatEnemy.animInitialize = true
 }

@@ -24,16 +24,14 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
           if (body2.gameObject) {
             body2.gameObject.updateHp()
             if (body2.gameObject.stats.getHp() === 0) {
-              this.destroyObject = true
-              this.objectToDestroy = body2
+              body2.gameObject.enemyDieRespawn()
             }
           }
         } else if (body2.label === 'fire' && body1.label === 'enemy') {
           if (body1.gameObject) {
             body1.gameObject.updateHp()
             if (body1.gameObject.stats.getHp() === 0) {
-              this.destroyObject = true
-              this.objectToDestroy = body1
+              body1.gameObject.enemyDieRespawn()
             }
           }
         }

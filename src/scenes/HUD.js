@@ -24,12 +24,31 @@ class HUDScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT - 75,
       '20', { fontFamily: 'hamlet', color: '#000000', align: 'center', fontSize: 50 }
     )
-    this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana18')
+    this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana20')
     this.mana.setScale(0.844, 0.844)
-    this.exp = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'exp18')
+    this.exp = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'exp0')
     this.exp.setScale(0.844, 0.844)
     // Phaser.Display.Align.In.Center(ui, this.add.zone(700, 940, 300, 300))
     this.healthText.setOrigin(1, 1)
+    this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4 + 50, CONFIG.DEFAULT_HEIGHT - 90, 'sword1')
+    const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2 - 100, 'exitButton')
+    exitButton.setInteractive()
+    exitButton.setVisible(false)
+    exitButton.on('pointerdown', () => {
+      this.scene.stop()
+      this.scene.stop('ExampleScene')
+      this.scene.start('StartScene')
+    })
+    this.pausedIcon = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 30, 80, 'pausedIcon')
+    this.pausedIcon.setVisible(false)
+    this.pauseButton = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 50, 'pauseButton')
+    this.pauseButton.setScale(0.5, 0.5)
+    this.pauseButton.setInteractive()
+    this.pauseButton.on('pointerdown', () => {
+      this.scene.pause('ExampleScene')
+      this.pausedIcon.setVisible(true)
+      exitButton.setVisible(true)
+    })
   }
 
   updateHealth (newHealth) {
@@ -44,7 +63,7 @@ class HUDScene extends Phaser.Scene {
   updateExp (newExp, expNeeded) {
     this.expIncrement = 0
     const expToAdd = expNeeded / 21
-    if (newExp < expNeeded) {
+    if (newExp !== 0) {
       for (let i = 0; i < newExp; i += expToAdd) {
         this.expIncrement++
       }
