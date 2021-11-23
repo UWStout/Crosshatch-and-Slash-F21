@@ -12,6 +12,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     }
     this.canAttack = true
     this.isInPlayer = false
+    this.canGetExp = true
     this.startX = x
     this.startY = y
     this.cooldownActive = false
@@ -60,12 +61,18 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.originY = y
   }
 
+  canGetExp () {
+    return this.canGetExp
+  }
+
   enemyDieRespawn () {
     const self = this
     self.setVisible(false)
+    this.canGetExp = false
     setTimeout(
       () => {
         self.setVisible(true)
+        self.canGetExp = true
         self.setPosition(self.getStartX(), self.getStartY())
         self.stats.setHp(5)
         console.log(self.active)
@@ -148,10 +155,10 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.scene.finder.calculate()
   }
 
-  updateHp () {
+  updateHp (damage) {
     if (!this.cooldownActive) {
       this.cooldownActive = true
-      this.stats.setHp(this.stats.getHp() - 1)
+      this.stats.setHp(this.stats.getHp() - damage)
       console.log(this.stats.getHp())
       setTimeout(() => {
         this.cooldownActive = false

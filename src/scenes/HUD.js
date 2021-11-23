@@ -9,6 +9,8 @@ class HUDScene extends Phaser.Scene {
 
   create () {
     this.maxMana = 10
+    const dungeon = this.scene.get('ExampleScene')
+    this.player = dungeon.getPlayer()
     const ui = this.add.image(970, 960, 'uiOutline')
     ui.setScale(0.844, 0.844)
     this.dice = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'dice')
@@ -24,6 +26,7 @@ class HUDScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT - 75,
       '20', { fontFamily: 'hamlet', color: '#000000', align: 'center', fontSize: 50 }
     )
+    this.levelUpPoints = 0
     this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana20')
     this.mana.setScale(0.844, 0.844)
     this.exp = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'exp0')
@@ -49,6 +52,36 @@ class HUDScene extends Phaser.Scene {
       this.pausedIcon.setVisible(true)
       exitButton.setVisible(true)
     })
+    this.levelUpIcon = this.add.image(100, 50, 'levelUp')
+    this.levelUpIcon.setScale(0.5, 0.5)
+    this.manaButton = this.add.image(100, 150, 'levelUpManaButton')
+    this.manaButton.setScale(0.5, 0.5)
+    this.manaButton.setInteractive()
+    this.manaButton.on('pointerup', () => {
+      this.player.getDataManager().setInt(1)
+      console.log(this.player.getDataManager().getInt())
+      this.levelUpPoints--
+      if (this.levelUpPoints === 0) {
+        this.levelUpIcon.setVisible(false)
+        this.manaButton.setVisible(false)
+        this.strengthButton.setVisible(false)
+      }
+    })
+    this.strengthButton = this.add.image(100, 250, 'levelUpStrengthButton')
+    this.strengthButton.setScale(0.5, 0.5)
+    this.strengthButton.setInteractive()
+    this.strengthButton.on('pointerup', () => {
+      this.player.getDataManager().setStr()
+      this.levelUpPoints--
+      if (this.levelUpPoints === 0) {
+        this.levelUpIcon.setVisible(false)
+        this.manaButton.setVisible(false)
+        this.strengthButton.setVisible(false)
+      }
+    })
+    this.levelUpIcon.setVisible(false)
+    this.manaButton.setVisible(false)
+    this.strengthButton.setVisible(false)
   }
 
   changeWeapon (swordNumber) {
@@ -61,8 +94,16 @@ class HUDScene extends Phaser.Scene {
       this.dice.setFrame(0)
       this.healthText.setText(newHealth)
     }, 950)
-    console.log(newHealth)
     this.dice.play('roll')
+  }
+
+  levelUpStats () {
+    this.levelUpPoints++
+    if (!this.levelUpIcon.visible) {
+      this.levelUpIcon.setVisible(true)
+      this.manaButton.setVisible(true)
+      this.strengthButton.setVisible(true)
+    }
   }
 
   updateExp (newExp, expNeeded) {

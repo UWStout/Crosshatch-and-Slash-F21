@@ -120,6 +120,10 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     }, this)
   }
 
+  getDataManager () {
+    return this.dataManaging
+  }
+
   attack () {
     this.canMove = false
     if (this.scene.canRotate !== null) {
@@ -129,28 +133,46 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.overlapping.forEach((body) => {
       if (body.gameObject) {
         console.log('Hit', body.gameObject)
-        body.gameObject.updateHp()
+        this.damage = this.dataManaging.getStr() / 2
+        this.damage = Phaser.Math.RoundTo(this.damage, 0)
+        console.log(this.damage)
+        if (this.dataManaging.getStr() > 2) {
+          if (this.damage > this.dataManaging.getStr() / 2) {
+            this.damage--
+          }
+        }
+        body.gameObject.updateHp(this.damage)
         console.log(body.gameObject.stats.getHp())
         if (body.gameObject.stats.getHp() <= 0) {
           body.gameObject.enemyDieRespawn()
-          this.dataManaging.setExp(2)
+          this.setCurrentExp(2)
           this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
-          if (this.dataManaging.getExp() >= this.levelUpExp) {
-            this.levelUp(this.levelUpExp)
-            this.levelUpExp += (this.levelUpExp * 0.25)
-            this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
-          } else {
-            this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
-          }
         }
       }
     })
+  }
+
+  setCurrentExp (expToSet) {
+    this.dataManaging.setExp(expToSet)
+    console.log(this.dataManaging.getExp())
+    if (this.dataManaging.getExp() >= this.levelUpExp) {
+      this.levelUp(this.levelUpExp)
+      this.levelUpExp += (this.levelUpExp * 0.25)
+      this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
+    } else {
+      this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
+    }
+  }
+
+  getCurrentExp () {
+    return this.dataManaging.getExp()
   }
 
   levelUp (expHad) {
     console.log('level')
     this.dataManaging.setExp(-expHad)
     this.dataManaging.addLevel()
+    this.hud.levelUpStats()
     this.hud.updateExp(this.dataManaging.getExp())
   }
 
@@ -178,7 +200,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       const endX = this.x + x
       const endY = this.y + y
 
-      const projectile = new FireBall(this.scene, this.x, this.y)
+      const projectile = new FireBall(this.scene, this.x, this.y, this)
       const newTween = this.scene.tweens.add({
         targets: projectile,
         x: endX,
@@ -207,7 +229,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     }
   }
 
-  updateHealth(deltaTime) {
+  updateHealth (deltaTime) {
     if (this.currentHealth < this.dataManaging.getHp()) {
       if (this.healthUpdateTimer >= HEALTH_TIMEOUT) {
         this.adjustHealth(1)

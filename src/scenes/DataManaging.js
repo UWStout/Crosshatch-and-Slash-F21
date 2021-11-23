@@ -43,6 +43,10 @@ class DataManaging {
     return this.HP
   }
 
+  getStr () {
+    return this.STR
+  }
+
   getGold () {
     return this.gold
   }

@@ -199,6 +199,10 @@ class ExampleScene extends Phaser.Scene {
     this.music.stop()
   }
 
+  getPlayer () {
+    return this.player
+  }
+
   update (time, deltaTime) {
     const directon = { x: 0, y: 0 }
     if (this.cursors.right.isDown) {
