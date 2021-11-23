@@ -207,9 +207,14 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
     if (this.cursors.open.isDown) {
-      console.log(this.chest.isInRange(), this.chest.isOpen())
+      // console.log(this.chest.isInRange(), this.chest.isOpen())
       if (this.chest.isInRange() && !this.chest.isOpen()) {
         this.chest.onOpen()
+      }
+      if (this.chest.getAnimationEnded()) {
+        console.log('called')
+        this.HUD.changeWeapon(3)
+        this.chest.emptyChest()
       }
     }
     this.player.move(directon.x, directon.y)

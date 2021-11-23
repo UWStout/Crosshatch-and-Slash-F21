@@ -71,7 +71,6 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   updateAI (deltaTime) {
-    const self = this
     switch (this.currentState) {
       case EnemyStates.GUARDING:
         // console.log('Currently standing guard')
@@ -80,15 +79,14 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       case EnemyStates.PURSUING:
         // console.log('Currently pursuing the player')
         this.moveTowards()
-        console.log(this.canAttack)
-
+        // console.log(this.canAttack)
         this.overlapping.forEach((body) => {
           if (body.label === 'player') {
             if (this.canAttack) {
               this.attack(body.gameObject)
               this.canAttack = false
               this.cooldown()
-              console.log('Hit', body.gameObject)
+              // console.log('Hit', body.gameObject)
             }
           }
         })

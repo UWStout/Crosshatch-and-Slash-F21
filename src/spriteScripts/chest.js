@@ -5,6 +5,7 @@ class Chest extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, (chestChosen === Chest.FRONT_CHEST ? 'frontChest' : 'sideChest'), 0)
     this.isOpened = false
     this.chestChosen = chestChosen
+    this.chestAnimationEnded = false
     this.isInPlayer = false
     if (!Chest.animInitialized) {
       Chest.setupAnim(scene)
@@ -13,6 +14,16 @@ class Chest extends Phaser.Physics.Matter.Sprite {
     const rectA = bodies.rectangle(x - 50, y, 300, 370, { isSensor: true, label: 'chestOpens' })
     const rectB = bodies.rectangle(x - 50, y, 180, 250, { label: 'chest' })
     const chestBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [rectB, rectA] })
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'frontChestOpen', () => {
+        this.chestAnimationEnded = true
+      }
+    )
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'sideChestOpen', () => {
+        this.chestAnimationEnded = true
+      }
+    )
     chestBody.position = { x, y }
     chestBody.restitution = 0
     this.setExistingBody(chestBody)
@@ -43,6 +54,14 @@ class Chest extends Phaser.Physics.Matter.Sprite {
 
   isOpen () {
     return this.isOpened
+  }
+
+  getAnimationEnded () {
+    return this.chestAnimationEnded
+  }
+
+  emptyChest () {
+    this.setFrame(3)
   }
 
   setUpCollision (scene) {

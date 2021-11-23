@@ -51,6 +51,10 @@ class HUDScene extends Phaser.Scene {
     })
   }
 
+  changeWeapon (swordNumber) {
+    this.sword.setTexture('sword' + swordNumber)
+  }
+
   updateHealth (newHealth) {
     this.healthText.setText('')
     setTimeout(() => {
