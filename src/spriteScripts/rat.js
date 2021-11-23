@@ -6,8 +6,7 @@ import EnemyStates from '../spriteScripts/EnemyStateMachines/enemyStates'
 class RatEnemy extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'RatWalkAttack', 9)
-    if(!RatEnemy.animInitialize)
-    {
+    if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
     }
     this.canAttack = true
@@ -184,7 +183,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   attack (player) {
-    // this.anims.play('ratAttack')
+    this.anims.play('ratAttack')
+    console.log(this.anims.get('ratAttack'))
     player.adjustHealth(-1)
     console.log('Rat attacks')
   }
@@ -255,10 +255,10 @@ RatEnemy.setupAnim = (scene) => {
   scene.anims.create({
     key: 'ratAttack',
     frameRate: 12,
-    repeat: -1,
+    repeat: 0,
     frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 8, end: 12 })
   })
-  RatEnemy.animInitialize = true
+  // RatEnemy.animInitialize = true
 }
 
 export default RatEnemy

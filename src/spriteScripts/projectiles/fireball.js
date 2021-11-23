@@ -14,7 +14,7 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
 
     this.player = player
     this.hud = scene.scene.get('HUDScene')
-
+    this.setScale(0.1, 0.1)
     scene.add.existing(this)
 
     this.setUpCollision(scene)
