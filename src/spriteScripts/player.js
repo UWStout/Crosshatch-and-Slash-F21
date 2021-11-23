@@ -143,12 +143,6 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         this.damage = Phaser.Math.RoundTo(this.damage, 0)
         console.log(this.damage)
 
-        if (this.dataManaging.getStr() > 2) {
-          if (this.damage > this.dataManaging.getStr() / 2) {
-            this.damage--
-          }
-        }
-
         body.gameObject.updateHp(this.damage)
         console.log(body.gameObject.stats.getHp())
 
