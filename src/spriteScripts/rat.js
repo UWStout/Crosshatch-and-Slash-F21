@@ -5,8 +5,9 @@ import EnemyStates from '../spriteScripts/EnemyStateMachines/enemyStates'
 
 class RatEnemy extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
-    super(scene.matter.world, x, y, 'rat', 0)
-    if (!RatEnemy.animInitialize) {
+    super(scene.matter.world, x, y, 'RatWalkAttack', 1)
+    if(!RatEnemy.animInitialize)
+    {
       RatEnemy.setupAnim(scene)
     }
     this.canAttack = true
@@ -33,6 +34,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     scene.add.existing(this)
     this.setUpCollision(scene)
     this.CurrentState = EnemyStates.GUARDING
+    //this.anims.play('ratWalk', true)
   }
 
   updateState (newstate) {
@@ -79,7 +81,6 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
       case EnemyStates.PURSUING:
         // console.log('Currently pursuing the player')
         this.moveTowards()
-        // console.log(this.canAttack)
         this.overlapping.forEach((body) => {
           if (body.label === 'player') {
             if (this.canAttack) {
@@ -219,15 +220,16 @@ RatEnemy.animInitialize = false
 RatEnemy.setupAnim = (scene) => {
   scene.anims.create({
     key: 'ratWalk',
-    frameRate: 12,
+    frameRate: 8,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 0, end: 7 })
+    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 0, end: 7 })
   })
+
   scene.anims.create({
     key: 'ratAttack',
     frameRate: 12,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 8, end: 12 })
+    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 8, end: 12 })
   })
   RatEnemy.animInitialize = true
 }

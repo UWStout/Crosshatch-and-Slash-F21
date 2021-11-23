@@ -10,6 +10,9 @@ import HUDScene from './HUD.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.music.stop()
+    })
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -158,7 +161,11 @@ class ExampleScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack2')
+    this.music.play('Keep')
+    this.fightSong = this.sound.addAudioSprite('gameAudio')
+    this.fightSong.play('prevail')
+    this.fightSong.setVolume(0)
+   
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
