@@ -13,6 +13,7 @@ class ExampleScene extends Phaser.Scene {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
     })
+
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -22,6 +23,7 @@ class ExampleScene extends Phaser.Scene {
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
     const backLayer = map.createLayer('til_map', room)
     const spawnLayer = map.createLayer('til_spawn', room)
+
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
@@ -29,15 +31,19 @@ class ExampleScene extends Phaser.Scene {
     // Create the player object
     this.player = new PlayerClass(this, 6000, 6500)
     this.canRotate = true
+
     // Create the chest object
     this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
+
     // Create enemy objects in the scene
     // Enemies array that holds all enemies
     this.enemies = []
     this.activeEnemies = []
+
     // Create the category used for tracking enemies
     const targetsCategory = this.matter.world.nextCategory()
 
+    // Create the rat enemies
     const rat1 = new RatEnemy(this, 6500, 6500)
     this.enemies.push(rat1)
 
@@ -48,11 +54,13 @@ class ExampleScene extends Phaser.Scene {
       enemy.setCollisionCategory(targetsCategory)
       enemy.canRotate = true
       enemy.setOriginXY(enemy.x, enemy.y)
+
       enemy.on('destroy', () => {
         const index = this.enemies.findIndex((item) => (item === enemy))
         if (index >= 0) {
           this.enemies.splice(index, 1)
         }
+
         enemy.updateState('DYING')
         this.tweens.pauseAll()
         this.tweens.killTweensOf(enemy)
@@ -75,7 +83,6 @@ class ExampleScene extends Phaser.Scene {
     // Set the HUD for the game
     this.scene.run('HUDScene')
     this.HUD = this.scene.get('HUDScene')
-    // this.activeWallGroup = this.add.group()
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
     // for (const wall of this.activeTileBodies) {
@@ -193,44 +200,47 @@ class ExampleScene extends Phaser.Scene {
     }, this)
   }
 
-  keyReleased () {
-    console.log('Key released')
-    this.scene.start('StartScene')
-    this.music.stop()
-  }
-
   getPlayer () {
     return this.player
   }
 
   update (time, deltaTime) {
     const directon = { x: 0, y: 0 }
+
     if (this.cursors.right.isDown) {
       directon.x += 1
     }
+
     if (this.cursors.left.isDown) {
       directon.x -= 1
     }
+
     if (this.cursors.up.isDown) {
       directon.y -= 1
     }
+
     if (this.cursors.down.isDown) {
       directon.y += 1
     }
+
     if (this.cursors.open.isDown) {
-      // console.log(this.chest.isInRange(), this.chest.isOpen())
       if (this.chest.isInRange() && !this.chest.isOpen()) {
         this.chest.onOpen()
       }
+
       if (this.chest.getAnimationEnded()) {
         console.log('called')
         this.HUD.changeWeapon(3)
         this.chest.emptyChest()
       }
     }
+
     this.player.move(directon.x, directon.y)
+
+    // Update the HUD
     this.player.updateMana(deltaTime / 1000)
     this.player.updateHealth(deltaTime / 1000)
+
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
       this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })
       this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
@@ -250,6 +260,7 @@ class ExampleScene extends Phaser.Scene {
 
     // cast ray in all directions
     this.intersections = this.ray.castCircle()
+
     // redraw
     this.draw()
 
@@ -258,9 +269,11 @@ class ExampleScene extends Phaser.Scene {
 
   moveCharacter (path, enemy) {
     const tweens = []
+
     for (let i = 0; i < path.length - 1; i++) {
       const ex = path[i + 1].x
       const ey = path[i + 1].y
+
       tweens.push({
         targets: enemy,
         x: { value: ex * 300, duration: 2000 },
@@ -275,9 +288,11 @@ class ExampleScene extends Phaser.Scene {
 
   moveCharacterBack (path, enemy) {
     const tweens = []
+
     for (let i = 0; i < path.length - 1; i++) {
       const ex = path[i + 1].x
       const ey = path[i + 1].y
+
       tweens.push({
         targets: enemy,
         x: { value: ex * 300, duration: 2000 },
@@ -323,6 +338,7 @@ class ExampleScene extends Phaser.Scene {
   fixFlippedColliders (main) {
     const tileMapBodies = []
     const col = []
+
     main.layer.data.forEach((row) => {
       col.push(row.map((tile) => { return tile.index }))
 

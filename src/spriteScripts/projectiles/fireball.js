@@ -4,14 +4,19 @@ import Phaser from 'phaser'
 class FireBall extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y, player) {
     super(scene.matter.world, x, y, 'fire', 0)
+
     if (!FireBall.animInitialize) {
       FireBall.setupAnim(scene)
     }
+
     this.setCircle(10, { label: 'fire' })
     this.setSensor(true)
+
     this.player = player
     this.hud = scene.scene.get('HUDScene')
+
     scene.add.existing(this)
+
     this.setUpCollision(scene)
   }
 
@@ -19,9 +24,11 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
     scene.matter.world.on('collisionstart', (event) => {
       const pairs = event.pairs
       this.destroyObject = false
+
       for (let i = 0; i < pairs.length; i++) {
         const body1 = pairs[i].bodyA
         const body2 = pairs[i].bodyB
+
         if (body1.label === 'fire' && body2.label === 'enemy') {
           if (body2.gameObject) {
             body2.gameObject.updateHp(1)
@@ -39,6 +46,7 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
             }
           }
         }
+
         if (this.destroyObject) {
           this.objectToDestroy.gameObject.destroy()
         }

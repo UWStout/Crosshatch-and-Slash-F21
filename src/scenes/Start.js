@@ -19,12 +19,28 @@ class StartScene extends Phaser.Scene {
     this.loadEvents.once('sceneReady', this.sceneReady, this)
 
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/StartScreen.png')
+    this.load.image('StartScreen', 'assets/CrossHatchStartScreen.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
 
     // Load the image assets needed for 'ExampleScene'
     this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
+    this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
+    this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
+    this.load.image('pauseButton', 'assets/sprites/Buttons/spr_UI_buttonPause.png')
+    this.load.image('levelUp', 'assets/sprites/Buttons/spr_UI_buttonLevelUp.png')
+    this.load.image('menuButton', 'assets/sprites/Buttons/spr_UI_buttonMenu.png')
+    this.load.image('menuButtonIcon', 'assets/sprites/Buttons/spr_UI_buttonMenuIcon.png')
+    this.load.image('soundButton', 'assets/sprites/Buttons/spr_UI_buttonSound.png')
+    this.load.image('soundButtonIcon', 'assets/sprites/Buttons/spr_UI_buttonSoundIcon.png')
+    this.load.image('pausedIcon', 'assets/sprites/Buttons/spr_UI_Paused.png')
+    this.load.image('levelUpManaButton', 'assets/sprites/Buttons/spr_UI_buttonLevelUp_Mana.png')
+    this.load.image('levelUpStrengthButton', 'assets/sprites/Buttons/spr_UI_buttonLevelUp_Strength.png')
+    this.load.image('sword1', 'assets/sprites/sword/spr_UI_Sword1.png')
+    this.load.image('sword2', 'assets/sprites/sword/spr_UI_Sword2.png')
+    this.load.image('sword3', 'assets/sprites/sword/spr_UI_Sword3.png')
+    this.load.image('sword4', 'assets/sprites/sword/spr_UI_Sword4.png')
+    this.load.image('sword5', 'assets/sprites/sword/spr_UI_Sword5.png')
     this.load.image('mana0', 'assets/sprites/mana/spr_UI_Mana1.png')
     this.load.image('mana1', 'assets/sprites/mana/spr_UI_Mana2.png')
     this.load.image('mana2', 'assets/sprites/mana/spr_UI_Mana3.png')
@@ -70,15 +86,14 @@ class StartScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
 
-    this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice.png', { frameWidth: 200, frameHeight: 200 })
+    this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice2.png', { frameWidth: 1152, frameHeight: 144 })
     this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 200, frameHeight: 200 })
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
-    this.load.spritesheet('rat', 'assets/sprites/Rat300x300.png', { frameWidth: 300, frameHeight: 300 })
+    this.load.spritesheet('RatWalkAttack', 'assets/sprites/RatAnimsSpritesheet300x300.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 100, frameHeight: 100 })
     // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
-
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',
@@ -122,23 +137,25 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen.height
     )
 
+    const startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2 - 100, 'startButton')
+    startButton.setInteractive()
+    // startButton.setScale(4.5, 4.5)
+    startButton.on('pointerdown', () => {
+      this.scene.start('ExampleScene')
+      this.scene.stop('StartScene')
+      this.music.stop()
+    })
+
     // this.add.text(32, 32,
     //   'The face of the\nmoon was in\nshadow.',
     //   { fontFamily: 'versal', fontSize: 80, color: '#ff0000' }
     // ).setShadow(2, 2, '#333333', 2, false, true)
 
     // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
-  }
-
-  keyReleased () {
-    console.log('Key released')
-    this.scene.start('ExampleScene')
-    this.music.stop()
+    this.music.play('prevail')
   }
 }
 

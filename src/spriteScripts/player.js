@@ -6,9 +6,11 @@ import FireBall from './projectiles/fireball'
 
 const MANA_TIMEOUT = 5
 const HEALTH_TIMEOUT = 10
+
 class PlayerClass extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
     super(scene.matter.world, x, y, 'playerWalkIdle', 0)
+
     this.hud = scene.scene.get('HUDScene')
 
     this.canMove = true
@@ -126,23 +128,30 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
   attack () {
     this.canMove = false
+
     if (this.scene.canRotate !== null) {
       this.scene.canRotate = false
     }
+
     this.anims.play('playerAttackPhysical', true)
+
     this.overlapping.forEach((body) => {
       if (body.gameObject) {
         console.log('Hit', body.gameObject)
+
         this.damage = this.dataManaging.getStr() / 2
         this.damage = Phaser.Math.RoundTo(this.damage, 0)
         console.log(this.damage)
+
         if (this.dataManaging.getStr() > 2) {
           if (this.damage > this.dataManaging.getStr() / 2) {
             this.damage--
           }
         }
+
         body.gameObject.updateHp(this.damage)
         console.log(body.gameObject.stats.getHp())
+
         if (body.gameObject.stats.getHp() <= 0) {
           body.gameObject.enemyDieRespawn()
           this.setCurrentExp(2)
@@ -155,6 +164,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   setCurrentExp (expToSet) {
     this.dataManaging.setExp(expToSet)
     console.log(this.dataManaging.getExp())
+
     if (this.dataManaging.getExp() >= this.levelUpExp) {
       this.levelUp(this.levelUpExp)
       this.levelUpExp += (this.levelUpExp * 0.25)
@@ -170,6 +180,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
   levelUp (expHad) {
     console.log('level')
+
     this.dataManaging.setExp(-expHad)
     this.dataManaging.addLevel()
     this.hud.levelUpStats()
@@ -195,6 +206,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
+
       this.canMove = false
       this.anims.play('playerAttackMagical', true)
       const endX = this.x + x
@@ -213,6 +225,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         setTimeout(() => { projectile.destroy() }, 0)
       })
     }
+
     this.adjustMana(-1)
   }
 
@@ -223,6 +236,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       } else {
         this.anims.play('playerIdle', true)
       }
+
       this.setVelocity(x * CONFIG.WALK_SPEED, y * CONFIG.WALK_SPEED)
     } else {
       this.setVelocity(0, 0)

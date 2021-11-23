@@ -9,10 +9,12 @@ class HUDScene extends Phaser.Scene {
 
   create () {
     this.maxMana = 10
+
     const dungeon = this.scene.get('ExampleScene')
     this.player = dungeon.getPlayer()
     const ui = this.add.image(970, 960, 'uiOutline')
     ui.setScale(0.844, 0.844)
+
     this.dice = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'dice')
     this.dice.setScale(1.6, 1.6)
     this.dice.anims.create({
@@ -21,20 +23,28 @@ class HUDScene extends Phaser.Scene {
       repeat: 0,
       frames: this.anims.generateFrameNumbers('dice', { start: 0, end: 7 })
     })
+
     this.healthText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2 + 33,
       CONFIG.DEFAULT_HEIGHT - 75,
       '20', { fontFamily: 'hamlet', color: '#000000', align: 'center', fontSize: 50 }
     )
+
     this.levelUpPoints = 0
+
     this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana20')
     this.mana.setScale(0.844, 0.844)
+
     this.exp = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'exp0')
     this.exp.setScale(0.844, 0.844)
+
     // Phaser.Display.Align.In.Center(ui, this.add.zone(700, 940, 300, 300))
     this.healthText.setOrigin(1, 1)
+
     this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4 + 50, CONFIG.DEFAULT_HEIGHT - 90, 'sword1')
+
     const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2 - 100, 'exitButton')
+
     exitButton.setInteractive()
     exitButton.setVisible(false)
     exitButton.on('pointerdown', () => {
@@ -42,9 +52,12 @@ class HUDScene extends Phaser.Scene {
       this.scene.stop('ExampleScene')
       this.scene.start('StartScene')
     })
+
     this.pausedIcon = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 30, 80, 'pausedIcon')
     this.pausedIcon.setVisible(false)
+
     this.pauseButton = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 50, 'pauseButton')
+
     this.pauseButton.setScale(0.5, 0.5)
     this.pauseButton.setInteractive()
     this.pauseButton.on('pointerdown', () => {
@@ -52,9 +65,12 @@ class HUDScene extends Phaser.Scene {
       this.pausedIcon.setVisible(true)
       exitButton.setVisible(true)
     })
+
     this.levelUpIcon = this.add.image(100, 50, 'levelUp')
     this.levelUpIcon.setScale(0.5, 0.5)
+
     this.manaButton = this.add.image(100, 150, 'levelUpManaButton')
+
     this.manaButton.setScale(0.5, 0.5)
     this.manaButton.setInteractive()
     this.manaButton.on('pointerup', () => {
@@ -67,7 +83,9 @@ class HUDScene extends Phaser.Scene {
         this.strengthButton.setVisible(false)
       }
     })
+
     this.strengthButton = this.add.image(100, 250, 'levelUpStrengthButton')
+
     this.strengthButton.setScale(0.5, 0.5)
     this.strengthButton.setInteractive()
     this.strengthButton.on('pointerup', () => {
@@ -79,6 +97,7 @@ class HUDScene extends Phaser.Scene {
         this.strengthButton.setVisible(false)
       }
     })
+
     this.levelUpIcon.setVisible(false)
     this.manaButton.setVisible(false)
     this.strengthButton.setVisible(false)
@@ -90,15 +109,18 @@ class HUDScene extends Phaser.Scene {
 
   updateHealth (newHealth) {
     this.healthText.setText('')
+
     setTimeout(() => {
       this.dice.setFrame(0)
       this.healthText.setText(newHealth)
     }, 950)
+
     this.dice.play('roll')
   }
 
   levelUpStats () {
     this.levelUpPoints++
+
     if (!this.levelUpIcon.visible) {
       this.levelUpIcon.setVisible(true)
       this.manaButton.setVisible(true)
@@ -109,10 +131,12 @@ class HUDScene extends Phaser.Scene {
   updateExp (newExp, expNeeded) {
     this.expIncrement = 0
     const expToAdd = expNeeded / 21
+
     if (newExp !== 0) {
       for (let i = 0; i < newExp; i += expToAdd) {
         this.expIncrement++
       }
+
       switch (this.expIncrement) {
         case 1:
           this.exp.destroy()
@@ -226,9 +250,11 @@ class HUDScene extends Phaser.Scene {
   updateMana (newMana) {
     this.manaIncrement = 0
     this.manaToAdd = this.maxMana / 21
+
     if (this.mana) {
       this.mana.destroy()
     }
+
     if (newMana === 0) {
       this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana0')
       this.mana.setScale(0.844, 0.844)
@@ -236,6 +262,7 @@ class HUDScene extends Phaser.Scene {
       for (let i = 0; i <= newMana; i += this.manaToAdd) {
         this.manaIncrement++
       }
+
       switch (this.manaIncrement) {
         case 0:
           this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana1')
