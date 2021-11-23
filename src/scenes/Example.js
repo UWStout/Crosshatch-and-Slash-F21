@@ -10,6 +10,9 @@ import HUDScene from './HUD.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.music.stop()
+    })
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -72,7 +75,6 @@ class ExampleScene extends Phaser.Scene {
     // Set the HUD for the game
     this.scene.run('HUDScene')
     this.HUD = this.scene.get('HUDScene')
-
     // this.activeWallGroup = this.add.group()
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -99,6 +101,18 @@ class ExampleScene extends Phaser.Scene {
       collisionRange: 1000
     })
 
+    // this.time.addEvent({
+    //   delay: 5000,
+    //   loop: true,
+    //   callbackScope: this,
+    //   callback: this.player.setMana(1)
+    // })
+    // this.time.addEvent({
+    //   delay: 5000,
+    //   loop: true,
+    //   callbackScope: this,
+    //   callback: this.HUD.updateMana(this.player.getMana())
+    // })
     this.ray.enablePhysics('matter')
     this.ray.setCollidesWith(targetsCategory)
 
@@ -147,7 +161,11 @@ class ExampleScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack2')
+    this.music.play('Keep')
+    this.fightSong = this.sound.addAudioSprite('gameAudio')
+    this.fightSong.play('prevail')
+    this.fightSong.setVolume(0)
+   
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
@@ -169,7 +187,8 @@ class ExampleScene extends Phaser.Scene {
       }
 
       if (pointer.rightButtonReleased()) {
-        this.player.magicAttack(this.point.x, this.point.y)
+        this.player.magicAttack(this.point.x, this.point.y, this.HUD)
+        this.HUD.updateMana(this.player.getMana())
       }
     }, this)
   }
@@ -180,7 +199,11 @@ class ExampleScene extends Phaser.Scene {
     this.music.stop()
   }
 
-  update () {
+  getPlayer () {
+    return this.player
+  }
+
+  update (time, deltaTime) {
     const directon = { x: 0, y: 0 }
     if (this.cursors.right.isDown) {
       directon.x += 1
@@ -195,12 +218,19 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
     if (this.cursors.open.isDown) {
-      console.log(this.chest.isInRange(), this.chest.isOpen())
+      // console.log(this.chest.isInRange(), this.chest.isOpen())
       if (this.chest.isInRange() && !this.chest.isOpen()) {
         this.chest.onOpen()
       }
+      if (this.chest.getAnimationEnded()) {
+        console.log('called')
+        this.HUD.changeWeapon(3)
+        this.chest.emptyChest()
+      }
     }
     this.player.move(directon.x, directon.y)
+    this.player.updateMana(deltaTime / 1000)
+    this.player.updateHealth(deltaTime / 1000)
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
       this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })
       this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
@@ -210,9 +240,11 @@ class ExampleScene extends Phaser.Scene {
 
     if (this.enemies) {
       this.enemies.forEach((enemy) => {
-        enemy.updateAI()
-        const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
-        enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
+        if (enemy.visible) {
+          enemy.updateAI(deltaTime)
+          const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
+          enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
+        }
       })
     }
 

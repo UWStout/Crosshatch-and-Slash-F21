@@ -70,7 +70,7 @@ class StartScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
 
-    this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice.png')
+    this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice.png', { frameWidth: 200, frameHeight: 200 })
     this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 200, frameHeight: 200 })
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
@@ -78,6 +78,7 @@ class StartScene extends Phaser.Scene {
     this.load.spritesheet('rat', 'assets/sprites/Rat300x300.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 100, frameHeight: 100 })
     // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
+
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',
@@ -88,6 +89,7 @@ class StartScene extends Phaser.Scene {
 
     // Load web fonts
     this.fontsLoaded = false
+
     webFontLoader({
       custom: {
         families: ['hamlet']
@@ -103,6 +105,7 @@ class StartScene extends Phaser.Scene {
 
   create () {
     this.loadingFinished = true
+
     if (this.fontsLoaded && this.loadingFinished) {
       this.loadEvents.emit('sceneReady')
     }

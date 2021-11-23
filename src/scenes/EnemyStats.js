@@ -8,7 +8,6 @@ class EnemyStats {
 
   setHp (hp) {
     this.HP = hp
-    this.name = name
   }
 
   getHp () {

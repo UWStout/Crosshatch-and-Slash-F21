@@ -5,11 +5,16 @@ import EnemyStates from '../spriteScripts/EnemyStateMachines/enemyStates'
 
 class RatEnemy extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
-    super(scene.matter.world, x, y, 'rat', 0)
-    if (!RatEnemy.animInitialize) {
+    super(scene.matter.world, x, y, 'RatWalkAttack', 1)
+    if(!RatEnemy.animInitialize)
+    {
       RatEnemy.setupAnim(scene)
     }
+    this.canAttack = true
     this.isInPlayer = false
+    this.canGetExp = true
+    this.startX = x
+    this.startY = y
     this.cooldownActive = false
     // this.stats.setHp(5)
     // this.stats.setName('Rat')
@@ -30,10 +35,25 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     scene.add.existing(this)
     this.setUpCollision(scene)
     this.CurrentState = EnemyStates.GUARDING
+    //this.anims.play('ratWalk', true)
   }
 
   updateState (newstate) {
-    this.currentState = newstate
+    if (this.currentState === EnemyStates.RECOVERING) {
+      setTimeout(() => {
+        this.currentState = newstate
+      }, 1000)
+    } else {
+      this.currentState = newstate
+    }
+  }
+
+  getStartX () {
+    return this.startX
+  }
+
+  getStartY () {
+    return this.startY
   }
 
   setOriginXY (x, y) {
@@ -41,38 +61,65 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.originY = y
   }
 
-  updateAI () {
+  canGetExp () {
+    return this.canGetExp
+  }
+
+  enemyDieRespawn () {
+    const self = this
+    self.setVisible(false)
+    this.canGetExp = false
+    setTimeout(
+      () => {
+        self.setVisible(true)
+        self.canGetExp = true
+        self.setPosition(self.getStartX(), self.getStartY())
+        self.stats.setHp(5)
+        console.log(self.active)
+      }, 5000)
+  }
+
+  updateAI (deltaTime) {
     switch (this.currentState) {
       case EnemyStates.GUARDING:
-        console.log('Currently standing guard')
+        // console.log('Currently standing guard')
         break
 
       case EnemyStates.PURSUING:
-        console.log('Currently pursuing the player')
+        // console.log('Currently pursuing the player')
         this.moveTowards()
-        break
+        this.overlapping.forEach((body) => {
+          if (body.label === 'player') {
+            if (this.canAttack) {
+              this.attack(body.gameObject)
+              this.canAttack = false
+              this.cooldown()
+              // console.log('Hit', body.gameObject)
+            }
+          }
+        })
 
-      case EnemyStates.ENGAGING:
-        console.log('Currently battling')
         break
-
       case EnemyStates.RECOVERING:
-        console.log('Currently recovering')
+        // console.log('Currently recovering')
         break
 
       case EnemyStates.RETURNING:
-        console.log('Currently returning to guard point')
+        // console.log('Currently returning to guard point')
         this.moveBack()
         break
 
-      case EnemyStates.DYING:
-        console.log('Currently dying')
-        break
-
       default:
-        console.error('Unknown state')
+        // console.error('Unknown state')
         break
     }
+  }
+
+  cooldown () {
+    const self = this
+    setTimeout(() => {
+      self.canAttack = true
+    }, 2000)
   }
 
   moveBack () {
@@ -82,7 +129,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     const fromY = Math.floor(this.y / 300)
     this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
       if (path === null) {
-        console.warn('Path was not found')
+        // console.warn('Path was not found')
       } else {
         // console.log(path)
         this.scene.moveCharacterBack(path, this)
@@ -99,7 +146,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     // console.log('going from (' + fromX + ',' + fromY + ') to (' + toX + ',' + toY + ')')
     this.scene.finder.findPath(fromX, fromY, toX, toY, (path) => {
       if (path === null) {
-        console.warn('Path was not found')
+        // console.warn('Path was not found')
       } else {
         // console.log(path)
         this.scene.moveCharacter(path, this)
@@ -108,20 +155,21 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.scene.finder.calculate()
   }
 
-  updateHp () {
+  updateHp (damage) {
     if (!this.cooldownActive) {
       this.cooldownActive = true
-      this.stats.setHp(this.stats.getHp() - 1)
+      this.stats.setHp(this.stats.getHp() - damage)
       console.log(this.stats.getHp())
       setTimeout(() => {
         this.cooldownActive = false
-        console.log('cooldown over')
+        // console.log('cooldown over')
       }, 1000)
     }
   }
 
-  attack () {
-    this.anims.play('ratAttack')
+  attack (player) {
+    // this.anims.play('ratAttack')
+    player.adjustHealth(-1)
     console.log('Rat attacks')
   }
 
@@ -179,15 +227,16 @@ RatEnemy.animInitialize = false
 RatEnemy.setupAnim = (scene) => {
   scene.anims.create({
     key: 'ratWalk',
-    frameRate: 12,
+    frameRate: 8,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 0, end: 8 })
+    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 0, end: 7 })
   })
+
   scene.anims.create({
     key: 'ratAttack',
     frameRate: 12,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('rat', { start: 9, end: 13 })
+    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 8, end: 12 })
   })
   RatEnemy.animInitialize = true
 }
