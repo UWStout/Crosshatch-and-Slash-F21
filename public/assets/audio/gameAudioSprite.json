@@ -20,6 +20,16 @@
       "start": 93,
       "end": 93.45913832199547,
       "loop": false
+    },
+    "Keep": {
+      "start": 95,
+      "end": 190.97494331065758,
+      "loop": false
+    },
+    "prevail": {
+      "start": 192,
+      "end": 287.9749433106576,
+      "loop": false
     }
   }
 }

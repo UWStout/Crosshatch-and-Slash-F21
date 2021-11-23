@@ -91,7 +91,7 @@ class StartScene extends Phaser.Scene {
     this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 200, frameHeight: 200 })
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
-    this.load.spritesheet('rat', 'assets/sprites/Rat300x300.png', { frameWidth: 300, frameHeight: 300 })
+    this.load.spritesheet('RatWalkAttack', 'assets/sprites/RatAnimsSpritesheet300x300.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 100, frameHeight: 100 })
     // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
     // Pre-load the entire audio sprite
@@ -153,7 +153,7 @@ class StartScene extends Phaser.Scene {
 
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('freeVertexStudioTrack1')
+    this.music.play('prevail')
   }
 }
 
