@@ -1,8 +1,6 @@
 {
   "title": "Crosshatch & Slash",
   "byLine": "A short and pithy description of the game",
-  "bannerTitleURI": "WebsiteData/Banner.png",
-  "bannerWideURI": "WebsiteData/WideBanner.png",
   "markdownURI": "WebsiteData/Markdown.md",
   "media": [
       {
