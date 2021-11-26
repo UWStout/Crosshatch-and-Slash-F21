@@ -1,0 +1,39 @@
+{
+  "title": "Crosshatch & Slash",
+  "byLine": "A short and pithy description of the game",
+  "bannerTitleURI": "WebsiteData/Banner.png",
+  "bannerWideURI": "WebsiteData/WideBanner.png",
+  "markdownURI": "WebsiteData/Markdown.md",
+  "media": [
+      {
+          "title": "Game Trailer",
+          "vimeoID": "",
+          "alt": "Crosshatch & Slash SGX Trailer"
+      },
+      {
+          "title": "Screenshot 1",
+          "link": "WebsiteData/Screenshot1.png",
+          "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Screenshot 2",
+          "link": "WebsiteData/Screenshot2.png",
+          "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Screenshot 3",
+          "link": "WebsiteData/Screenshot3.png",
+          "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Screenshot 4",
+          "link": "WebsiteData/Screenshot4.png",
+          "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Source Code Evolution",
+          "vimeoID": "",
+          "alt": "gource visualization of the changes in the source code"
+      }
+  ]
+}
