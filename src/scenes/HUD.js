@@ -170,9 +170,7 @@ class HUDScene extends Phaser.Scene {
 
       this.exp.setTexture('exp' + this.expIncrement)
     } else {
-      this.exp.destroy()
-      this.exp = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'exp0')
-      this.exp.setScale(0.844, 0.844)
+      this.exp.setTexture('exp0')
     }
   }
 
@@ -181,8 +179,7 @@ class HUDScene extends Phaser.Scene {
     this.manaToAdd = this.maxMana / 21
 
     if (newMana === 0) {
-      this.mana = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 120, 'mana0')
-      this.mana.setScale(0.844, 0.844)
+      this.mana.setTexture('mana0')
     } else {
       for (let i = 0; i <= newMana; i += this.manaToAdd) {
         this.manaIncrement++
