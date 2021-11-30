@@ -80,7 +80,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     const self = this
     self.setVisible(false)
     this.canGetExp = false
-
+    self.setPosition(0, 0)
     setTimeout(
       () => {
         self.setVisible(true)
