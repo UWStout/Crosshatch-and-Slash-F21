@@ -27,6 +27,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
     this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
     this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
+    this.load.image('resumeButton', 'assets/sprites/Buttons/spr_UI_buttonResume.png')
     this.load.image('pauseButton', 'assets/sprites/Buttons/spr_UI_buttonPause.png')
     this.load.image('levelUp', 'assets/sprites/Buttons/spr_UI_buttonLevelUp.png')
     this.load.image('menuButton', 'assets/sprites/Buttons/spr_UI_buttonMenu.png')

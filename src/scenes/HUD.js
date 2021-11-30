@@ -54,6 +54,18 @@ class HUDScene extends Phaser.Scene {
       this.scene.start('StartScene')
     })
 
+    const resumeButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 150, 'resumeButton')
+    resumeButton.setInteractive()
+    resumeButton.setVisible(false)
+    resumeButton.setScale(0.9, 0.9)
+    resumeButton.on('pointerdown', () => {
+      this.scene.resume('ExampleScene')
+      this.pausedIcon.setVisible(false)
+      exitButton.setVisible(false)
+      soundButton.setVisible(false)
+      resumeButton.setVisible(false)
+    })
+
     const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, CONFIG.DEFAULT_HEIGHT - 100, 'soundButtonIcon')
     soundButtonIcon.setScale(0.5, 0.5)
 
@@ -82,6 +94,7 @@ class HUDScene extends Phaser.Scene {
       this.pausedIcon.setVisible(true)
       exitButton.setVisible(true)
       soundButton.setVisible(true)
+      resumeButton.setVisible(true)
     })
 
     this.levelUpIcon = this.add.image(100, 50, 'levelUp')
