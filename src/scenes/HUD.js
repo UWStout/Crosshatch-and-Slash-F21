@@ -43,14 +43,30 @@ class HUDScene extends Phaser.Scene {
 
     this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4 + 50, CONFIG.DEFAULT_HEIGHT - 90, 'sword1')
 
-    const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2 - 100, 'exitButton')
+    const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 200, 'exitButton')
 
     exitButton.setInteractive()
     exitButton.setVisible(false)
+    exitButton.setScale(0.9, 0.9)
     exitButton.on('pointerdown', () => {
       this.scene.stop()
       this.scene.stop('ExampleScene')
       this.scene.start('StartScene')
+    })
+
+    const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, CONFIG.DEFAULT_HEIGHT - 100, 'soundButtonIcon')
+    soundButtonIcon.setScale(0.5, 0.5)
+
+    const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 25, 'soundButton')
+    soundButton.setInteractive()
+    soundButton.setVisible(false)
+    soundButton.setScale(0.9, 0.9)
+    soundButton.on('pointerdown', () => {
+      if (soundButtonIcon.visible) {
+        soundButtonIcon.setVisible(false)
+      } else {
+        soundButtonIcon.setVisible(true)
+      }
     })
 
     this.pausedIcon = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 30, 80, 'pausedIcon')
@@ -62,8 +78,10 @@ class HUDScene extends Phaser.Scene {
     this.pauseButton.setInteractive()
     this.pauseButton.on('pointerdown', () => {
       this.scene.pause('ExampleScene')
+
       this.pausedIcon.setVisible(true)
       exitButton.setVisible(true)
+      soundButton.setVisible(true)
     })
 
     this.levelUpIcon = this.add.image(100, 50, 'levelUp')

@@ -24,6 +24,9 @@ class ExampleScene extends Phaser.Scene {
     const backLayer = map.createLayer('til_map', room)
     const spawnLayer = map.createLayer('til_spawn', room)
 
+    // backLayer.setVisible(false)
+    // spawnLayer.setVisible(false)
+
     backLayer.setCollisionBetween(3, 6)
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
@@ -262,7 +265,9 @@ class ExampleScene extends Phaser.Scene {
     this.intersections = this.ray.castCircle()
 
     // redraw
-    this.draw()
+    if (__DEV__) {
+      this.draw()
+    }
 
     this.ray.setOrigin(this.player.x, this.player.y)
   }

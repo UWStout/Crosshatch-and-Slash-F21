@@ -5,9 +5,11 @@ import EnemyStates from '../spriteScripts/EnemyStateMachines/enemyStates'
 
 class RatEnemy extends Phaser.Physics.Matter.Sprite {
   constructor (scene, x, y) {
-    super(scene.matter.world, x, y, 'RatWalkAttack', 9)
+    super(scene.matter.world, x, y, 'RatWalkAttack', 0)
     if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
+      console.log(scene.anims.get('ratWalk'))
+      console.log(scene.anims.get('ratAttack'))
     }
     this.canAttack = true
     this.isInPlayer = false
@@ -39,12 +41,12 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.setFrictionAir(1)
     this.setIgnoreGravity(false)
 
+    this.currentState = EnemyStates.GUARDING
+
+    // this.anims.play('ratWalk')
     scene.add.existing(this)
 
     this.setUpCollision(scene)
-
-    this.CurrentState = EnemyStates.GUARDING
-    // this.anims.play('ratWalk', true)
   }
 
   updateState (newstate) {
@@ -183,8 +185,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   attack (player) {
-    this.anims.play('ratAttack')
-    console.log(this.anims.get('ratAttack'))
+    // this.anims.play('ratAttack')
     player.adjustHealth(-1)
     console.log('Rat attacks')
   }
@@ -258,7 +259,7 @@ RatEnemy.setupAnim = (scene) => {
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 8, end: 12 })
   })
-  // RatEnemy.animInitialize = true
+  RatEnemy.animInitialize = true
 }
 
 export default RatEnemy

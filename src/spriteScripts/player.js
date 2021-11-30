@@ -1,7 +1,6 @@
-import Phaser, { Scenes } from 'phaser'
+import Phaser from 'phaser'
 import CONFIG from '../config'
 import DataManaging from '../scenes/DataManaging'
-import HUDScene from '../scenes/HUD'
 import FireBall from './projectiles/fireball'
 
 const MANA_TIMEOUT = 5
@@ -196,7 +195,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   magicAttack (x, y, scene) {
-    if (this.currentMana > 0) {
+    if (this.currentMana < this.dataManaging.getInt()) {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
