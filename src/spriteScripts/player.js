@@ -195,7 +195,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   magicAttack (x, y, scene) {
-    if (this.currentMana < this.dataManaging.getInt()) {
+    if (this.currentMana < this.dataManaging.getInt() && this.currentMana >= 0) {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
