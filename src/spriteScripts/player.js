@@ -206,18 +206,22 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
       const endX = this.x + x
       const endY = this.y + y
 
-      const projectile = new FireBall(this.scene, this.x, this.y, this)
-      const newTween = this.scene.tweens.add({
-        targets: projectile,
-        x: endX,
-        y: endY,
-        ease: 'Power1',
-        duration: 250
-      })
+      setTimeout(() => {
+        const projectile = new FireBall(this.scene, this.x, this.y, this)
+        projectile.anims.play('fireBall')
+        projectile.setRotation(this.scene.angle + 90)
+        const newTween = this.scene.tweens.add({
+          targets: projectile,
+          x: endX,
+          y: endY,
+          ease: 'Power1',
+          duration: 250
+        })
 
-      newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
-        setTimeout(() => { projectile.destroy() }, 0)
-      })
+        newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
+          projectile.anims.play('burnout')
+        })
+      }, 200)
     }
 
     this.adjustMana(-1)
@@ -284,7 +288,7 @@ PlayerClass.setupAnim = (scene) => {
   })
   scene.anims.create({
     key: 'playerAttackMagical',
-    frameRate: 12,
+    frameRate: 24,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('playerAttack', { start: 10, end: 14 })
   })

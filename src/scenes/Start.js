@@ -19,7 +19,7 @@ class StartScene extends Phaser.Scene {
     this.loadEvents.once('sceneReady', this.sceneReady, this)
 
     // Load the image assets needed for THIS scene
-    this.load.image('StartScreen', 'assets/CrossHatchStartScreen.png')
+    this.load.image('StartScreen', 'assets/CrossHatchStartScreenColor.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
 
     // Load the image assets needed for 'ExampleScene'
@@ -92,7 +92,7 @@ class StartScene extends Phaser.Scene {
     this.load.spritesheet('playerWalkIdle', 'assets/sprites/KnightWalkSpritesheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('RatWalkAttack', 'assets/sprites/RatAnimsSpritesheet300x300.png', { frameWidth: 300, frameHeight: 300 })
-    this.load.spritesheet('fire', 'assets/sprites/Fire.png', { frameWidth: 512, frameHeight: 512 })
+    this.load.spritesheet('Fire', 'assets/sprites/FireEffect.png', { frameWidth: 200, frameHeight: 200 })
     // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [

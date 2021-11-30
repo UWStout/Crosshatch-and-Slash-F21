@@ -182,7 +182,6 @@ class ExampleScene extends Phaser.Scene {
       this.point.x -= this.player.x
       this.point.y -= this.player.y
       this.angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.x + this.point.x, this.player.y + this.point.y)
-
       if (this.canRotate) {
         this.player.setAngle((Phaser.Math.RAD_TO_DEG * this.angle) + 90)
       }

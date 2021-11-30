@@ -8,15 +8,20 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
     if (!FireBall.animInitialize) {
       FireBall.setupAnim(scene)
     }
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'burnout',
+      () => {
+        this.destroy()
+      },
+      this)
 
     this.setCircle(10, { label: 'fire' })
     this.setSensor(true)
 
     this.player = player
     this.hud = scene.scene.get('HUDScene')
-    this.setScale(0.1, 0.1)
     scene.add.existing(this)
-
+    this.setScale(.5,.5)
     this.setUpCollision(scene)
   }
 
@@ -29,7 +34,7 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
         const body1 = pairs[i].bodyA
         const body2 = pairs[i].bodyB
 
-        if (body1.label === 'fire' && body2.label === 'enemy') {
+        if (body1.label === 'fire' && body2.label === 'enemyhitbox') {
           if (body2.gameObject) {
             body2.gameObject.updateHp(1)
             if (body2.gameObject.stats.getHp() === 0) {
@@ -37,7 +42,7 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
               this.player.setCurrentExp(2)
             }
           }
-        } else if (body2.label === 'fire' && body1.label === 'enemy') {
+        } else if (body2.label === 'fire' && body1.label === 'enemyhitbox') {
           if (body1.gameObject) {
             body1.gameObject.updateHp(1)
             if (body1.gameObject.stats.getHp() === 0) {
@@ -61,7 +66,13 @@ FireBall.setupAnim = (scene) => {
     key: 'fireBall',
     frameRate: 12,
     repeat: -1,
-    frames: scene.anims.generateFrameNumbers('fire', { start: 0, end: 3 })
+    frames: scene.anims.generateFrameNumbers('Fire', { start: 5, end: 10 })
+  })
+  scene.anims.create({
+    key: 'burnout',
+    frameRate: 12,
+    repeat: 0,
+    frames: scene.anims.generateFrameNumbers('Fire', { start: 11, end: 15 })
   })
   FireBall.animInitialize = true
 }
