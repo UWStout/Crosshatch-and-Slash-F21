@@ -6,14 +6,12 @@ import Chest from '../spriteScripts/chest.js'
 
 import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
-import HUDScene from './HUD.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
     })
-
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -83,8 +81,18 @@ class ExampleScene extends Phaser.Scene {
 
     this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
 
+    // Load and play background music
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('Keep')
+    this.fightSong = this.sound.addAudioSprite('gameAudio')
+    this.fightSong.play('prevail')
+    this.fightSong.setVolume(0)
+
+    // Create a sound instance for sfx
+    this.sfx = this.sound.addAudioSprite('gameAudio')
+
     // Set the HUD for the game
-    this.scene.run('HUDScene')
+    this.scene.run('HUDScene', { music: this.music, sfx: this.sfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -168,17 +176,6 @@ class ExampleScene extends Phaser.Scene {
         this.point.scale(20 / length)
       }
     }, this)
-
-    // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('Keep')
-    this.fightSong = this.sound.addAudioSprite('gameAudio')
-    this.fightSong.play('prevail')
-    this.fightSong.setVolume(0)
-   
-
-    // Create a sound instance for sfx
-    this.sfx = this.sound.addAudioSprite('gameAudio')
 
     this.input.on('pointermove', function (pointer) {
       this.point.set(pointer.worldX, pointer.worldY)

@@ -31,6 +31,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('levelUp', 'assets/sprites/Buttons/spr_UI_buttonLevelUp.png')
     this.load.image('menuButton', 'assets/sprites/Buttons/spr_UI_buttonMenu.png')
     this.load.image('menuButtonIcon', 'assets/sprites/Buttons/spr_UI_buttonMenuIcon.png')
+    this.load.image('blankBox', 'assets/sprites/Buttons/spr_UI_box.png')
     this.load.image('soundButton', 'assets/sprites/Buttons/spr_UI_buttonSound.png')
     this.load.image('soundButtonIcon', 'assets/sprites/Buttons/spr_UI_buttonSoundIcon.png')
     this.load.image('pausedIcon', 'assets/sprites/Buttons/spr_UI_Paused.png')
