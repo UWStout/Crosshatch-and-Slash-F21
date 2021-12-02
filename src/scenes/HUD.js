@@ -42,7 +42,7 @@ class HUDScene extends Phaser.Scene {
     this.healthText.setOrigin(1, 1)
 
     this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4 + 50, CONFIG.DEFAULT_HEIGHT - 90, 'sword1')
-
+    this.swordNumber = 1
     const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 200, 'exitButton')
 
     exitButton.setInteractive()
@@ -136,6 +136,7 @@ class HUDScene extends Phaser.Scene {
 
   changeWeapon (swordNumber) {
     this.sword.setTexture('sword' + swordNumber)
+    this.swordNumber = swordNumber
   }
 
   updateHealth (newHealth) {
@@ -157,6 +158,10 @@ class HUDScene extends Phaser.Scene {
       this.manaButton.setVisible(true)
       this.strengthButton.setVisible(true)
     }
+  }
+
+  getSword () {
+    return this.swordNumber
   }
 
   updateExp (newExp, expNeeded) {

@@ -20,8 +20,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
     this.cooldownActive = false
 
-    this.stats = new EnemyStats(5, 'Rat')
-
+    this.stats = new EnemyStats(Phaser.Math.Between(10, 15), 'Rat')
+    console.log(this.stats.getHp())
     const bodies = Phaser.Physics.Matter.Matter.Bodies
     const rectA = bodies.rectangle(x, y - 130, 150, 150, { isSensor: true, label: 'enemyhitbox' })
     const rectB = bodies.rectangle(x, y, 100, 300, { label: 'enemy' })
