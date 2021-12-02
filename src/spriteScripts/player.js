@@ -215,6 +215,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
       setTimeout(() => {
         const projectile = new FireBall(this.scene, this.x, this.y, this)
+        console.log(projectile)
         projectile.anims.play('fireBall')
         projectile.setRotation(this.scene.angle + 90)
         const newTween = this.scene.tweens.add({
@@ -226,7 +227,9 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         })
 
         newTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE, () => {
-          projectile.anims.play('burnout')
+          if (projectile && !projectile.getIsPlayingBurnout()) {
+            projectile.anims.play('burnout')
+          }
         })
       }, 200)
     }

@@ -17,12 +17,20 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
 
     this.setCircle(10, { label: 'fire' })
     this.setSensor(true)
-
+    this.isPlayingBurnout = false
     this.player = player
     this.hud = scene.scene.get('HUDScene')
     scene.add.existing(this)
     this.setScale(0.5, 0.5)
     this.setUpCollision(scene)
+  }
+
+  getIsPlayingBurnout() {
+    return this.isPlayingBurnout
+  }
+
+  setIsPlayingBurnout(newValue) {
+    this.isPlayingBurnout = newValue
   }
 
   setUpCollision (scene) {
@@ -37,6 +45,8 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
         if (body1.label === 'fire' && body2.label === 'enemyhitbox') {
           if (body2.gameObject) {
             body2.gameObject.updateHp(1)
+            this.anims.play('burnout')
+            this.setIsPlayingBurnout(true)
             if (body2.gameObject.stats.getHp() === 0) {
               body2.gameObject.enemyDieRespawn()
               this.player.setCurrentExp(2)
@@ -45,6 +55,8 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
         } else if (body2.label === 'fire' && body1.label === 'enemyhitbox') {
           if (body1.gameObject) {
             body1.gameObject.updateHp(1)
+            body2.gameObject.anims.play('burnout')
+            this.setIsPlayingBurnout(true)
             if (body1.gameObject.stats.getHp() === 0) {
               body1.gameObject.enemyDieRespawn()
               this.player.setCurrentExp(2)
