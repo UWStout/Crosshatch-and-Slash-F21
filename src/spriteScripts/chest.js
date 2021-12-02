@@ -1,9 +1,9 @@
 import Phaser from 'phaser'
 
 class Chest extends Phaser.Physics.Matter.Sprite {
-  constructor (scene, x, y, chestChosen) {
+  constructor (scene, x, y, chestChosen, chestLoot) {
     super(scene.matter.world, x, y, (chestChosen === Chest.FRONT_CHEST ? 'frontChest' : 'sideChest'), 0)
-
+    this.chestLoot = chestLoot
     this.isOpened = false
     this.chestChosen = chestChosen
     this.chestAnimationEnded = false
@@ -61,6 +61,10 @@ class Chest extends Phaser.Physics.Matter.Sprite {
 
   isInRange () {
     return this.isInPlayer
+  }
+
+  getChestLoot () {
+    return this.chestLoot
   }
 
   isOpen () {

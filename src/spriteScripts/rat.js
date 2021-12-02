@@ -132,7 +132,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     const self = this
     setTimeout(() => {
       self.canAttack = true
-    }, 2000)
+    }, 5000)
   }
 
   moveBack () {

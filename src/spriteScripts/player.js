@@ -13,7 +13,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.hud = scene.scene.get('HUDScene')
 
     this.canMove = true
-
+    this.hasKey = false
     this.healthUpdateTimer = 0
     this.manaUpdateTimer = 0
 
@@ -123,6 +123,14 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
   getDataManager () {
     return this.dataManaging
+  }
+
+  getHasKey () {
+    return this.hasKey
+  }
+
+  setHasKey () {
+    this.hasKey = true
   }
 
   attack () {

@@ -6,14 +6,12 @@ import Chest from '../spriteScripts/chest.js'
 
 import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
-import HUDScene from './HUD.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
     })
-
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -36,7 +34,7 @@ class ExampleScene extends Phaser.Scene {
     this.canRotate = true
 
     // Create the chest object
-    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
+    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST, 'sword3')
 
     // Create enemy objects in the scene
     // Enemies array that holds all enemies
@@ -84,8 +82,18 @@ class ExampleScene extends Phaser.Scene {
 
     this.cameraBody = this.matter.add.rectangle(this.player.x, this.player.y, 1920, 1080, { isSensor: true, label: 'cameraBox' })
 
+    // Load and play background music
+    this.music = this.sound.addAudioSprite('gameAudio')
+    this.music.play('Keep')
+    this.fightSong = this.sound.addAudioSprite('gameAudio')
+    this.fightSong.play('prevail')
+    this.fightSong.setVolume(0)
+
+    // Create a sound instance for sfx
+    this.sfx = this.sound.addAudioSprite('gameAudio')
+
     // Set the HUD for the game
-    this.scene.run('HUDScene')
+    this.scene.run('HUDScene', { music: this.music, sfx: this.sfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -231,12 +239,33 @@ class ExampleScene extends Phaser.Scene {
     }
 
     if (this.cursors.open.isDown) {
-      if (this.chest.isInRange() && !this.chest.isOpen()) {
+      if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest) <= 270 && !this.chest.isOpen()) {
         this.chest.onOpen()
       }
 
       if (this.chest.getAnimationEnded()) {
         console.log('called')
+        const sword = this.chest.getChestLoot()
+        switch (sword) {
+          case 'sword1':
+            this.HUD.changeWeapon(1)
+            break
+          case 'sword2':
+            this.HUD.changeWeapon(2)
+            break
+          case 'sword3':
+            this.HUD.changeWeapon(3)
+            break
+          case 'sword4':
+            this.HUD.changeWeapon(4)
+            break
+          case 'sword5':
+            this.HUD.changeWeapon(5)
+            break
+          default:
+            this.player.setHasKey()
+            break
+        }
         this.HUD.changeWeapon(3)
         this.chest.emptyChest()
       }

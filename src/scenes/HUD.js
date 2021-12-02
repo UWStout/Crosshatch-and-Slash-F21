@@ -7,9 +7,11 @@ class HUDScene extends Phaser.Scene {
   //   super()
   // }
 
-  create () {
+  create (data) {
     this.maxMana = 10
-
+    // this.music = this.sound.addAudioSprite('gameAudio')
+    this.music = data?.music || null
+    this.sfx = data?.sfx || null
     const dungeon = this.scene.get('ExampleScene')
     this.player = dungeon.getPlayer()
     const ui = this.add.image(970, 960, 'uiOutline')
@@ -54,7 +56,21 @@ class HUDScene extends Phaser.Scene {
       this.scene.start('StartScene')
     })
 
-    const resumeButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 150, 'resumeButton')
+    const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 150, 'blankBox')
+    musicButton.setInteractive()
+    musicButton.setVisible(false)
+    musicButton.setScale(0.38, 0.92)
+    musicButton.on('pointerdown', () => {
+      if (this.music) {
+        if (this.music.isPlaying) {
+          this.music.pause()
+        } else {
+          this.music.resume()
+        }
+      }
+    })
+
+    const resumeButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 325, 'resumeButton')
     resumeButton.setInteractive()
     resumeButton.setVisible(false)
     resumeButton.setScale(0.9, 0.9)
@@ -64,6 +80,7 @@ class HUDScene extends Phaser.Scene {
       exitButton.setVisible(false)
       soundButton.setVisible(false)
       resumeButton.setVisible(false)
+      musicButton.setVisible(false)
     })
 
     const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, CONFIG.DEFAULT_HEIGHT - 100, 'soundButtonIcon')
@@ -76,10 +93,12 @@ class HUDScene extends Phaser.Scene {
     soundButton.on('pointerdown', () => {
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)
+        if (this.sfx) { this.sfx.pause() }
       } else {
         soundButtonIcon.setVisible(true)
+        if (this.sfx) { this.sfx.resume() }
       }
-    })
+    }, this)
 
     this.pausedIcon = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 30, 80, 'pausedIcon')
     this.pausedIcon.setVisible(false)
@@ -95,6 +114,7 @@ class HUDScene extends Phaser.Scene {
       exitButton.setVisible(true)
       soundButton.setVisible(true)
       resumeButton.setVisible(true)
+      musicButton.setVisible(true)
     })
 
     this.levelUpIcon = this.add.image(100, 50, 'levelUp')
@@ -106,6 +126,7 @@ class HUDScene extends Phaser.Scene {
     this.manaButton.setInteractive()
     this.manaButton.on('pointerup', () => {
       this.player.getDataManager().setInt(1)
+      this.maxMana = this.player.getDataManager().getInt()
       console.log(this.player.getDataManager().getInt())
       this.levelUpPoints--
       if (this.levelUpPoints === 0) {
