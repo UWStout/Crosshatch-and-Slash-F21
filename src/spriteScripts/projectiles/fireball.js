@@ -74,6 +74,7 @@ FireBall.setupAnim = (scene) => {
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('Fire', { start: 11, end: 15 })
   })
+  
   FireBall.animInitialize = true
 }
 export default FireBall

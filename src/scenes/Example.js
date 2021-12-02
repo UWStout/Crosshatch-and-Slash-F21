@@ -42,6 +42,7 @@ class ExampleScene extends Phaser.Scene {
     // Enemies array that holds all enemies
     this.enemies = []
     this.activeEnemies = []
+    this.activeEnemiesCounter = 0
 
     // Create the category used for tracking enemies
     const targetsCategory = this.matter.world.nextCategory()
@@ -127,11 +128,13 @@ class ExampleScene extends Phaser.Scene {
     this.ray.setCollidesWith(targetsCategory)
 
     this.ray.setOnCollide((collisionInfo) => {
+      this.activeEnemiesCounter++
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('PURSUING')
     })
 
     this.ray.setOnCollideEnd((collisionInfo) => {
+      this.activeEnemiesCounter--
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('RETURNING')
     })
@@ -140,7 +143,7 @@ class ExampleScene extends Phaser.Scene {
 
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
 
-    this.draw()
+    //this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -175,6 +178,8 @@ class ExampleScene extends Phaser.Scene {
     this.fightSong = this.sound.addAudioSprite('gameAudio')
     this.fightSong.play('prevail')
     this.fightSong.setVolume(0)
+
+    this.AttackAudioIsPlaying = false
    
 
     // Create a sound instance for sfx
@@ -235,6 +240,36 @@ class ExampleScene extends Phaser.Scene {
         this.HUD.changeWeapon(3)
         this.chest.emptyChest()
       }
+    }
+
+    if(this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false)
+    {
+      this.tweens.add({
+        targets: this.fightSong,
+        volume: 1,
+        duration: 500
+      })
+      this.tweens.add({
+        targets: this.music,
+        volume: .5,
+        duration: 500
+      })
+      this.AttackAudioIsPlaying = true
+    }
+
+    if(this.activeEnemiesCounter === 0)
+    {
+      this.tweens.add({
+        targets: this.fightSong,
+        volume: 0,
+        duration: 500
+      })
+      this.tweens.add({
+        targets: this.music,
+        volume: 1,
+        duration: 500
+      })
+      this.AttackAudioIsPlaying = false
     }
 
     this.player.move(directon.x, directon.y)

@@ -43,7 +43,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
     this.currentState = EnemyStates.GUARDING
 
-    // this.anims.play('ratWalk')
+    //this.anims.play('ratWalk')
     scene.add.existing(this)
 
     this.setUpCollision(scene)
@@ -102,7 +102,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         this.moveTowards()
         this.overlapping.forEach((body) => {
           if (body.label === 'player') {
-            if (this.canAttack) {
+            const ranAttack = Math.floor(Math.random() * 5)
+            if (this.canAttack && ranAttack > 2) {
               this.attack(body.gameObject)
               this.canAttack = false
               this.cooldown()
@@ -247,18 +248,18 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 RatEnemy.animInitialize = false
 RatEnemy.setupAnim = (scene) => {
   scene.anims.create({
-    key: 'ratWalk',
-    frameRate: 8,
-    repeat: -1,
-    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 0, end: 7 })
-  })
-
-  scene.anims.create({
     key: 'ratAttack',
     frameRate: 12,
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 8, end: 12 })
   })
+  scene.anims.create({
+    key: 'ratWalk',
+    frameRate: 8,
+    repeat: -1,
+    frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 0, end: 5 })
+  })
+  
   RatEnemy.animInitialize = true
 }
 
