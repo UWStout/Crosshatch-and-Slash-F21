@@ -226,7 +226,7 @@ class ExampleScene extends Phaser.Scene {
     }
 
     if (this.cursors.open.isDown) {
-      if (this.chest.isInRange() && !this.chest.isOpen()) {
+      if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest) <= 270 && !this.chest.isOpen()) {
         this.chest.onOpen()
       }
 

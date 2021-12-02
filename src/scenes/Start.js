@@ -23,7 +23,6 @@ class StartScene extends Phaser.Scene {
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
 
     // Load the image assets needed for 'ExampleScene'
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png')
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
     this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
     this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
