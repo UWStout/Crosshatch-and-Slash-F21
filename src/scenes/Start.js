@@ -22,6 +22,9 @@ class StartScene extends Phaser.Scene {
     this.load.image('StartScreen', 'assets/CrossHatchStartScreenColor.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
 
+    // Load the images used for the cut scene
+    this.load.image('TestScreen', 'assets/DialogTest.png')
+
     // Load the image assets needed for 'ExampleScene'
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
     this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
@@ -103,7 +106,7 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
-    
+
 
     // Load web fonts
     this.fontsLoaded = false
@@ -144,8 +147,8 @@ class StartScene extends Phaser.Scene {
     startButton.setInteractive()
     // startButton.setScale(4.5, 4.5)
     startButton.on('pointerdown', () => {
-      this.scene.start('ExampleScene')
-      this.scene.stop('StartScene')
+      this.scene.start('CutScene')
+      this.scene.stop('HUDScene')
       this.music.stop()
     })
 
