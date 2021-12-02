@@ -210,6 +210,7 @@ class HUDScene extends Phaser.Scene {
       for (let i = 0; i <= newMana; i += this.manaToAdd) {
         this.manaIncrement++
       }
+      this.manaIncrement = Phaser.Math.Clamp(this.manaIncrement, 0, 20)
       this.mana.setTexture('mana' + this.manaIncrement)
     }
     console.log(this.manaIncrement)
