@@ -150,7 +150,23 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         this.damage = Phaser.Math.RoundTo(this.damage, 0)
         console.log(this.damage)
 
-        body.gameObject.updateHp(this.damage)
+        switch (this.hud.getSword()) {
+          case 1:
+            body.gameObject.updateHp(this.damage + Phaser.Math.Between(1, 6))
+            break
+          case 2:
+            body.gameObject.updateHp(this.damage + Phaser.Math.Between(1, 8))
+            break
+          case 3:
+            body.gameObject.updateHp(this.damage + Phaser.Math.Between(1, 6) + Phaser.Math.Between(1, 6))
+            break
+          case 4:
+            body.gameObject.updateHp(this.damage + Phaser.Math.Between(1, 20))
+            break
+          case 5:
+            body.gameObject.updateHp(this.damage + Phaser.Math.Between(1, 6) + Phaser.Math.Between(1, 6))
+            break
+        }
         console.log(body.gameObject.stats.getHp())
 
         if (body.gameObject.stats.getHp() <= 0) {

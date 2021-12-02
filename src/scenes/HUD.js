@@ -60,8 +60,9 @@ class HUDScene extends Phaser.Scene {
     musicButton.setInteractive()
     musicButton.setVisible(false)
     musicButton.setScale(0.38, 0.92)
-    musicButton.on('pointerdown', () => {
+    musicButton.on('pointerup', () => {
       if (this.music) {
+        console.log(this.music.isPlaying)
         if (this.music.isPlaying) {
           this.music.pause()
         } else {
@@ -74,7 +75,7 @@ class HUDScene extends Phaser.Scene {
     resumeButton.setInteractive()
     resumeButton.setVisible(false)
     resumeButton.setScale(0.9, 0.9)
-    resumeButton.on('pointerdown', () => {
+    resumeButton.on('pointerup', () => {
       this.scene.resume('ExampleScene')
       this.pausedIcon.setVisible(false)
       exitButton.setVisible(false)
@@ -90,7 +91,7 @@ class HUDScene extends Phaser.Scene {
     soundButton.setInteractive()
     soundButton.setVisible(false)
     soundButton.setScale(0.9, 0.9)
-    soundButton.on('pointerdown', () => {
+    soundButton.on('pointerup', () => {
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)
         if (this.sfx) { this.sfx.pause() }
