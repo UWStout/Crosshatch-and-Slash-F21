@@ -103,6 +103,8 @@ class StartScene extends Phaser.Scene {
       'assets/audio/gameAudioSprite.ac3'
     ])
 
+    
+
     // Load web fonts
     this.fontsLoaded = false
 
