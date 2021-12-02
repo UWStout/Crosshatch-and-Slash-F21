@@ -34,7 +34,7 @@ class ExampleScene extends Phaser.Scene {
     this.canRotate = true
 
     // Create the chest object
-    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST)
+    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST, 'sword3')
 
     // Create enemy objects in the scene
     // Enemies array that holds all enemies
@@ -229,6 +229,27 @@ class ExampleScene extends Phaser.Scene {
 
       if (this.chest.getAnimationEnded()) {
         console.log('called')
+        const sword = this.chest.getChestLoot()
+        switch (sword) {
+          case 'sword1':
+            this.HUD.changeWeapon(1)
+            break
+          case 'sword2':
+            this.HUD.changeWeapon(2)
+            break
+          case 'sword3':
+            this.HUD.changeWeapon(3)
+            break
+          case 'sword4':
+            this.HUD.changeWeapon(4)
+            break
+          case 'sword5':
+            this.HUD.changeWeapon(5)
+            break
+          default:
+            this.player.setHasKey()
+            break
+        }
         this.HUD.changeWeapon(3)
         this.chest.emptyChest()
       }
