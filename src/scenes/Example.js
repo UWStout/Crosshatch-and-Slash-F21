@@ -55,7 +55,7 @@ class ExampleScene extends Phaser.Scene {
     this.enemies.forEach(enemy => {
       enemy.setCollisionCategory(targetsCategory)
       enemy.canRotate = true
-      enemy.setOriginXY(enemy.x, enemy.y)
+      // enemy.setOriginXY(enemy.x, enemy.y)
 
       enemy.on('destroy', () => {
         const index = this.enemies.findIndex((item) => (item === enemy))

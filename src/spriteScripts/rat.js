@@ -43,7 +43,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
     this.currentState = EnemyStates.GUARDING
 
-    //this.anims.play('ratWalk')
+    this.anims.play('ratWalk')
     scene.add.existing(this)
 
     this.setUpCollision(scene)
@@ -186,7 +186,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   attack (player) {
-    // this.anims.play('ratAttack')
+    this.anims.play('ratAttack')
     player.adjustHealth(-1)
     console.log('Rat attacks')
   }

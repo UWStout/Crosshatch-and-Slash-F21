@@ -1,3 +1,6 @@
+# Video output
+WebsiteData/gource/*.mp4
+
 # System and IDE files
 Thumbs.db
 .DS_Store

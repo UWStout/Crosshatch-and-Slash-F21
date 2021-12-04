@@ -1,0 +1,7 @@
+1570467600|Sprint 1 Ends
+1571850000|Sprint 2 Ends
+1573495200|Sprint 3 Ends
+1574834400|Fall Break
+1575482400|Sprint 4 Ends
+1575957600|Stable Lockdown
+1576108800|SGX Release
