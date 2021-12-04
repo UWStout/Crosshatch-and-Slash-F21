@@ -1,7 +1,6 @@
-1570467600|Sprint 1 Ends
-1571850000|Sprint 2 Ends
-1573495200|Sprint 3 Ends
-1574834400|Fall Break
-1575482400|Sprint 4 Ends
-1575957600|Stable Lockdown
-1576108800|SGX Release
+1634680800|Sprint 1 Ends - Design
+1636063200|Sprint 2 Ends - Vertical Slice
+1637708400|Sprint 3 Ends - Alpha/Beta
+1637967600|Fall Break
+1639522800|Sprint 4 Ends - Beta/RC1
+1639785600|SGX Release

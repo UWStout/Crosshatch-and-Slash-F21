@@ -406,3 +406,13 @@
 1638475924|Brady Bogucki|M|/src/scenes/Start.js
 1638475924|Brady Bogucki|D|/src/scenes/boot.js
 1638475924|Brady Bogucki|D|/src/scenes/dev.js
+1638628246|Prof. B|M|/.gitignore
+1638628246|Prof. B|A|/WebsiteData/gource/gourceCaptions.txt
+1638628246|Prof. B|A|/WebsiteData/gource/gourceCustomize.sh
+1638628246|Prof. B|A|/WebsiteData/gource/gourceInteract.sh
+1638628246|Prof. B|A|/WebsiteData/gource/gourceLog.txt
+1638628246|Prof. B|A|/WebsiteData/gource/gourceRT.sh
+1638628246|Prof. B|A|/WebsiteData/gource/gourceVidGen.sh
+1638628246|Prof. B|M|/src/scenes/Example.js
+1638628246|Prof. B|A|/src/scenes/Minimal.js
+1638628246|Prof. B|M|/src/spriteScripts/rat.js
