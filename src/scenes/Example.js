@@ -14,23 +14,28 @@ class ExampleScene extends Phaser.Scene {
     })
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
-    const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
-
+    const dungeon = map.addTilesetImage('til_set_dungeon01', 'dungeon')
+    // const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
+    // const bones = map.addTilesetImage('til_bones', 'bones')
+    // const crates = map.addTilesetImage('til_crates, crates')
+    // const crackedFloor = map.addTilesetImage('crackFloor')
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
-    const backLayer = map.createLayer('til_map', room)
-    const spawnLayer = map.createLayer('til_spawn', room)
+    const backLayer = map.createLayer('collision', dungeon)
+    const visualLayer = map.createLayer('visual', dungeon)
+    // const visualLayer = map.createLayer('visual', dungeon)
+    // const collisionLayer = map.createLayer('collision', { bones, crates, room })
 
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    backLayer.setCollisionBetween(3, 6)
+    backLayer.setCollisionByExclusion([0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
 
     // Create the player object
-    this.player = new PlayerClass(this, 6000, 6500)
+    this.player = new PlayerClass(this, 4000, 10000)
     this.canRotate = true
 
     // Create the chest object
@@ -161,7 +166,8 @@ class ExampleScene extends Phaser.Scene {
         down: Phaser.Input.Keyboard.KeyCodes.S,
         left: Phaser.Input.Keyboard.KeyCodes.A,
         right: Phaser.Input.Keyboard.KeyCodes.D,
-        open: Phaser.Input.Keyboard.KeyCodes.E
+        open: Phaser.Input.Keyboard.KeyCodes.E,
+        getLocation: Phaser.Input.Keyboard.KeyCodes.O
       })
 
     // mouse look
@@ -238,6 +244,10 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
 
+    if (this.cursors.getLocation.isDown) {
+      console.log(this.player.x, this.player.y)
+    }
+
     if (this.cursors.open.isDown) {
       if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest) <= 270 && !this.chest.isOpen()) {
         this.chest.onOpen()
@@ -271,8 +281,7 @@ class ExampleScene extends Phaser.Scene {
       }
     }
 
-    if(this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false)
-    {
+    if (this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false) {
       this.tweens.add({
         targets: this.fightSong,
         volume: 1,
@@ -286,8 +295,7 @@ class ExampleScene extends Phaser.Scene {
       this.AttackAudioIsPlaying = true
     }
 
-    if(this.activeEnemiesCounter === 0)
-    {
+    if (this.activeEnemiesCounter === 0) {
       this.tweens.add({
         targets: this.fightSong,
         volume: 0,

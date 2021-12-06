@@ -21,7 +21,10 @@ class StartScene extends Phaser.Scene {
     // Load the image assets needed for THIS scene
     this.load.image('StartScreen', 'assets/CrossHatchStartScreenColor.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
-
+    this.load.image('crates', 'assets/tilemaps/til_crates.png')
+    this.load.image('bones', 'assets/tilemaps/til_bones.png')
+    this.load.image('crackFloor', 'assets/tilemaps/til_crackedFloor.png')
+    this.load.image('dungeon', 'assets/tilemaps/til_dungeon01.png')
     // Load the images used for the cut scene
     this.load.image('TestScreen', 'assets/DialogTest.png')
 
@@ -88,7 +91,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('exp19', 'assets/sprites/exp/spr_UI_Exp20.png')
     this.load.image('exp20', 'assets/sprites/exp/spr_UI_Exp21.png')
 
-    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/tutorial_02.json')
+    this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/rm_dungeon01.json')
 
     this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice2.png', { frameWidth: 1152, frameHeight: 144 })
     this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 300, frameHeight: 300 })
