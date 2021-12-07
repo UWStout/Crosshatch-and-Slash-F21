@@ -84,7 +84,7 @@ class HUDScene extends Phaser.Scene {
       musicButton.setVisible(false)
     })
 
-    const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, CONFIG.DEFAULT_HEIGHT - 100, 'soundButtonIcon')
+    const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 130, 'soundButtonIcon')
     soundButtonIcon.setScale(0.5, 0.5)
 
     const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 25, 'soundButton')
@@ -157,6 +157,7 @@ class HUDScene extends Phaser.Scene {
   }
 
   changeWeapon (swordNumber) {
+    console.log('changing weapon to ' + swordNumber)
     this.sword.setTexture('sword' + swordNumber)
     this.swordNumber = swordNumber
   }

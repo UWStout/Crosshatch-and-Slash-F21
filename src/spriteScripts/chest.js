@@ -14,10 +14,20 @@ class Chest extends Phaser.Physics.Matter.Sprite {
     }
 
     const bodies = Phaser.Physics.Matter.Matter.Bodies
-    const rectA = bodies.rectangle(x - 50, y, 300, 370, { isSensor: true, label: 'chestOpens' })
-    const rectB = bodies.rectangle(x - 50, y, 180, 250, { label: 'chest' })
-    const chestBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [rectB, rectA] })
 
+    let chestBody = null
+
+    if (chestChosen === Chest.FRONT_CHEST) {
+      const rectA = bodies.rectangle(x + 50, y + 50, 300, 370, { isSensor: true, label: 'chestOpens' })
+      const rectB = bodies.rectangle(x + 50, y + 50, 180, 250, { label: 'chest' })
+      Phaser.Physics.Matter.Matter.Body.setAngle(rectA, 1.57079633)
+      Phaser.Physics.Matter.Matter.Body.setAngle(rectB, 1.57079633)
+      chestBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [rectB, rectA] })
+    } else {
+      const rectA = bodies.rectangle(x - 50, y, 300, 370, { isSensor: true, label: 'chestOpens' })
+      const rectB = bodies.rectangle(x - 50, y, 180, 250, { label: 'chest' })
+      chestBody = Phaser.Physics.Matter.Matter.Body.create({ parts: [rectB, rectA] })
+    }
     this.on(
       Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'frontChestOpen', () => {
         this.chestAnimationEnded = true
@@ -35,9 +45,12 @@ class Chest extends Phaser.Physics.Matter.Sprite {
     this.setExistingBody(chestBody)
     if (flipped) {
       this.setAngle(180)
-      this.setFlipY(true)
+      if (chestChosen === Chest.FRONT_CHEST) {
+        this.setFlipX(true)
+      } else {
+        this.setFlipY(true)
+      }
     }
-
     this.setBounce(0)
     this.setPosition(x, y)
     this.setStatic(true)

@@ -30,25 +30,42 @@ class ExampleScene extends Phaser.Scene {
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    backLayer.setCollisionByExclusion([0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28])
+    backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
 
     // Create the chests
+    this.chestArray = []
     this.chest1 = new Chest(this, 4033, 14246, Chest.SIDE_CHEST, 'sword3', false)
     this.chest2 = new Chest(this, 3761, 10095, Chest.FRONT_CHEST, 'sword1', true)
     this.chest3 = new Chest(this, 1945, 10944, Chest.SIDE_CHEST, 'sword2', false)
     this.chest4 = new Chest(this, 1974, 8277, Chest.SIDE_CHEST, 'sword3', true)
     this.chest5 = new Chest(this, 4956, 5840, Chest.FRONT_CHEST, 'sword1', false)
     this.chest6 = new Chest(this, 2326, 6445, Chest.SIDE_CHEST, 'sword2', true)
-    this.chest7 = new Chest(this, 7009, 13127, Chest.FRONT_CHEST, 'sword3', true)
+    this.chest7 = new Chest(this, 7009, 13127, Chest.FRONT_CHEST, 'sword2', true)
     this.chest8 = new Chest(this, 9444, 7539, Chest.FRONT_CHEST, 'key', false)
-    this.chest9 = new Chest(this, 9520, 3145, Chest.FRONT_CHEST, 'sword4', true)
+    this.chest9 = new Chest(this, 9520, 3145, Chest.FRONT_CHEST, 'sword4', false)
     this.chest10 = new Chest(this, 13652, 4338, Chest.FRONT_CHEST, 'sword1', false)
     this.chest11 = new Chest(this, 13937, 4338, Chest.FRONT_CHEST, 'sword2', false)
     this.chest12 = new Chest(this, 13949, 5558, Chest.FRONT_CHEST, 'sword3', true)
     this.chest13 = new Chest(this, 13672, 5558, Chest.FRONT_CHEST, 'sword4', true)
     this.chest14 = new Chest(this, 14236, 4795, Chest.SIDE_CHEST, 'sword5', false)
+
+    // Push them to the array
+    this.chestArray.push(this.chest1)
+    this.chestArray.push(this.chest2)
+    this.chestArray.push(this.chest3)
+    this.chestArray.push(this.chest4)
+    this.chestArray.push(this.chest5)
+    this.chestArray.push(this.chest6)
+    this.chestArray.push(this.chest7)
+    this.chestArray.push(this.chest8)
+    this.chestArray.push(this.chest9)
+    this.chestArray.push(this.chest10)
+    this.chestArray.push(this.chest11)
+    this.chestArray.push(this.chest12)
+    this.chestArray.push(this.chest13)
+    this.chestArray.push(this.chest14)
 
     // Create the player object
     this.player = new PlayerClass(this, 594, 14245)
@@ -169,7 +186,7 @@ class ExampleScene extends Phaser.Scene {
 
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
 
-    //this.draw()
+    // this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -182,6 +199,8 @@ class ExampleScene extends Phaser.Scene {
         open: Phaser.Input.Keyboard.KeyCodes.E,
         getLocation: Phaser.Input.Keyboard.KeyCodes.O
       })
+
+    this.cursors.open.on('down', this.tryOpenChest, this)
 
     // mouse look
     this.point = new Phaser.Math.Vector2(0, 0)
@@ -207,7 +226,6 @@ class ExampleScene extends Phaser.Scene {
     this.fightSong.setVolume(0)
 
     this.AttackAudioIsPlaying = false
-   
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
@@ -257,42 +275,44 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
 
-    if (this.cursors.getLocation.isDown) {
+    if (this.cursors.getLocation.is) {
       console.log(this.player.x, this.player.y)
     }
 
-    if (this.cursors.open.isDown) {
-      if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest1) <= 270 && !this.chest1.isOpen()) {
-        this.chest1.onOpen()
-      }
-
-      if (this.chest1.getAnimationEnded()) {
-        console.log('called')
-        const sword = this.chest1.getChestLoot()
-        switch (sword) {
-          case 'sword1':
-            this.HUD.changeWeapon(1)
-            break
-          case 'sword2':
-            this.HUD.changeWeapon(2)
-            break
-          case 'sword3':
-            this.HUD.changeWeapon(3)
-            break
-          case 'sword4':
-            this.HUD.changeWeapon(4)
-            break
-          case 'sword5':
-            this.HUD.changeWeapon(5)
-            break
-          default:
-            this.player.setHasKey()
-            break
-        }
-        this.HUD.changeWeapon(3)
-        this.chest1.emptyChest()
-      }
-    }
+    // if (this.cursors.open.isDown) {
+    //   if (this.chestArray) {
+    //     this.chestArray.forEach((chest) => {
+    //       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
+    //         chest.onOpen()
+    //       }
+    //       if (chest.getAnimationEnded() && Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270) {
+    //         const sword = chest.getChestLoot()
+    //         switch (sword) {
+    //           case 'sword1':
+    //             this.HUD.changeWeapon(1)
+    //             break
+    //           case 'sword2':
+    //             this.HUD.changeWeapon(2)
+    //             break
+    //           case 'sword3':
+    //             this.HUD.changeWeapon(3)
+    //             break
+    //           case 'sword4':
+    //             this.HUD.changeWeapon(4)
+    //             break
+    //           case 'sword5':
+    //             this.HUD.changeWeapon(5)
+    //             break
+    //           default:
+    //             this.player.setHasKey()
+    //             break
+    //         }
+    //         this.HUD.changeWeapon(3)
+    //         chest.emptyChest()
+    //       }
+    //     })
+    //   }
+    // }
 
     if (this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false) {
       this.tweens.add({
@@ -302,7 +322,7 @@ class ExampleScene extends Phaser.Scene {
       })
       this.tweens.add({
         targets: this.music,
-        volume: .5,
+        volume: 0.5,
         duration: 500
       })
       this.AttackAudioIsPlaying = true
@@ -354,6 +374,40 @@ class ExampleScene extends Phaser.Scene {
     }
 
     this.ray.setOrigin(this.player.x, this.player.y)
+  }
+
+  tryOpenChest () {
+    if (!Array.isArray(this.chestArray)) { return }
+
+    this.chestArray.forEach((chest) => {
+      if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
+        chest.onOpen()
+      }
+      if (chest.getAnimationEnded() && Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270) {
+        const sword = chest.getChestLoot()
+        switch (sword) {
+          case 'sword1':
+            this.HUD.changeWeapon(1)
+            break
+          case 'sword2':
+            this.HUD.changeWeapon(2)
+            break
+          case 'sword3':
+            this.HUD.changeWeapon(3)
+            break
+          case 'sword4':
+            this.HUD.changeWeapon(4)
+            break
+          case 'sword5':
+            this.HUD.changeWeapon(5)
+            break
+          default:
+            this.player.setHasKey()
+            break
+        }
+        chest.emptyChest()
+      }
+    })
   }
 
   moveCharacter (path, enemy) {
