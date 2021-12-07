@@ -140,7 +140,7 @@ class ExampleScene extends Phaser.Scene {
     this.finder = new EasyStar.js()
 
     this.finder.setGrid(this.grid)
-    this.finder.setAcceptableTiles([1, 2])
+    this.finder.setAcceptableTiles([2, 3])
     this.finder.enableDiagonals()
     this.finder.enableCornerCutting(0)
 
@@ -185,8 +185,6 @@ class ExampleScene extends Phaser.Scene {
     this.intersections = this.ray.castCircle()
 
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
-
-    // this.draw()
 
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
@@ -487,11 +485,11 @@ class ExampleScene extends Phaser.Scene {
 
       const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
 
-      allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body) })
       allBodies.filter((tile) => tile.index === 7 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
         .forEach((tile) => {
           const matterBody = tile.physics.matterBody.body
           const rotationPoint = { x: tile.getCenterX(), y: tile.getCenterY() }
+          tileMapBodies.push(matterBody)
           if (tile.rotation > 0) {
             Phaser.Physics.Matter.Matter.Body.rotate(matterBody, tile.rotation, rotationPoint)
           }
