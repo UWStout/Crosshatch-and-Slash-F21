@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 class Chest extends Phaser.Physics.Matter.Sprite {
-  constructor (scene, x, y, chestChosen, chestLoot) {
+  constructor (scene, x, y, chestChosen, chestLoot, flipped) {
     super(scene.matter.world, x, y, (chestChosen === Chest.FRONT_CHEST ? 'frontChest' : 'sideChest'), 0)
     this.chestLoot = chestLoot
     this.isOpened = false
@@ -32,13 +32,17 @@ class Chest extends Phaser.Physics.Matter.Sprite {
 
     chestBody.position = { x, y }
     chestBody.restitution = 0
-
     this.setExistingBody(chestBody)
+    if (flipped) {
+      this.setAngle(180)
+      this.setFlipY(true)
+    }
 
     this.setBounce(0)
     this.setPosition(x, y)
     this.setStatic(true)
     this.setOrigin(0.5, 0.5)
+    // this.setScale(0.99, 0.99)
 
     this.setFixedRotation()
     this.setFrictionAir(1)

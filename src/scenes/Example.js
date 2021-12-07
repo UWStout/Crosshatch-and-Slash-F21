@@ -33,12 +33,26 @@ class ExampleScene extends Phaser.Scene {
     backLayer.setCollisionByExclusion([0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
+
+    // Create the chests
+    this.chest1 = new Chest(this, 4033, 14246, Chest.SIDE_CHEST, 'sword3', false)
+    this.chest2 = new Chest(this, 3761, 10095, Chest.FRONT_CHEST, 'sword1', true)
+    this.chest3 = new Chest(this, 1945, 10944, Chest.SIDE_CHEST, 'sword2', false)
+    this.chest4 = new Chest(this, 1974, 8277, Chest.SIDE_CHEST, 'sword3', true)
+    this.chest5 = new Chest(this, 4956, 5840, Chest.FRONT_CHEST, 'sword1', false)
+    this.chest6 = new Chest(this, 2326, 6445, Chest.SIDE_CHEST, 'sword2', true)
+    this.chest7 = new Chest(this, 7009, 13127, Chest.FRONT_CHEST, 'sword3', true)
+    this.chest8 = new Chest(this, 9444, 7539, Chest.FRONT_CHEST, 'key', false)
+    this.chest9 = new Chest(this, 9520, 3145, Chest.FRONT_CHEST, 'sword4', true)
+    this.chest10 = new Chest(this, 13652, 4338, Chest.FRONT_CHEST, 'sword1', false)
+    this.chest11 = new Chest(this, 13937, 4338, Chest.FRONT_CHEST, 'sword2', false)
+    this.chest12 = new Chest(this, 13949, 5558, Chest.FRONT_CHEST, 'sword3', true)
+    this.chest13 = new Chest(this, 13672, 5558, Chest.FRONT_CHEST, 'sword4', true)
+    this.chest14 = new Chest(this, 14236, 4795, Chest.SIDE_CHEST, 'sword5', false)
+
     // Create the player object
     this.player = new PlayerClass(this, 594, 14245)
     this.canRotate = true
-
-    // Create the chest object
-    this.chest = new Chest(this, 5500, 6400, Chest.SIDE_CHEST, 'sword3')
 
     // Create enemy objects in the scene
     // Enemies array that holds all enemies
@@ -248,13 +262,13 @@ class ExampleScene extends Phaser.Scene {
     }
 
     if (this.cursors.open.isDown) {
-      if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest) <= 270 && !this.chest.isOpen()) {
-        this.chest.onOpen()
+      if (Phaser.Math.Distance.BetweenPoints(this.player, this.chest1) <= 270 && !this.chest1.isOpen()) {
+        this.chest1.onOpen()
       }
 
-      if (this.chest.getAnimationEnded()) {
+      if (this.chest1.getAnimationEnded()) {
         console.log('called')
-        const sword = this.chest.getChestLoot()
+        const sword = this.chest1.getChestLoot()
         switch (sword) {
           case 'sword1':
             this.HUD.changeWeapon(1)
@@ -276,7 +290,7 @@ class ExampleScene extends Phaser.Scene {
             break
         }
         this.HUD.changeWeapon(3)
-        this.chest.emptyChest()
+        this.chest1.emptyChest()
       }
     }
 
@@ -336,7 +350,7 @@ class ExampleScene extends Phaser.Scene {
 
     // redraw
     if (__DEV__) {
-      this.draw()
+      // this.draw()
     }
 
     this.ray.setOrigin(this.player.x, this.player.y)
