@@ -33,9 +33,8 @@ class ExampleScene extends Phaser.Scene {
     backLayer.setCollisionByExclusion([0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
-
     // Create the player object
-    this.player = new PlayerClass(this, 4000, 10000)
+    this.player = new PlayerClass(this, 594, 14245)
     this.canRotate = true
 
     // Create the chest object
@@ -421,7 +420,7 @@ class ExampleScene extends Phaser.Scene {
       const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
 
       allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body) })
-      allBodies.filter((tile) => tile.index === 3 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
+      allBodies.filter((tile) => tile.index === 7 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
         .forEach((tile) => {
           const matterBody = tile.physics.matterBody.body
           const rotationPoint = { x: tile.getCenterX(), y: tile.getCenterY() }
@@ -429,11 +428,11 @@ class ExampleScene extends Phaser.Scene {
             Phaser.Physics.Matter.Matter.Body.rotate(matterBody, tile.rotation, rotationPoint)
           }
 
-          if (tile.flipX || tile.flipY || tile.index === 3) {
+          if (tile.flipX || tile.flipY || tile.index === 7) {
             Phaser.Physics.Matter.Matter.Body.scale(
               matterBody,
               (tile.flipX ? -1 : 1),
-              (tile.flipY || tile.index === 3 ? -1 : 1),
+              (tile.flipY || tile.index === 7 ? -1 : 1),
               rotationPoint
             )
           }
