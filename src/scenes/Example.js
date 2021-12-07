@@ -30,7 +30,7 @@ class ExampleScene extends Phaser.Scene {
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    backLayer.setCollisionByExclusion([0, 1, 2, 3, 20, 21, 22, 23, 24, 25, 26, 27, 28])
+    backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
     // Create the player object
@@ -109,7 +109,7 @@ class ExampleScene extends Phaser.Scene {
     this.finder = new EasyStar.js()
 
     this.finder.setGrid(this.grid)
-    this.finder.setAcceptableTiles([1, 2])
+    this.finder.setAcceptableTiles([2, 3])
     this.finder.enableDiagonals()
     this.finder.enableCornerCutting(0)
 
@@ -155,8 +155,6 @@ class ExampleScene extends Phaser.Scene {
 
     this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0x00ff00 }, fillStyle: { color: 0xffffff, alpha: 0.3 } })
 
-    //this.draw()
-
     // player look
     this.cursors = this.input.keyboard.createCursorKeys()
     this.cursors = this.input.keyboard.addKeys(
@@ -193,7 +191,6 @@ class ExampleScene extends Phaser.Scene {
     this.fightSong.setVolume(0)
 
     this.AttackAudioIsPlaying = false
-   
 
     // Create a sound instance for sfx
     this.sfx = this.sound.addAudioSprite('gameAudio')
@@ -288,7 +285,7 @@ class ExampleScene extends Phaser.Scene {
       })
       this.tweens.add({
         targets: this.music,
-        volume: .5,
+        volume: 0.5,
         duration: 500
       })
       this.AttackAudioIsPlaying = true
@@ -336,7 +333,7 @@ class ExampleScene extends Phaser.Scene {
 
     // redraw
     if (__DEV__) {
-      this.draw()
+     this.draw()
     }
 
     this.ray.setOrigin(this.player.x, this.player.y)
@@ -419,11 +416,11 @@ class ExampleScene extends Phaser.Scene {
 
       const allBodies = row.filter((tile) => tile.physics.matterBody) // Tiles with editing collision
 
-      allBodies.forEach((tile) => { tileMapBodies.push(tile.physics.matterBody.body) })
       allBodies.filter((tile) => tile.index === 7 || (tile.physics.matterBody.body.label === 'Body' && (tile.rotation > 0 || tile.flipX || tile.flipY)))
         .forEach((tile) => {
           const matterBody = tile.physics.matterBody.body
           const rotationPoint = { x: tile.getCenterX(), y: tile.getCenterY() }
+          tileMapBodies.push(matterBody)
           if (tile.rotation > 0) {
             Phaser.Physics.Matter.Matter.Body.rotate(matterBody, tile.rotation, rotationPoint)
           }
