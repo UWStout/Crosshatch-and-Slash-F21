@@ -28,7 +28,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
     this.levelUpExp = 5
 
-    this.setScale(0.6, 0.6)
+    this.setScale(0.68, 0.68)
 
     const bodies = Phaser.Physics.Matter.Matter.Bodies
     const circleA = bodies.circle(x + 10, y - 60, 120, { isSensor: true, label: 'hitbox' })
