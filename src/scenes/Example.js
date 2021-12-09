@@ -473,7 +473,7 @@ class ExampleScene extends Phaser.Scene {
     this.mask.setInvertAlpha()
     this.fow = scene.add.graphics({ fillStyle: { color: 0x000000, alpha: 0.6 } }).setDepth(29)
     this.fow.setMask(this.mask)
-    this.fow.fillRect(0, 0, 800, 600)
+    this.fow.fillRect(0, 0, 1000, 800)
   }
 
   fixFlippedColliders (main) {
