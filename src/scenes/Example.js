@@ -430,7 +430,9 @@ class ExampleScene extends Phaser.Scene {
 
     if (this.enemies) {
       this.enemies.forEach((enemy) => {
-        if (enemy) {
+        if (enemy.getState() === 'DYING') {
+          enemy.updateAI(deltaTime)
+        } else if (enemy) {
           enemy.updateAI(deltaTime)
           const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
           enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)

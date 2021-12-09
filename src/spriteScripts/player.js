@@ -170,7 +170,8 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         console.log(body.gameObject.stats.getHp())
 
         if (body.gameObject.stats.getHp() <= 0) {
-          body.gameObject.destroy()
+          body.gameObject.updateState('DYING')
+          this.scene.tweens.killTweensOf(body.gameObject)
           this.setCurrentExp(2)
           this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
         }

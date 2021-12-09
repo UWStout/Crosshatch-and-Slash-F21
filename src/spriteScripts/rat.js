@@ -49,6 +49,11 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.setUpCollision(scene)
   }
 
+  getState()
+  {
+    return this.currentState
+  }
+
   updateState (newstate) {
     if (this.currentState === EnemyStates.RECOVERING) {
       setTimeout(() => {
@@ -110,6 +115,10 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         // console.log('Currently returning to guard point')
         this.moveBack()
         break
+
+      case EnemyStates.DYING:
+         this.destroy()
+         break
 
       default:
         // console.error('Unknown state')
