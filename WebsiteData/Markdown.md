@@ -17,7 +17,7 @@ Crosshatch & Slash is a dungeon crawl style action RPG. The game holds strong to
 
 ## Acknowledgements
 
-- 
+- Artur Pilatovs (SFX)
 
 ## Other
 
