@@ -31,7 +31,7 @@ class ExampleScene extends Phaser.Scene {
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    // backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
+    backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
 
