@@ -81,11 +81,86 @@ class ExampleScene extends Phaser.Scene {
     const targetsCategory = this.matter.world.nextCategory()
 
     // Create the rat enemies
-    const rat1 = new RatEnemy(this, 6500, 6500)
+    const rat1 = new RatEnemy(this, 2862, 8259)
     this.enemies.push(rat1)
 
-    const rat2 = new RatEnemy(this, 6000, 6500)
+    const rat2 = new RatEnemy(this, 1095, 8191)
     this.enemies.push(rat2)
+
+    const rat3 = new RatEnemy(this, 3756, 13941)
+    this.enemies.push(rat3)
+
+    const rat4 = new RatEnemy(this, 753, 11238)
+    this.enemies.push(rat4)
+
+    const rat5 = new RatEnemy(this, 6739, 12198)
+    this.enemies.push(rat5)
+
+    const rat6 = new RatEnemy(this, 6996, 11706)
+    this.enemies.push(rat6)
+
+    const rat7 = new RatEnemy(this, 5283, 11225)
+    this.enemies.push(rat7)
+
+    const rat8 = new RatEnemy(this, 6086, 12728)
+    this.enemies.push(rat8)
+
+    const rat9 = new RatEnemy(this, 9111, 9803)
+    this.enemies.push(rat9)
+
+    const rat10 = new RatEnemy(this, 6781, 8230)
+    this.enemies.push(rat10)
+
+    const rat11 = new RatEnemy(this, 7929, 7767)
+    this.enemies.push(rat11)
+
+    const rat12 = new RatEnemy(this, 8546, 7067)
+    this.enemies.push(rat12)
+
+    const rat13 = new RatEnemy(this, 8297, 6436)
+    this.enemies.push(rat13)
+
+    const rat14 = new RatEnemy(this, 9811, 4996)
+    this.enemies.push(rat14)
+
+    const rat15 = new RatEnemy(this, 9138, 4441)
+    this.enemies.push(rat15)
+
+    const rat16 = new RatEnemy(this, 19858, 4946)
+    this.enemies.push(rat16)
+
+    const rat17 = new RatEnemy(this, 12745, 4663)
+    this.enemies.push(rat17)
+
+    const rat18 = new RatEnemy(this, 13292, 4975)
+    this.enemies.push(rat18)
+
+    const rat19 = new RatEnemy(this, 10558, 6828)
+    this.enemies.push(rat19)
+
+    const rat20 = new RatEnemy(this, 11210, 6148)
+    this.enemies.push(rat20)
+
+    const rat21 = new RatEnemy(this, 10933, 8019)
+    this.enemies.push(rat21)
+
+    const rat22 = new RatEnemy(this, 11813, 7673)
+    this.enemies.push(rat22)
+
+    const rat23 = new RatEnemy(this, 12729, 8907)
+    this.enemies.push(rat23)
+
+    const rat24 = new RatEnemy(this, 11956, 9776)
+    this.enemies.push(rat24)
+
+    const rat25 = new RatEnemy(this, 11005, 9126)
+    this.enemies.push(rat25)
+
+    const rat26 = new RatEnemy(this, 11747, 12127)
+    this.enemies.push(rat26)
+
+    const rat27 = new RatEnemy(this, 10271, 12155)
+    this.enemies.push(rat27)
 
     this.enemies.forEach(enemy => {
       enemy.setCollisionCategory(targetsCategory)
@@ -355,7 +430,7 @@ class ExampleScene extends Phaser.Scene {
 
     if (this.enemies) {
       this.enemies.forEach((enemy) => {
-        if (enemy.visible) {
+        if (enemy) {
           enemy.updateAI(deltaTime)
           const enemyAngle = Phaser.Math.Angle.Between(enemy.x, enemy.y, this.player.x, this.player.y)
           enemy.setAngle((Phaser.Math.RAD_TO_DEG * enemyAngle) + 90)
@@ -473,7 +548,7 @@ class ExampleScene extends Phaser.Scene {
     this.mask.setInvertAlpha()
     this.fow = scene.add.graphics({ fillStyle: { color: 0x000000, alpha: 0.6 } }).setDepth(29)
     this.fow.setMask(this.mask)
-    this.fow.fillRect(0, 0, 800, 600)
+    this.fow.fillRect(0, 0, 1000, 800)
   }
 
   fixFlippedColliders (main) {

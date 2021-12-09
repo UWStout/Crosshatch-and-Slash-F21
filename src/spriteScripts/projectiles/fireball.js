@@ -44,21 +44,24 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
 
         if (body1.label === 'fire' && body2.label === 'enemyhitbox') {
           if (body2.gameObject) {
-            body2.gameObject.updateHp(1)
+            body2.gameObject.updateHp(Phaser.Math.Between(1, 6))
             this.anims.play('burnout')
             this.setIsPlayingBurnout(true)
             if (body2.gameObject.stats.getHp() === 0) {
-              body2.gameObject.enemyDieRespawn()
+              body2.gameObject.setDestroyed()
+              body2.gameObject.destroy()
               this.player.setCurrentExp(2)
             }
           }
         } else if (body2.label === 'fire' && body1.label === 'enemyhitbox') {
           if (body1.gameObject) {
-            body1.gameObject.updateHp(1)
+            body1.gameObject.updateHp(Phaser.Math.Between(1, 6))
             body2.gameObject.anims.play('burnout')
             this.setIsPlayingBurnout(true)
             if (body1.gameObject.stats.getHp() === 0) {
-              body1.gameObject.enemyDieRespawn()
+              body1.gameObject.setDestroyed()
+              body1.gameObject.destroy()
+
               this.player.setCurrentExp(2)
             }
           }
