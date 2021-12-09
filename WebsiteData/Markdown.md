@@ -1,18 +1,23 @@
 # Game Name
 
-**Byline**
+**Crosshatch & Slash**
 
 ## Description
 
-A longer description
+Crosshatch & Slash is a dungeon crawl style action RPG. The game holds strong to a hand drawn art style mimicking old Table Top RPG games. In this game you'll explore one of the Darkhorn Keeps in an attempt to find answers on how to break your immortal curse.
+
 
 ## Core Team
 
-- List of all team members
+- Max Willman
+- Kyle Christensen
+- Mags Marcinkiewicz
+- Brady Bogucki
+- Charles Heikkila
 
 ## Acknowledgements
 
-- Cite any references or important 3rd party folks
+- Artur Pilatovs (SFX)
 
 ## Other
 

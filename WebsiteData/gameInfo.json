@@ -2,6 +2,8 @@
   "title": "Crosshatch & Slash",
   "byLine": "A short and pithy description of the game",
   "markdownURI": "WebsiteData/Markdown.md",
+  "bannerTitleURI": "WebsiteData/CSMedBanner.png",
+  "bannerWideURI": "WebsiteData/CSWideBanner.png",
   "media": [
       {
           "title": "Game Trailer",
