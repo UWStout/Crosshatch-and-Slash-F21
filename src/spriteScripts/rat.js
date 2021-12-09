@@ -17,7 +17,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
     this.startX = x
     this.startY = y
-
+    this.destroyed = false
     this.cooldownActive = false
 
     this.stats = new EnemyStats(Phaser.Math.Between(10, 15), 'Rat')
@@ -59,6 +59,10 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     }
   }
 
+  setDestroyed () {
+    this.destroyed = true
+  }
+
   getStartX () {
     return this.startX
   }
@@ -74,21 +78,6 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
 
   canGetExp () {
     return this.canGetExp
-  }
-
-  enemyDieRespawn () {
-    const self = this
-    self.setVisible(false)
-    this.canGetExp = false
-    self.setPosition(0, 0)
-    setTimeout(
-      () => {
-        self.setVisible(true)
-        self.canGetExp = true
-        self.setPosition(self.getStartX(), self.getStartY())
-        self.stats.setHp(5)
-        console.log(self.active)
-      }, 5000)
   }
 
   updateAI (deltaTime) {
@@ -165,7 +154,9 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         // console.warn('Path was not found')
       } else {
         // console.log(path)
-        this.scene.moveCharacter(path, this)
+        if (!this.destroyed) {
+          this.scene.moveCharacter(path, this)
+        }
       }
     })
 

@@ -18,7 +18,7 @@ class HUDScene extends Phaser.Scene {
     ui.setScale(1.16, 1.16)
 
     this.dice = this.add.sprite(CONFIG.DEFAULT_WIDTH / 2 + 10, CONFIG.DEFAULT_HEIGHT - 150, 'dice')
-    this.dice.setScale(1.6, 1.6)
+    this.dice.setScale(1.8, 1.8)
     this.dice.anims.create({
       key: 'roll',
       frameRate: 8,
@@ -28,8 +28,8 @@ class HUDScene extends Phaser.Scene {
 
     this.healthText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 2 + 33,
-      CONFIG.DEFAULT_HEIGHT - 105,
-      '20', { fontFamily: 'hamlet', color: '#000000', align: 'center', fontSize: 50 }
+      CONFIG.DEFAULT_HEIGHT - 100,
+      '20', { fontFamily: 'hamlet', color: '#000000', align: 'center', fontSize: 56 }
     )
 
     this.levelUpPoints = 0
@@ -48,10 +48,10 @@ class HUDScene extends Phaser.Scene {
     // Phaser.Display.Align.In.Center(ui, this.add.zone(700, 940, 300, 300))
     this.healthText.setOrigin(1, 1)
 
-    this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4, CONFIG.DEFAULT_HEIGHT - 100, 'sword1')
-    this.sword.setScale(1.16, 1.16)
+    this.sword = this.add.image(CONFIG.DEFAULT_WIDTH / 4 + 50, CONFIG.DEFAULT_HEIGHT - 120, 'sword1')
+    this.sword.setScale(1.36, 1.36)
     this.swordNumber = 1
-    const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 150, 'exitButton')
+    const exitButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 280, 'exitButton')
 
     this.swordText = this.add.text(
       CONFIG.DEFAULT_WIDTH / 4 - 110,
@@ -60,17 +60,17 @@ class HUDScene extends Phaser.Scene {
 
     exitButton.setInteractive()
     exitButton.setVisible(false)
-    exitButton.setScale(0.9, 0.9)
+    exitButton.setScale(1.1, 1.1)
     exitButton.on('pointerdown', () => {
       this.scene.stop()
       this.scene.stop('ExampleScene')
       this.scene.start('StartScene')
     })
 
-    const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 150, 'blankBox')
+    const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'blankBox')
     musicButton.setInteractive()
     musicButton.setVisible(false)
-    musicButton.setScale(0.38, 0.92)
+    musicButton.setScale(0.43, 1.12)
     musicButton.on('pointerup', () => {
       if (this.music) {
         console.log(this.music.isPlaying)
@@ -82,10 +82,10 @@ class HUDScene extends Phaser.Scene {
       }
     })
 
-    const resumeButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 325, 'resumeButton')
+    const resumeButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 415, 'resumeButton')
     resumeButton.setInteractive()
     resumeButton.setVisible(false)
-    resumeButton.setScale(0.9, 0.9)
+    resumeButton.setScale(1.1, 1.1)
     resumeButton.on('pointerup', () => {
       this.scene.resume('ExampleScene')
       this.pausedIcon.setVisible(false)
@@ -98,10 +98,10 @@ class HUDScene extends Phaser.Scene {
     const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 130, 'soundButtonIcon')
     soundButtonIcon.setScale(0.5, 0.5)
 
-    const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 25, 'soundButton')
+    const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 55, 'soundButton')
     soundButton.setInteractive()
     soundButton.setVisible(false)
-    soundButton.setScale(0.9, 0.9)
+    soundButton.setScale(1.1, 1.1)
     soundButton.on('pointerup', () => {
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)

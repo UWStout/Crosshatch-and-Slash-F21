@@ -48,7 +48,8 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
             this.anims.play('burnout')
             this.setIsPlayingBurnout(true)
             if (body2.gameObject.stats.getHp() === 0) {
-              body2.gameObject.enemyDieRespawn()
+              body2.gameObject.setDestroyed()
+              body2.gameObject.destroy()
               this.player.setCurrentExp(2)
             }
           }
@@ -58,7 +59,9 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
             body2.gameObject.anims.play('burnout')
             this.setIsPlayingBurnout(true)
             if (body1.gameObject.stats.getHp() === 0) {
-              body1.gameObject.enemyDieRespawn()
+              body1.gameObject.setDestroyed()
+              body1.gameObject.destroy()
+
               this.player.setCurrentExp(2)
             }
           }

@@ -170,7 +170,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
         console.log(body.gameObject.stats.getHp())
 
         if (body.gameObject.stats.getHp() <= 0) {
-          body.gameObject.enemyDieRespawn()
+          body.gameObject.destroy()
           this.setCurrentExp(2)
           this.hud.updateExp(this.dataManaging.getExp(), this.levelUpExp)
         }
