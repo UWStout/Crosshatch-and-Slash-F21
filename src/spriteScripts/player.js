@@ -125,6 +125,10 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     return this.dataManaging
   }
 
+  getHealth () {
+    return this.currentHealth
+  }
+
   getHasKey () {
     return this.hasKey
   }
