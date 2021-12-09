@@ -93,6 +93,7 @@ class StartScene extends Phaser.Scene {
 
     this.load.tilemapTiledJSON('tutorialRoom', 'assets/tilemaps/rm_dungeon01.json')
 
+    this.load.spritesheet('trapdoor', 'assets/sprites/spr_trapDoor.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('dice', 'assets/sprites/spr_UI_dice2.png', { frameWidth: 1152, frameHeight: 144 })
     this.load.spritesheet('sideChest', 'assets/sprites/til_sideChest.png', { frameWidth: 302, frameHeight: 302 })
     this.load.spritesheet('frontChest', 'assets/sprites/til_frontChest.png', { frameWidth: 302, frameHeight: 302 })

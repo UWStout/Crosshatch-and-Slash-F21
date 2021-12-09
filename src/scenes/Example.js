@@ -6,6 +6,7 @@ import Chest from '../spriteScripts/chest.js'
 
 import PlayerClass from '../spriteScripts/player.js'
 import RatEnemy from '../spriteScripts/rat.js'
+import Trapdoor from '../spriteScripts/trapdoor.js'
 
 class ExampleScene extends Phaser.Scene {
   create () {
@@ -30,7 +31,7 @@ class ExampleScene extends Phaser.Scene {
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
+    // backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
 
@@ -71,6 +72,8 @@ class ExampleScene extends Phaser.Scene {
     this.player = new PlayerClass(this, 594, 14245)
     this.canRotate = true
 
+    // Create trapdoor for victory
+    this.trapdoor = new Trapdoor(this, 10936, 14523)
     // Create enemy objects in the scene
     // Enemies array that holds all enemies
     this.enemies = []
@@ -273,7 +276,7 @@ class ExampleScene extends Phaser.Scene {
         getLocation: Phaser.Input.Keyboard.KeyCodes.O
       })
 
-    this.cursors.open.on('down', this.tryOpenChest, this)
+    this.cursors.open.on('down', this.tryOpen, this)
 
     // mouse look
     this.point = new Phaser.Math.Vector2(0, 0)
@@ -348,7 +351,7 @@ class ExampleScene extends Phaser.Scene {
       directon.y += 1
     }
 
-    if (this.cursors.getLocation.is) {
+    if (this.cursors.getLocation.isDown) {
       console.log(this.player.x, this.player.y)
     }
 
@@ -449,9 +452,13 @@ class ExampleScene extends Phaser.Scene {
     this.ray.setOrigin(this.player.x, this.player.y)
   }
 
-  tryOpenChest () {
+  tryOpen () {
     if (!Array.isArray(this.chestArray)) { return }
-
+    if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && !this.trapdoor.getOpened() && this.player.getHasKey()) {
+      this.trapdoor.setOpened()
+    } else if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && this.trapdoor.getOpened()) {
+      console.log('winner')
+    }
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
         chest.onOpen()
