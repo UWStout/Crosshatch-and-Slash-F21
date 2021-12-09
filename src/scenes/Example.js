@@ -355,11 +355,12 @@ class ExampleScene extends Phaser.Scene {
       console.log(this.player.x, this.player.y)
     }
 
-    if (this.player.getHealth() <= 0) {
-      this.scene.stop()
-      this.scene.stop('HUDScene')
-      this.scene.start('GameOverScene')
-    }
+    // if (this.player.getHealth() <= 0) {
+    //   this.scene.stop()
+    //   this.scene.stop('HUDScene')
+    //   this.scene.start('GameOverScene')
+    // }
+
     // if (this.cursors.open.isDown) {
     //   if (this.chestArray) {
     //     this.chestArray.forEach((chest) => {
