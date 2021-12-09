@@ -1,6 +1,6 @@
 # Game Name
 
-**Byline**
+**Crosshatch & Slash**
 
 ## Description
 
