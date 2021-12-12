@@ -136,7 +136,6 @@ class StartScene extends Phaser.Scene {
     startButton.on('pointerdown', () => {
       this.scene.start('CutScene')
       this.scene.stop('HUDScene')
-      this.music.stop()
     })
 
     // this.add.text(32, 32,
@@ -147,8 +146,6 @@ class StartScene extends Phaser.Scene {
     // Add a callback when a key is released
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('prevail')
   }
 }
 

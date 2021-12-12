@@ -14,7 +14,7 @@ class CutScene extends Phaser.Scene {
 
   create () {
     // Add a callback when a key is released
-     this.input.keyboard.on('keyup', this.keyReleased, this)
+    this.input.keyboard.on('keyup', this.keyReleased, this)
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
     this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
     this.load.image('resumeButton', 'assets/sprites/Buttons/spr_UI_buttonResume.png')
@@ -76,6 +76,8 @@ class CutScene extends Phaser.Scene {
     this.load.image('exp19', 'assets/sprites/exp/spr_UI_Exp20.png')
     this.load.image('exp20', 'assets/sprites/exp/spr_UI_Exp21.png')
     this.load.start()
+
+    this.totalTolLoad = this.load.totalToLoad
     // Setup variables with world bounds
     let currentFrame = 1
     let Frame = 'Frame' + currentFrame
@@ -88,7 +90,8 @@ class CutScene extends Phaser.Scene {
     this.cameras.main.on(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
       console.log(Frame)
       if (Frame === 39) {
-        this.keyReleased()
+        this.scene.start('ExampleScene')
+        this.scene.stop('StartScene')
       }
       currentFrame++
       Frame = 'Frame' + currentFrame
@@ -114,10 +117,11 @@ class CutScene extends Phaser.Scene {
     )
   }
 
-  keyReleased () {
-    console.log('Key released')
-    this.scene.start('ExampleScene')
-    this.scene.stop('StartScene')
+  update () {
+    if (this.load.totalComplete >= this.totalTolLoad) {
+      this.scene.start('ExampleScene')
+      this.scene.stop('StartScene')
+    }
   }
 }
 
