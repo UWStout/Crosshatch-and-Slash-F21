@@ -67,10 +67,10 @@ class HUDScene extends Phaser.Scene {
       this.scene.start('StartScene')
     })
 
-    const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'blankBox')
+    const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'musicButton')
     musicButton.setInteractive()
     musicButton.setVisible(false)
-    musicButton.setScale(0.43, 1.12)
+    musicButton.setScale(1.1, 1.1)
     musicButton.on('pointerup', () => {
       if (this.music) {
         console.log(this.music.isPlaying)

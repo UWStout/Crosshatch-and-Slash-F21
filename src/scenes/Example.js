@@ -294,13 +294,6 @@ class ExampleScene extends Phaser.Scene {
       }
     }, this)
 
-    // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('Keep')
-    this.fightSong = this.sound.addAudioSprite('gameAudio')
-    this.fightSong.play('prevail')
-    this.fightSong.setVolume(0)
-
     this.AttackAudioIsPlaying = false
 
     // Create a sound instance for sfx
