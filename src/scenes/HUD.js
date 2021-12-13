@@ -67,6 +67,9 @@ class HUDScene extends Phaser.Scene {
       this.scene.start('StartScene')
     })
 
+    const musicButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 210, 'musicButtonIcon')
+    musicButtonIcon.setScale(0.5, 0.5)
+
     const musicButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'musicButton')
     musicButton.setInteractive()
     musicButton.setVisible(false)
@@ -76,8 +79,10 @@ class HUDScene extends Phaser.Scene {
         console.log(this.music.isPlaying)
         if (this.music.isPlaying) {
           this.music.pause()
+          musicButtonIcon.setVisible(false)
         } else {
           this.music.resume()
+          musicButtonIcon.setVisible(true)
         }
       }
     })
@@ -97,6 +102,7 @@ class HUDScene extends Phaser.Scene {
 
     const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 130, 'soundButtonIcon')
     soundButtonIcon.setScale(0.5, 0.5)
+
 
     const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 55, 'soundButton')
     soundButton.setInteractive()
