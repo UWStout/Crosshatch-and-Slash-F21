@@ -14,6 +14,7 @@ class ExampleScene extends Phaser.Scene {
       this.music.stop()
     })
     this.input.mouse.disableContextMenu()
+    this.input.setDefaultCursor('cursor')
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const dungeon = map.addTilesetImage('til_set_dungeon01', 'dungeon')
     // const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
