@@ -14,7 +14,6 @@ class CutScene extends Phaser.Scene {
 
   create () {
     // Add a callback when a key is released
-    this.input.keyboard.on('keyup', this.keyReleased, this)
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
     this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
     this.load.image('resumeButton', 'assets/sprites/Buttons/spr_UI_buttonResume.png')
