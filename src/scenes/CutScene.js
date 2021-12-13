@@ -15,9 +15,9 @@ class CutScene extends Phaser.Scene {
   create () {
     // Add a callback when a key is released
     this.load.image('uiOutline', 'assets/sprites/spr_UI_Outline.png')
-    this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
     this.load.image('resumeButton', 'assets/sprites/Buttons/spr_UI_buttonResume.png')
     this.load.image('pauseButton', 'assets/sprites/Buttons/spr_UI_buttonPause.png')
+    this.load.image('cursor', 'assets/sprites/spr_UI_cursor.png')
     this.load.image('levelUp', 'assets/sprites/Buttons/spr_UI_buttonLevelUp.png')
     this.load.image('menuButton', 'assets/sprites/Buttons/spr_UI_buttonMenu.png')
     this.load.image('menuButtonIcon', 'assets/sprites/Buttons/spr_UI_buttonMenuIcon.png')
@@ -81,6 +81,15 @@ class CutScene extends Phaser.Scene {
     // Setup variables with world bounds
     let currentFrame = 1
     let Frame = 'Frame' + currentFrame
+    const exitButton = this.add.image(150, CONFIG.DEFAULT_HEIGHT - 80, 'exitButton')
+    exitButton.setInteractive()
+    exitButton.setScale(1.1, 1.1)
+    exitButton.on('pointerdown', () => {
+      this.scene.stop()
+      this.scene.stop('CutScene')
+      this.scene.start('ExampleScene')
+    })
+    exitButton.setDepth(1)
 
     // fade to black
     setTimeout(() => {

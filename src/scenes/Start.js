@@ -28,6 +28,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
     // Load the images used for the cut scene
     this.load.image('TestScreen', 'assets/DialogTest.png')
+    this.load.image('exitButton', 'assets/sprites/Buttons/spr_UI_buttonExit.png')
 
     this.load.image('Frame1', 'assets/IntroScenes/spr_IntroScene01.png')
     this.load.image('Frame2', 'assets/IntroScenes/spr_IntroScene02.png')
