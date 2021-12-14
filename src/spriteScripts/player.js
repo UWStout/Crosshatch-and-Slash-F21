@@ -22,6 +22,8 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     this.currentMana = 10
     this.isAttacking = false
 
+    this.PlayerSfx = this.scene.sound.addAudioSprite('gameAudio')
+
     if (!PlayerClass.animInitialize) {
       PlayerClass.setupAnim(scene)
     }
@@ -145,6 +147,35 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     }
 
     this.anims.play('playerAttackPhysical', true)
+    if (!this.PlayerSfx.isPaused) {
+      this.PlayerSfx.stop()
+      const audioChoice = Math.floor(Math.random() * 12)
+      if (audioChoice === 0) {
+        this.PlayerSfx.play('Sword Slash 1_1')
+      } else if (audioChoice === 1) {
+        this.PlayerSfx.play('Sword Slash 2_1')
+      } else if (audioChoice === 2) {
+        this.PlayerSfx.play('Sword Slash 3_1')
+      } else if (audioChoice === 3) {
+        this.PlayerSfx.play('Sword Slash 4_1')
+      } else if (audioChoice === 4) {
+        this.PlayerSfx.play('Sword Slash 5_1')
+      } else if (audioChoice === 5) {
+        this.PlayerSfx.play('Sword Slash 6_1')
+      } else if (audioChoice === 6) {
+        this.PlayerSfx.play('Sword Swing 1_1')
+      } else if (audioChoice === 7) {
+        this.PlayerSfx.play('Sword Swing 2_1')
+      } else if (audioChoice === 8) {
+        this.PlayerSfx.play('Sword Swing 3_1')
+      } else if (audioChoice === 9) {
+        this.PlayerSfx.play('Sword Swing 4_1')
+      } else if (audioChoice === 10) {
+        this.PlayerSfx.play('Sword Swing 5_1')
+      } else if (audioChoice === 11) {
+        this.PlayerSfx.play('Sword Swing 6_1')
+      }
+    }
 
     this.overlapping.forEach((body) => {
       if (body.gameObject) {
@@ -224,13 +255,29 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   magicAttack (x, y, scene) {
-    if (this.currentMana < this.dataManaging.getInt()) {
+    if (this.currentMana > 0) {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
 
       this.canMove = false
       this.anims.play('playerAttackMagical', true)
+      if (!this.PlayerSfx.isPaused) {
+        this.PlayerSfx.stop()
+        const audioChoice = Math.floor(Math.random() * 5)
+        if (audioChoice === 0) {
+          this.PlayerSfx.play('Fire_Bolt_1')
+        } else if (audioChoice === 1) {
+          this.PlayerSfx.play('Fire_Bolt_2')
+        } else if (audioChoice === 2) {
+          this.PlayerSfx.play('Fire_Bolt_3')
+        } else if (audioChoice === 3) {
+          this.PlayerSfx.play('Fire_Bolt_4')
+        } else if (audioChoice === 4) {
+          this.PlayerSfx.play('Fire_Bolt_5')
+        }
+      }
+
       const endX = this.x + x
       const endY = this.y + y
 
@@ -253,9 +300,8 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
           }
         })
       }, 200)
+      this.adjustMana(-1)
     }
-
-    this.adjustMana(-1)
   }
 
   move (x, y) {
@@ -287,6 +333,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     if (this.getMana() < this.dataManaging.getInt()) {
       if (this.manaUpdateTimer >= MANA_TIMEOUT) {
         this.adjustMana(1)
+        console.log('mana updated')
         this.manaUpdateTimer = 0
       } else {
         this.manaUpdateTimer += deltaTime

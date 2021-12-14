@@ -77,18 +77,10 @@ class CutScene extends Phaser.Scene {
     this.load.start()
 
     this.totalTolLoad = this.load.totalToLoad
+    this.finisedLoading = false
     // Setup variables with world bounds
-    let currentFrame = 1
-    let Frame = 'Frame' + currentFrame
-    const exitButton = this.add.image(200, 200, 'exitButton')
-    exitButton.setInteractive()
-    exitButton.setScale(1.1, 1.1)
-    exitButton.on('pointerdown', () => {
-      this.scene.stop()
-      this.scene.stop('CutScene')
-      this.scene.start('ExampleScene')
-    })
-    exitButton.setDepth(1)
+    this.currentFrame = 1
+    let Frame = 'Frame' + this.currentFrame
 
     // fade to black
     setTimeout(() => {
@@ -97,12 +89,12 @@ class CutScene extends Phaser.Scene {
 
     this.cameras.main.on(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
       console.log(Frame)
-      if (Frame === 39) {
+      if (Frame === 38) {
         this.scene.start('ExampleScene')
         this.scene.stop('StartScene')
       }
-      currentFrame++
-      Frame = 'Frame' + currentFrame
+      this.currentFrame++
+      Frame = 'Frame' + this.currentFrame
       console.log(Frame)
       startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, Frame)
       startScreen.setScale(
@@ -126,9 +118,18 @@ class CutScene extends Phaser.Scene {
   }
 
   update () {
-    if (this.load.totalComplete >= this.totalTolLoad) {
-      // this.scene.start('ExampleScene')
-      // this.scene.stop('StartScene')
+    if (this.load.totalComplete >= this.totalTolLoad && this.finisedLoading === false) {
+      const skipButton = this.add.image(200, 200, 'skip')
+
+      skipButton.setInteractive()
+      skipButton.setScale(1.1, 1.1)
+      skipButton.on('pointerdown', () => {
+        this.scene.stop()
+        this.scene.stop('CutScene')
+        this.scene.start('ExampleScene')
+      })
+      skipButton.setDepth(1)
+      this.finisedLoading = true
     }
   }
 }

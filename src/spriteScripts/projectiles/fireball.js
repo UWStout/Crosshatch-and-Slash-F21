@@ -25,11 +25,11 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
     this.setUpCollision(scene)
   }
 
-  getIsPlayingBurnout() {
+  getIsPlayingBurnout () {
     return this.isPlayingBurnout
   }
 
-  setIsPlayingBurnout(newValue) {
+  setIsPlayingBurnout (newValue) {
     this.isPlayingBurnout = newValue
   }
 
@@ -42,25 +42,14 @@ class FireBall extends Phaser.Physics.Matter.Sprite {
         const body1 = pairs[i].bodyA
         const body2 = pairs[i].bodyB
 
-        if (body1.label === 'fire' && body2.label === 'enemyhitbox') {
-          if (body2.gameObject) {
-            body2.gameObject.updateHp(Phaser.Math.Between(1, 6))
-            this.anims.play('burnout')
-            this.setIsPlayingBurnout(true)
-            if (body2.gameObject.stats.getHp() === 0) {
-              body2.gameObject.setDestroyed()
-              body2.gameObject.destroy()
-              this.player.setCurrentExp(2)
-            }
-          }
-        } else if (body2.label === 'fire' && body1.label === 'enemyhitbox') {
+        if (body2.label === 'fire' && body1.label === 'enemyhitbox') {
           if (body1.gameObject) {
             body1.gameObject.updateHp(Phaser.Math.Between(1, 6))
             body2.gameObject.anims.play('burnout')
             this.setIsPlayingBurnout(true)
-            if (body1.gameObject.stats.getHp() === 0) {
-              body1.gameObject.setDestroyed()
-              body1.gameObject.destroy()
+            if (body1.gameObject.stats.getHp() <= 0) {
+              body1.gameObject.updateState('DYING')
+              // this.scene.tweens.killTweensOf(body1.gameObject)
 
               this.player.setCurrentExp(2)
             }
@@ -89,7 +78,7 @@ FireBall.setupAnim = (scene) => {
     repeat: 0,
     frames: scene.anims.generateFrameNumbers('Fire', { start: 11, end: 15 })
   })
-  
+
   FireBall.animInitialize = true
 }
 export default FireBall

@@ -14,6 +14,10 @@ class HUDScene extends Phaser.Scene {
     this.music = data?.music || null
     this.fightSong = data?.fightSong || null
     this.sfx = data?.sfx || null
+    this.playersfx = data?.playersfx || null
+    this.enemysfx = data?.enemysfx || null
+    this.menusfx = data?.menusfx || null
+
     const dungeon = this.scene.get('ExampleScene')
     this.player = dungeon.getPlayer()
     const ui = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 20, CONFIG.DEFAULT_HEIGHT - 160, 'uiOutline')
@@ -64,6 +68,15 @@ class HUDScene extends Phaser.Scene {
     exitButton.setVisible(false)
     exitButton.setScale(1.1, 1.1)
     exitButton.on('pointerdown', () => {
+      const audioChoice = Math.floor(Math.random() * 3)
+      if (audioChoice === 0) {
+        this.menusfx.play('Pencil Writing 1_1')
+      } else if (audioChoice === 1) {
+        this.menusfx.play('Pencil Writing 2_1')
+      } else if (audioChoice === 2) {
+        this.menusfx.play('Pencil Writing 3_1')
+      }
+
       this.scene.stop()
       this.scene.stop('ExampleScene')
       this.scene.start('StartScene')
@@ -77,6 +90,15 @@ class HUDScene extends Phaser.Scene {
     musicButton.setVisible(false)
     musicButton.setScale(1.1, 1.1)
     musicButton.on('pointerup', () => {
+      const audioChoice = Math.floor(Math.random() * 3)
+      if (audioChoice === 0) {
+        this.menusfx.play('Pencil Writing 1_1')
+      } else if (audioChoice === 1) {
+        this.menusfx.play('Pencil Writing 2_1')
+      } else if (audioChoice === 2) {
+        this.menusfx.play('Pencil Writing 3_1')
+      }
+
       if (this.music) {
         console.log(this.music.isPlaying)
         if (this.music.isPlaying) {
@@ -96,6 +118,7 @@ class HUDScene extends Phaser.Scene {
     resumeButton.setVisible(false)
     resumeButton.setScale(1.1, 1.1)
     resumeButton.on('pointerup', () => {
+      this.menusfx.play('Pencil Writing 4_1')
       this.scene.resume('ExampleScene')
       this.pausedIcon.setVisible(false)
       exitButton.setVisible(false)
@@ -107,18 +130,32 @@ class HUDScene extends Phaser.Scene {
     const soundButtonIcon = this.add.image(CONFIG.DEFAULT_WIDTH - 40, 130, 'soundButtonIcon')
     soundButtonIcon.setScale(0.5, 0.5)
 
-
     const soundButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 55, 'soundButton')
     soundButton.setInteractive()
     soundButton.setVisible(false)
     soundButton.setScale(1.1, 1.1)
     soundButton.on('pointerup', () => {
+      const audioChoice = Math.floor(Math.random() * 3)
+      if (audioChoice === 0) {
+        this.menusfx.play('Pencil Writing 1_1')
+      } else if (audioChoice === 1) {
+        this.menusfx.play('Pencil Writing 2_1')
+      } else if (audioChoice === 2) {
+        this.menusfx.play('Pencil Writing 3_1')
+      }
+
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)
-        if (this.sfx) { this.sfx.pause() }
+
+        this.sfx = false
+        this.playersfx = false
+        this.enemysfx = false
       } else {
         soundButtonIcon.setVisible(true)
-        if (this.sfx) { this.sfx.resume() }
+
+        this.sfx = true
+        this.playersfx = true
+        this.enemysfx = true
       }
     }, this)
 
@@ -130,6 +167,7 @@ class HUDScene extends Phaser.Scene {
     this.pauseButton.setScale(0.5, 0.5)
     this.pauseButton.setInteractive()
     this.pauseButton.on('pointerdown', () => {
+      this.menusfx.play('Pencil Writing 5_1')
       this.scene.pause('ExampleScene')
 
       this.pausedIcon.setVisible(true)
