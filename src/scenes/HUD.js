@@ -9,7 +9,7 @@ class HUDScene extends Phaser.Scene {
 
   create (data) {
     this.maxMana = 10
-    this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
+    // this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
     // this.music = this.sound.addAudioSprite('gameAudio')
     this.music = data?.music || null
     this.fightSong = data?.fightSong || null
@@ -182,15 +182,11 @@ class HUDScene extends Phaser.Scene {
       this.player.getDataManager().setInt(1)
       this.maxMana = this.player.getDataManager().getInt()
       console.log(this.player.getDataManager().getInt())
-      this.levelUpPoints--
-      if (this.levelUpPoints === 0) {
-        this.scene.resume('HUDScene')
         this.scene.resume('ExampleScene')
         this.pausedIcon.setVisible(false)
         this.levelUpIcon.setVisible(false)
         this.manaButton.setVisible(false)
         this.strengthButton.setVisible(false)
-      }
     })
 
     this.strengthButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'levelUpStrengthButton')
@@ -199,13 +195,11 @@ class HUDScene extends Phaser.Scene {
     this.strengthButton.setInteractive()
     this.strengthButton.on('pointerup', () => {
       this.player.getDataManager().setStr()
-      this.levelUpPoints--
-      if (this.levelUpPoints === 0) {
-        this.pausedIcon.setVisible(false)
-        this.levelUpIcon.setVisible(false)
-        this.manaButton.setVisible(false)
-        this.strengthButton.setVisible(false)
-      }
+      this.scene.resume('ExampleScene')
+      this.pausedIcon.setVisible(false)
+      this.levelUpIcon.setVisible(false)
+      this.manaButton.setVisible(false)
+      this.strengthButton.setVisible(false)
     })
 
     this.levelUpIcon.setVisible(false)
@@ -248,15 +242,11 @@ class HUDScene extends Phaser.Scene {
   }
 
   levelUpStats () {
-    this.levelUpPoints++
-    this.scene.pause('HUDScene')
     this.scene.pause('ExampleScene')
-    if (!this.levelUpIcon.visible) {
       this.pausedIcon.setVisible(true)
       this.levelUpIcon.setVisible(true)
       this.manaButton.setVisible(true)
       this.strengthButton.setVisible(true)
-    }
   }
 
   getSword () {

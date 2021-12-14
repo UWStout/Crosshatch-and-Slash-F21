@@ -18,7 +18,7 @@ class ExampleScene extends Phaser.Scene {
       this.enemysfx.stop()
     })
     this.input.mouse.disableContextMenu()
-    this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
+    // this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const dungeon = map.addTilesetImage('til_set_dungeon01', 'dungeon')
     const dungeon2 = map.addTilesetImage('til_set_dungeon02', 'dungeon')
