@@ -233,8 +233,13 @@ class ExampleScene extends Phaser.Scene {
     this.Playersfx = this.sound.addAudioSprite('gameAudio')
     this.enemysfx = this.sound.addAudioSprite('gameAudio')
 
+    this.GamesfxBool = true
+    this.PlayersfxBool = true
+    this.enemysfxBool = true
+
+
     // Set the HUD for the game
-    this.scene.run('HUDScene', { music: this.music, sfx: this.Gamesfx, fightSong: this.fightSong, playersfx: this.Playersfx, enemysfx: this.enemysfx })
+    this.scene.run('HUDScene', { music: this.music, sfx: this.GamesfxBool, fightSong: this.fightSong, playersfx: this.PlayersfxBool, enemysfx: this.enemysfxBool })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -261,7 +266,6 @@ class ExampleScene extends Phaser.Scene {
       collisionRange: 1000
     })
 
-  
     this.ray.enablePhysics('matter')
     this.ray.setCollidesWith(targetsCategory)
 
@@ -269,20 +273,21 @@ class ExampleScene extends Phaser.Scene {
       this.activeEnemiesCounter++
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('PURSUING')
-
-      const audioChoice = Math.floor(Math.random() * 6)
-      if (audioChoice === 0) {
-        this.enemysfx.play('Rat Chatter 1_1')
-      } else if (audioChoice === 1) {
-        this.enemysfx.play('Rat Chatter 2_1')
-      } else if (audioChoice === 2) {
-        this.enemysfx.play('Rat Chatter 3_1')
-      } else if (audioChoice === 3) {
-        this.enemysfx.play('Rat Chatter 4_1')
-      } else if (audioChoice === 4) {
-        this.enemysfx.play('Rat Chatter 5_1')
-      } else if (audioChoice === 5) {
-        this.enemysfx.play('Rat Chatter 6_1')
+      if (this.enemysfxBool) {
+        const audioChoice = Math.floor(Math.random() * 6)
+        if (audioChoice === 0) {
+          this.enemysfx.play('Rat Chatter 1_1')
+        } else if (audioChoice === 1) {
+          this.enemysfx.play('Rat Chatter 2_1')
+        } else if (audioChoice === 2) {
+          this.enemysfx.play('Rat Chatter 3_1')
+        } else if (audioChoice === 3) {
+          this.enemysfx.play('Rat Chatter 4_1')
+        } else if (audioChoice === 4) {
+          this.enemysfx.play('Rat Chatter 5_1')
+        } else if (audioChoice === 5) {
+          this.enemysfx.play('Rat Chatter 6_1')
+        }
       }
     })
 
@@ -422,7 +427,7 @@ class ExampleScene extends Phaser.Scene {
     this.player.updateHealth(deltaTime / 1000)
 
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
-      if (this.Playersfx.isPlaying === false) {
+      if (this.Playersfx.isPlaying === false && this.PlayersfxBool) {
         const audioChoice = Math.floor(Math.random() * 12)
         if (audioChoice === 0) {
           this.Playersfx.play('Footsteps 1_1')
@@ -490,15 +495,16 @@ class ExampleScene extends Phaser.Scene {
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
         chest.onOpen()
-
-        const audioChoice = Math.floor(Math.random() * 3)
-        this.Gamesfx.stop()
-        if (audioChoice === 0) {
-          this.Gamesfx.play('Chest Open 1_1')
-        } else if (audioChoice === 1) {
-          this.Gamesfx.play('Chest Open 2_1')
-        } else if (audioChoice === 2) {
-          this.Gamesfx.play('Chest Open 3_1')
+        if (this.GamesfxBool) {
+          const audioChoice = Math.floor(Math.random() * 3)
+          this.Gamesfx.stop()
+          if (audioChoice === 0) {
+            this.Gamesfx.play('Chest Open 1_1')
+          } else if (audioChoice === 1) {
+            this.Gamesfx.play('Chest Open 2_1')
+          } else if (audioChoice === 2) {
+            this.Gamesfx.play('Chest Open 3_1')
+          }
         }
       }
       if (chest.getAnimationEnded() && Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270) {
@@ -567,8 +573,8 @@ class ExampleScene extends Phaser.Scene {
     })
   }
 
-  playRatHit() {
-    
+  playRatHit () {
+    if (!this.enemysfx.isPlaying) {
       const audioChoice = Math.floor(Math.random() * 4)
       if (audioChoice === 0) {
         this.enemysfx.play('Rat Hit 1_1')
@@ -579,7 +585,7 @@ class ExampleScene extends Phaser.Scene {
       } else if (audioChoice === 3) {
         this.enemysfx.play('Rat Hit 1_1')
       }
-    
+    }
   }
 
   // draw rays intersections
