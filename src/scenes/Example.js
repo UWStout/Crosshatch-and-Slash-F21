@@ -232,6 +232,7 @@ class ExampleScene extends Phaser.Scene {
     this.Gamesfx = this.sound.addAudioSprite('gameAudio')
     this.Playersfx = this.sound.addAudioSprite('gameAudio')
     this.enemysfx = this.sound.addAudioSprite('gameAudio')
+    this.menusfx = this.sound.addAudioSprite('gameAudio')
 
     this.GamesfxBool = true
     this.PlayersfxBool = true
@@ -239,7 +240,7 @@ class ExampleScene extends Phaser.Scene {
 
 
     // Set the HUD for the game
-    this.scene.run('HUDScene', { music: this.music, sfx: this.GamesfxBool, fightSong: this.fightSong, playersfx: this.PlayersfxBool, enemysfx: this.enemysfxBool })
+    this.scene.run('HUDScene', { music: this.music, sfx: this.GamesfxBool, fightSong: this.fightSong, playersfx: this.PlayersfxBool, enemysfx: this.enemysfxBool, menusfx: this.menusfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
