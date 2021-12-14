@@ -171,12 +171,12 @@ class HUDScene extends Phaser.Scene {
       musicButton.setVisible(true)
     })
 
-    this.levelUpIcon = this.add.image(100, 50, 'levelUp')
-    this.levelUpIcon.setScale(0.5, 0.5)
+    this.levelUpIcon = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 415, 'levelUp')
+    this.levelUpIcon.setScale(1.1, 1.1)
 
-    this.manaButton = this.add.image(100, 150, 'levelUpManaButton')
+    this.manaButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 + 55, 'levelUpManaButton')
 
-    this.manaButton.setScale(0.5, 0.5)
+    this.manaButton.setScale(1.1, 1.1)
     this.manaButton.setInteractive()
     this.manaButton.on('pointerup', () => {
       this.player.getDataManager().setInt(1)
@@ -184,15 +184,17 @@ class HUDScene extends Phaser.Scene {
       console.log(this.player.getDataManager().getInt())
       this.levelUpPoints--
       if (this.levelUpPoints === 0) {
+        this.scene.resume('HUDScene')
+        this.scene.resume('ExampleScene')
         this.levelUpIcon.setVisible(false)
         this.manaButton.setVisible(false)
         this.strengthButton.setVisible(false)
       }
     })
 
-    this.strengthButton = this.add.image(100, 250, 'levelUpStrengthButton')
+    this.strengthButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'levelUpStrengthButton')
 
-    this.strengthButton.setScale(0.5, 0.5)
+    this.strengthButton.setScale(1.1, 1.1)
     this.strengthButton.setInteractive()
     this.strengthButton.on('pointerup', () => {
       this.player.getDataManager().setStr()
@@ -245,7 +247,8 @@ class HUDScene extends Phaser.Scene {
 
   levelUpStats () {
     this.levelUpPoints++
-
+    this.scene.pause('HUDScene')
+    this.scene.pause('ExampleScene')
     if (!this.levelUpIcon.visible) {
       this.levelUpIcon.setVisible(true)
       this.manaButton.setVisible(true)
