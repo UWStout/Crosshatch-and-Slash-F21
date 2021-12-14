@@ -29,7 +29,7 @@ class ExampleScene extends Phaser.Scene {
     const backLayer = map.createLayer('collision', [dungeon, dungeon2])
     const visualLayer = map.createLayer('visual', [dungeon, dungeon2])
     const visualLayer2 = map.createLayer('visual2', [dungeon, dungeon2])
-    
+
     backLayer.setCollision([6, 7, 8, 9, 10, 16, 17, 18, 19, 20])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
@@ -69,6 +69,9 @@ class ExampleScene extends Phaser.Scene {
 
     // Create the player object
     this.player = new PlayerClass(this, 594, 14245)
+    this.playerText = this.add.text(this.player.x, this.player.y, 'Test', { fontFamily: 'hamlet', color: '#808080', fontSize: 50 })
+    this.playerText.alpha = 0
+    this.playerText.setBackgroundColor('#000000d')
     this.canRotate = true
 
     // Create trapdoor for victory
@@ -231,7 +234,6 @@ class ExampleScene extends Phaser.Scene {
     this.menusfx = this.sound.addAudioSprite('gameAudio')
 
     this.sfxBool = true
-
 
     // Set the HUD for the game
     this.scene.run('HUDScene', { music: this.music, sfx: this.sfxRunnning, fightSong: this.fightSong, menusfx: this.menusfx })
@@ -418,7 +420,7 @@ class ExampleScene extends Phaser.Scene {
     }
 
     this.player.move(directon.x, directon.y)
-
+    this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
     // Update the HUD
     this.player.updateMana(deltaTime / 1000)
     this.player.updateHealth(deltaTime / 1000)
@@ -482,6 +484,24 @@ class ExampleScene extends Phaser.Scene {
     this.ray.setOrigin(this.player.x, this.player.y)
   }
 
+  displayText (text) {
+    this.playerText.setText(text)
+    this.tweens.add({
+      targets: this.playerText,
+      duration: 1500,
+      alpha: 1,
+      ease: 'Power1'
+    })
+    setTimeout(() => {
+      this.tweens.add({
+        targets: this.playerText,
+        duration: 1500,
+        alpha: 0,
+        ease: 'Power1'
+      })
+    }, 7500)
+  }
+
   tryOpen () {
     if (!Array.isArray(this.chestArray)) { return }
     if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && !this.trapdoor.getOpened() && this.player.getHasKey()) {
@@ -490,7 +510,10 @@ class ExampleScene extends Phaser.Scene {
       this.scene.stop('HUDScene')
       this.scene.stop('ExampleScene')
       this.scene.start('WinScene')
+    } else if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && !this.trapdoor.getOpened() && !this.player.getHasKey()) {
+      this.displayText('Looks like I need a key')
     }
+
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
         chest.onOpen()
@@ -510,21 +533,33 @@ class ExampleScene extends Phaser.Scene {
         const sword = chest.getChestLoot()
         switch (sword) {
           case 'sword1':
+            this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
+            this.displayText('I found a Iron Sword')
             this.HUD.changeWeapon(1)
             break
           case 'sword2':
+            this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
+            this.displayText('I found a Steel Sword')
             this.HUD.changeWeapon(2)
             break
           case 'sword3':
+            this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
+            this.displayText('I found a Enchanted Sword')
             this.HUD.changeWeapon(3)
             break
           case 'sword4':
+            this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
+            this.displayText('I found a Haunted Blade')
             this.HUD.changeWeapon(4)
             break
           case 'sword5':
+            this.playerText.setPosition(this.player.x - 200, this.player.y - 200)
+            this.displayText('I found a Ancient Blade')
             this.HUD.changeWeapon(5)
             break
           default:
+            this.playerText.setPosition(this.player.x - 100, this.player.y - 200)
+            this.displayText('I found a key')
             this.player.setHasKey()
             break
         }
