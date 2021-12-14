@@ -20,7 +20,7 @@ class StartScene extends Phaser.Scene {
 
     // Load the image assets needed for THIS scene
     this.load.image('pointer', 'assets/cursors/spr_UI_cursor.cur')
-    this.load.image('StartScreen', 'assets/CrossHatchStartScreenColor.png')
+    this.load.image('StartScreen', 'assets/StartScreenLogo.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
     this.load.image('crates', 'assets/tilemaps/til_crates.png')
     this.load.image('bones', 'assets/tilemaps/til_bones.png')
@@ -134,7 +134,7 @@ class StartScene extends Phaser.Scene {
       CONFIG.DEFAULT_HEIGHT / startScreen.height
     )
 
-    const startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2 - 100, 'startButton')
+    const startButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2  - 750 , CONFIG.DEFAULT_HEIGHT / 2 + 100, 'startButton')
     startButton.setInteractive()
     // startButton.setScale(4.5, 4.5)
     startButton.on('pointerdown', () => {
