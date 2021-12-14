@@ -186,6 +186,7 @@ class HUDScene extends Phaser.Scene {
       if (this.levelUpPoints === 0) {
         this.scene.resume('HUDScene')
         this.scene.resume('ExampleScene')
+        this.pausedIcon.setVisible(false)
         this.levelUpIcon.setVisible(false)
         this.manaButton.setVisible(false)
         this.strengthButton.setVisible(false)
@@ -200,6 +201,7 @@ class HUDScene extends Phaser.Scene {
       this.player.getDataManager().setStr()
       this.levelUpPoints--
       if (this.levelUpPoints === 0) {
+        this.pausedIcon.setVisible(false)
         this.levelUpIcon.setVisible(false)
         this.manaButton.setVisible(false)
         this.strengthButton.setVisible(false)
@@ -250,6 +252,7 @@ class HUDScene extends Phaser.Scene {
     this.scene.pause('HUDScene')
     this.scene.pause('ExampleScene')
     if (!this.levelUpIcon.visible) {
+      this.pausedIcon.setVisible(true)
       this.levelUpIcon.setVisible(true)
       this.manaButton.setVisible(true)
       this.strengthButton.setVisible(true)
