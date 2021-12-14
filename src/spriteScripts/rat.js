@@ -22,6 +22,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.destroyed = false
     this.cooldownActive = false
 
+
     this.stats = new EnemyStats(Phaser.Math.Between(10, 15), 'Rat')
     console.log(this.stats.getHp())
     const bodies = Phaser.Physics.Matter.Matter.Bodies
@@ -118,6 +119,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         break
 
       case EnemyStates.DYING:
+
         this.destroy()
         break
 
@@ -174,6 +176,9 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
   }
 
   updateHp (damage) {
+   
+    this.scene.playRatHit()
+    
     if (!this.cooldownActive) {
       this.cooldownActive = true
       this.stats.setHp(this.stats.getHp() - damage)
