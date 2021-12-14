@@ -30,13 +30,14 @@ class ExampleScene extends Phaser.Scene {
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
     const backLayer = map.createLayer('collision', dungeon)
     const visualLayer = map.createLayer('visual', dungeon)
+    const visualLayer2 = map.createLayer('visual2', dungeon)
     // const visualLayer = map.createLayer('visual', dungeon)
     // const collisionLayer = map.createLayer('collision', { bones, crates, room })
 
     // backLayer.setVisible(false)
     // spawnLayer.setVisible(false)
 
-    // backLayer.setCollisionByExclusion([0, 1, 2, 3, 4, 20, 21, 22, 23, 24, 25, 26, 27, 28])
+    backLayer.setCollision([6, 7, 8, 9, 10, 16, 17, 18, 19, 20])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
 
