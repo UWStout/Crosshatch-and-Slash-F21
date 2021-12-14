@@ -493,7 +493,9 @@ class ExampleScene extends Phaser.Scene {
     if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && !this.trapdoor.getOpened() && this.player.getHasKey()) {
       this.trapdoor.setOpened()
     } else if (Phaser.Math.Distance.Between(this.player.x, this.player.y, this.trapdoor.x, this.trapdoor.y) <= 270 && this.trapdoor.getOpened()) {
-      console.log('winner')
+      this.scene.stop('HUDScene')
+      this.scene.stop('ExampleScene')
+      this.scene.start('WinScene')
     }
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {

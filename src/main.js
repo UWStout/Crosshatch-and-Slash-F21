@@ -10,6 +10,7 @@ import StartScene from './scenes/Start.js'
 import HUDScene from './scenes/HUD.js'
 import CutScene from './scenes/CutScene.js'
 import GameOverScene from './scenes/GameOver.js'
+import WinScene from './scenes/WinScene.js'
 
 const config = {
   // Configure Phaser graphics settings
@@ -52,4 +53,5 @@ game.scene.add('ExampleScene', ExampleScene)
 game.scene.add('HUDScene', HUDScene)
 game.scene.add('CutScene', CutScene)
 game.scene.add('GameOverScene', GameOverScene)
+game.scene.add('WinScene', WinScene)
 game.scene.start('StartScene')
