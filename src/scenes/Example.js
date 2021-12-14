@@ -12,9 +12,9 @@ class ExampleScene extends Phaser.Scene {
   create () {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
+      this.fightSong.stop()
     })
     this.input.mouse.disableContextMenu()
-    this.input.setDefaultCursor('cursor')
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const dungeon = map.addTilesetImage('til_set_dungeon01', 'dungeon')
     // const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
@@ -206,10 +206,12 @@ class ExampleScene extends Phaser.Scene {
     this.fightSong.loop = true
 
     // Create a sound instance for sfx
-    this.sfx = this.sound.addAudioSprite('gameAudio')
+    this.Gamesfx = this.sound.addAudioSprite('gameAudio')
+    this.Playersfx = this.sound.addAudioSprite('gameAudio')
+    this.enemysfx = this.sound.addAudioSprite('gameAudio')
 
     // Set the HUD for the game
-    this.scene.run('HUDScene', { music: this.music, sfx: this.sfx })
+    this.scene.run('HUDScene', { music: this.music, sfx: this.Gamesfx, fightSong: this.fightSong, playersfx: this.Playersfx, enemysfx: this.enemysfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -255,6 +257,21 @@ class ExampleScene extends Phaser.Scene {
       this.activeEnemiesCounter++
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('PURSUING')
+
+      const audioChoice = Math.floor(Math.random() * 6)
+      if (audioChoice === 0) {
+        this.enemysfx.play('Rat Chatter 1_1')
+      } else if (audioChoice === 1) {
+        this.enemysfx.play('Rat Chatter 2_1')
+      } else if (audioChoice === 2) {
+        this.enemysfx.play('Rat Chatter 3_1')
+      } else if (audioChoice === 3) {
+        this.enemysfx.play('Rat Chatter 4_1')
+      } else if (audioChoice === 4) {
+        this.enemysfx.play('Rat Chatter 5_1')
+      } else if (audioChoice === 5) {
+        this.enemysfx.play('Rat Chatter 6_1')
+      }
     })
 
     this.ray.setOnCollideEnd((collisionInfo) => {

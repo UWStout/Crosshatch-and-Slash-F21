@@ -6,29 +6,289 @@
     "public/assets/audio/gameAudioSprite.ac3"
   ],
   "spritemap": {
-    "freeVertexStudioTrack1": {
+    "Chest Open 1_1": {
       "start": 0,
-      "end": 64.07836734693878,
-      "loop": true
+      "end": 2.2291156462585033,
+      "loop": false
     },
-    "freeVertexStudioTrack2": {
-      "start": 66,
-      "end": 91.65224489795918,
-      "loop": true
+    "Chest Open 2_1": {
+      "start": 4,
+      "end": 6.229115646258503,
+      "loop": false
     },
-    "hitSound": {
-      "start": 93,
-      "end": 93.45913832199547,
+    "Chest Open 3_1": {
+      "start": 8,
+      "end": 10.972154195011338,
+      "loop": false
+    },
+    "Fire_Bolt_1": {
+      "start": 12,
+      "end": 14.62498866213152,
+      "loop": false
+    },
+    "Fire_Bolt_2": {
+      "start": 16,
+      "end": 18.62498866213152,
+      "loop": false
+    },
+    "Fire_Bolt_3": {
+      "start": 20,
+      "end": 22.62498866213152,
+      "loop": false
+    },
+    "Fire_Bolt_4": {
+      "start": 24,
+      "end": 26.62498866213152,
+      "loop": false
+    },
+    "Fire_Bolt_5": {
+      "start": 28,
+      "end": 30.62498866213152,
+      "loop": false
+    },
+    "Footsteps 1_1": {
+      "start": 32,
+      "end": 33.48607709750567,
+      "loop": false
+    },
+    "Footsteps 10_1": {
+      "start": 35,
+      "end": 36.48607709750567,
+      "loop": false
+    },
+    "Footsteps 11_1": {
+      "start": 38,
+      "end": 39.48607709750567,
+      "loop": false
+    },
+    "Footsteps 12_1": {
+      "start": 41,
+      "end": 42.48607709750567,
+      "loop": false
+    },
+    "Footsteps 2_1": {
+      "start": 44,
+      "end": 45.48607709750567,
+      "loop": false
+    },
+    "Footsteps 3_1": {
+      "start": 47,
+      "end": 48.48607709750567,
+      "loop": false
+    },
+    "Footsteps 4_1": {
+      "start": 50,
+      "end": 51.48607709750567,
+      "loop": false
+    },
+    "Footsteps 5_1": {
+      "start": 53,
+      "end": 54.48607709750567,
+      "loop": false
+    },
+    "Footsteps 6_1": {
+      "start": 56,
+      "end": 57.48607709750567,
+      "loop": false
+    },
+    "Footsteps 7_1": {
+      "start": 59,
+      "end": 60.48607709750567,
+      "loop": false
+    },
+    "Footsteps 8_1": {
+      "start": 62,
+      "end": 63.48607709750567,
+      "loop": false
+    },
+    "Footsteps 9_1": {
+      "start": 65,
+      "end": 66.48607709750567,
       "loop": false
     },
     "Keep": {
-      "start": 95,
-      "end": 190.97494331065758,
+      "start": 68,
+      "end": 163.97494331065758,
+      "loop": false
+    },
+    "Pencil Writing 1_1": {
+      "start": 165,
+      "end": 166.48607709750567,
+      "loop": false
+    },
+    "Pencil Writing 2_1": {
+      "start": 168,
+      "end": 169.48607709750567,
+      "loop": false
+    },
+    "Pencil Writing 3_1": {
+      "start": 171,
+      "end": 172.48607709750567,
+      "loop": false
+    },
+    "Pencil Writing 4_1": {
+      "start": 174,
+      "end": 176.2291156462585,
+      "loop": false
+    },
+    "Pencil Writing 5_1": {
+      "start": 178,
+      "end": 179.48607709750567,
+      "loop": false
+    },
+    "Pencil Writing 6_1": {
+      "start": 181,
+      "end": 182.48607709750567,
       "loop": false
     },
     "prevail": {
-      "start": 192,
-      "end": 287.9749433106576,
+      "start": 184,
+      "end": 279.9749433106576,
+      "loop": false
+    },
+    "Rat Chatter 1_1": {
+      "start": 281,
+      "end": 284.7151927437642,
+      "loop": false
+    },
+    "Rat Chatter 2_1": {
+      "start": 286,
+      "end": 288.2291156462585,
+      "loop": false
+    },
+    "Rat Chatter 3_1": {
+      "start": 290,
+      "end": 295.9443083900227,
+      "loop": false
+    },
+    "Rat Chatter 4_1": {
+      "start": 297,
+      "end": 299.2291156462585,
+      "loop": false
+    },
+    "Rat Chatter 5_1": {
+      "start": 301,
+      "end": 304.7151927437642,
+      "loop": false
+    },
+    "Rat Chatter 6_1": {
+      "start": 306,
+      "end": 308.97215419501134,
+      "loop": false
+    },
+    "Rat Hit 1_1": {
+      "start": 310,
+      "end": 311.48607709750564,
+      "loop": false
+    },
+    "Rat hit 2_1": {
+      "start": 313,
+      "end": 314.48607709750564,
+      "loop": false
+    },
+    "Rat Hit 3_1": {
+      "start": 316,
+      "end": 317.48607709750564,
+      "loop": false
+    },
+    "Rat Hit 4_1": {
+      "start": 319,
+      "end": 320.48607709750564,
+      "loop": false
+    },
+    "Rat Scream 1_1": {
+      "start": 322,
+      "end": 324.2291156462585,
+      "loop": false
+    },
+    "Rat Scream 2_1": {
+      "start": 326,
+      "end": 328.2291156462585,
+      "loop": false
+    },
+    "Rat Scream 3_1": {
+      "start": 330,
+      "end": 332.2291156462585,
+      "loop": false
+    },
+    "Rat Scream 4_1": {
+      "start": 334,
+      "end": 338.458231292517,
+      "loop": false
+    },
+    "Rat Scream 5_2": {
+      "start": 340,
+      "end": 342.97215419501134,
+      "loop": false
+    },
+    "Rat Scream 5": {
+      "start": 344,
+      "end": 346.2291156462585,
+      "loop": false
+    },
+    "Rat Scream 6_1": {
+      "start": 348,
+      "end": 350.2291156462585,
+      "loop": false
+    },
+    "Sword Slash 1_1": {
+      "start": 352,
+      "end": 354.2291156462585,
+      "loop": false
+    },
+    "Sword Slash 2_1": {
+      "start": 356,
+      "end": 358.2291156462585,
+      "loop": false
+    },
+    "Sword Slash 3_1": {
+      "start": 360,
+      "end": 362.2291156462585,
+      "loop": false
+    },
+    "Sword Slash 4_1": {
+      "start": 364,
+      "end": 366.2291156462585,
+      "loop": false
+    },
+    "Sword Slash 5_1": {
+      "start": 368,
+      "end": 369.48607709750564,
+      "loop": false
+    },
+    "Sword Slash 6_1": {
+      "start": 371,
+      "end": 372.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 1_1": {
+      "start": 374,
+      "end": 375.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 2_1": {
+      "start": 377,
+      "end": 378.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 3_1": {
+      "start": 380,
+      "end": 381.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 4_1": {
+      "start": 383,
+      "end": 384.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 5_1": {
+      "start": 386,
+      "end": 387.48607709750564,
+      "loop": false
+    },
+    "Sword Swing 6_1": {
+      "start": 389,
+      "end": 390.48607709750564,
       "loop": false
     }
   }
