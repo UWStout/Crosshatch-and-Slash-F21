@@ -255,7 +255,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   magicAttack (x, y, scene) {
-    if (this.currentMana < this.dataManaging.getInt()) {
+    if (this.currentMana > 0) {
       if (this.scene.canRotate !== null) {
         this.scene.canRotate = false
       }
@@ -300,9 +300,8 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
           }
         })
       }, 200)
+      this.adjustMana(-1)
     }
-
-    this.adjustMana(-1)
   }
 
   move (x, y) {
@@ -334,6 +333,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     if (this.getMana() < this.dataManaging.getInt()) {
       if (this.manaUpdateTimer >= MANA_TIMEOUT) {
         this.adjustMana(1)
+        console.log('mana updated')
         this.manaUpdateTimer = 0
       } else {
         this.manaUpdateTimer += deltaTime
