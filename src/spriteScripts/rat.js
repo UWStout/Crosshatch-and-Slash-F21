@@ -8,9 +8,11 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, 'RatWalkAttack', 0)
     if (!RatEnemy.animInitialize) {
       RatEnemy.setupAnim(scene)
-      console.log(scene.anims.get('ratWalk'))
-      console.log(scene.anims.get('ratAttack'))
     }
+
+    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'ratAttack', () => {
+      this.anims.play('ratWalk')
+    })
     this.canAttack = true
     this.isInPlayer = false
     this.canGetExp = true
@@ -49,8 +51,7 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
     this.setUpCollision(scene)
   }
 
-  getState()
-  {
+  getState () {
     return this.currentState
   }
 
@@ -117,8 +118,8 @@ class RatEnemy extends Phaser.Physics.Matter.Sprite {
         break
 
       case EnemyStates.DYING:
-         this.destroy()
-         break
+        this.destroy()
+        break
 
       default:
         // console.error('Unknown state')
@@ -259,7 +260,7 @@ RatEnemy.setupAnim = (scene) => {
     repeat: -1,
     frames: scene.anims.generateFrameNumbers('RatWalkAttack', { start: 0, end: 5 })
   })
-  
+
   RatEnemy.animInitialize = true
 }
 

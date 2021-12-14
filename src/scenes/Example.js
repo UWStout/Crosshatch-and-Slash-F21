@@ -12,6 +12,7 @@ class ExampleScene extends Phaser.Scene {
   create () {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
+      this.fightSong.stop()
     })
     this.input.mouse.disableContextMenu()
     this.input.setDefaultCursor('url(assets/sprites/cur_mouse.cur), pointer')
@@ -199,15 +200,19 @@ class ExampleScene extends Phaser.Scene {
     // Load and play background music
     this.music = this.sound.addAudioSprite('gameAudio')
     this.music.play('Keep')
+    this.music.loop = true
     this.fightSong = this.sound.addAudioSprite('gameAudio')
     this.fightSong.play('prevail')
     this.fightSong.setVolume(0)
+    this.fightSong.loop = true
 
     // Create a sound instance for sfx
-    this.sfx = this.sound.addAudioSprite('gameAudio')
+    this.Gamesfx = this.sound.addAudioSprite('gameAudio')
+    this.Playersfx = this.sound.addAudioSprite('gameAudio')
+    this.enemysfx = this.sound.addAudioSprite('gameAudio')
 
     // Set the HUD for the game
-    this.scene.run('HUDScene', { music: this.music, sfx: this.sfx })
+    this.scene.run('HUDScene', { music: this.music, sfx: this.Gamesfx, fightSong: this.fightSong, playersfx: this.Playersfx, enemysfx: this.enemysfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -253,6 +258,21 @@ class ExampleScene extends Phaser.Scene {
       this.activeEnemiesCounter++
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('PURSUING')
+
+      const audioChoice = Math.floor(Math.random() * 6)
+      if (audioChoice === 0) {
+        this.enemysfx.play('Rat Chatter 1_1')
+      } else if (audioChoice === 1) {
+        this.enemysfx.play('Rat Chatter 2_1')
+      } else if (audioChoice === 2) {
+        this.enemysfx.play('Rat Chatter 3_1')
+      } else if (audioChoice === 3) {
+        this.enemysfx.play('Rat Chatter 4_1')
+      } else if (audioChoice === 4) {
+        this.enemysfx.play('Rat Chatter 5_1')
+      } else if (audioChoice === 5) {
+        this.enemysfx.play('Rat Chatter 6_1')
+      }
     })
 
     this.ray.setOnCollideEnd((collisionInfo) => {
@@ -354,68 +374,34 @@ class ExampleScene extends Phaser.Scene {
       this.scene.stop()
       this.scene.start('GameOverScene')
     }
+    if (this.fightSong.isPlaying === true) {
+      if (this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false) {
+        this.tweens.add({
+          targets: this.fightSong,
+          volume: 1,
+          duration: 500
+        })
+        this.tweens.add({
+          targets: this.music,
+          volume: 0.5,
+          duration: 500
+        })
+        this.AttackAudioIsPlaying = true
+      }
 
-    // if (this.cursors.open.isDown) {
-    //   if (this.chestArray) {
-    //     this.chestArray.forEach((chest) => {
-    //       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
-    //         chest.onOpen()
-    //       }
-    //       if (chest.getAnimationEnded() && Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270) {
-    //         const sword = chest.getChestLoot()
-    //         switch (sword) {
-    //           case 'sword1':
-    //             this.HUD.changeWeapon(1)
-    //             break
-    //           case 'sword2':
-    //             this.HUD.changeWeapon(2)
-    //             break
-    //           case 'sword3':
-    //             this.HUD.changeWeapon(3)
-    //             break
-    //           case 'sword4':
-    //             this.HUD.changeWeapon(4)
-    //             break
-    //           case 'sword5':
-    //             this.HUD.changeWeapon(5)
-    //             break
-    //           default:
-    //             this.player.setHasKey()
-    //             break
-    //         }
-    //         this.HUD.changeWeapon(3)
-    //         chest.emptyChest()
-    //       }
-    //     })
-    //   }
-    // }
-
-    if (this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false) {
-      this.tweens.add({
-        targets: this.fightSong,
-        volume: 1,
-        duration: 500
-      })
-      this.tweens.add({
-        targets: this.music,
-        volume: 0.5,
-        duration: 500
-      })
-      this.AttackAudioIsPlaying = true
-    }
-
-    if (this.activeEnemiesCounter === 0) {
-      this.tweens.add({
-        targets: this.fightSong,
-        volume: 0,
-        duration: 500
-      })
-      this.tweens.add({
-        targets: this.music,
-        volume: 1,
-        duration: 500
-      })
-      this.AttackAudioIsPlaying = false
+      if (this.activeEnemiesCounter === 0) {
+        this.tweens.add({
+          targets: this.fightSong,
+          volume: 0,
+          duration: 500
+        })
+        this.tweens.add({
+          targets: this.music,
+          volume: 1,
+          duration: 500
+        })
+        this.AttackAudioIsPlaying = false
+      }
     }
 
     this.player.move(directon.x, directon.y)
@@ -425,6 +411,35 @@ class ExampleScene extends Phaser.Scene {
     this.player.updateHealth(deltaTime / 1000)
 
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
+      if (this.Playersfx.isPlaying === false) {
+        const audioChoice = Math.floor(Math.random() * 12)
+        if (audioChoice === 0) {
+          this.Playersfx.play('Footsteps 1_1')
+        } else if (audioChoice === 1) {
+          this.Playersfx.play('Footsteps 2_1')
+        } else if (audioChoice === 2) {
+          this.Playersfx.play('Footsteps 3_1')
+        } else if (audioChoice === 3) {
+          this.Playersfx.play('Footsteps 4_1')
+        } else if (audioChoice === 4) {
+          this.Playersfx.play('Footsteps 5_1')
+        } else if (audioChoice === 5) {
+          this.Playersfx.play('Footsteps 6_1')
+        } else if (audioChoice === 6) {
+          this.Playersfx.play('Footsteps 7_1')
+        } else if (audioChoice === 7) {
+          this.Playersfx.play('Footsteps 8_1')
+        } else if (audioChoice === 8) {
+          this.Playersfx.play('Footsteps 9_1')
+        } else if (audioChoice === 9) {
+          this.Playersfx.play('Footsteps 10_1')
+        } else if (audioChoice === 10) {
+          this.Playersfx.play('Footsteps 11_1')
+        } else if (audioChoice === 11) {
+          this.Playersfx.play('Footsteps 12_1')
+        }
+      }
+
       this.matter.body.setPosition(this.cameraBody, { x: this.player.x, y: this.player.y })
       this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
       this.raycaster.mappedObjects = []
@@ -464,6 +479,16 @@ class ExampleScene extends Phaser.Scene {
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
         chest.onOpen()
+
+        const audioChoice = Math.floor(Math.random() * 3)
+        this.Gamesfx.stop()
+        if (audioChoice === 0) {
+          this.Gamesfx.play('Chest Open 1_1')
+        } else if (audioChoice === 1) {
+          this.Gamesfx.play('Chest Open 2_1')
+        } else if (audioChoice === 2) {
+          this.Gamesfx.play('Chest Open 3_1')
+        }
       }
       if (chest.getAnimationEnded() && Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270) {
         const sword = chest.getChestLoot()

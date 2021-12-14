@@ -12,6 +12,7 @@ class HUDScene extends Phaser.Scene {
     this.input.setDefaultCursor('url(assets/sprites/cur_mouse.cur), pointer')
     // this.music = this.sound.addAudioSprite('gameAudio')
     this.music = data?.music || null
+    this.fightSong = data?.fightSong || null
     this.sfx = data?.sfx || null
     const dungeon = this.scene.get('ExampleScene')
     this.player = dungeon.getPlayer()
@@ -80,9 +81,11 @@ class HUDScene extends Phaser.Scene {
         console.log(this.music.isPlaying)
         if (this.music.isPlaying) {
           this.music.pause()
+          this.fightSong.pause()
           musicButtonIcon.setVisible(false)
         } else {
           this.music.resume()
+          this.fightSong.resume()
           musicButtonIcon.setVisible(true)
         }
       }

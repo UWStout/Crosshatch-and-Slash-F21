@@ -19,6 +19,7 @@ class StartScene extends Phaser.Scene {
     this.loadEvents.once('sceneReady', this.sceneReady, this)
 
     // Load the image assets needed for THIS scene
+    this.load.image('pointer', 'assets/cursors/spr_UI_cursor.cur')
     this.load.image('StartScreen', 'assets/CrossHatchStartScreenColor.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
     this.load.image('crates', 'assets/tilemaps/til_crates.png')
@@ -113,6 +114,7 @@ class StartScene extends Phaser.Scene {
   }
 
   create () {
+    this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
     this.loadingFinished = true
 
     if (this.fontsLoaded && this.loadingFinished) {
@@ -137,7 +139,6 @@ class StartScene extends Phaser.Scene {
     startButton.on('pointerdown', () => {
       this.scene.start('CutScene')
       this.scene.stop('HUDScene')
-      this.music.stop()
     })
 
     // this.add.text(32, 32,
@@ -148,8 +149,6 @@ class StartScene extends Phaser.Scene {
     // Add a callback when a key is released
 
     // Load and play background music
-    this.music = this.sound.addAudioSprite('gameAudio')
-    this.music.play('prevail')
   }
 }
 
