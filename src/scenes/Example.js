@@ -13,6 +13,9 @@ class ExampleScene extends Phaser.Scene {
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.music.stop()
       this.fightSong.stop()
+      this.Playersfx.stop()
+      this.Gamesfx.stop()
+      this.enemysfx.stop()
     })
     this.input.mouse.disableContextMenu()
     const map = this.make.tilemap({ key: 'tutorialRoom' })
@@ -178,6 +181,26 @@ class ExampleScene extends Phaser.Scene {
         }
 
         enemy.updateState('DYING')
+        this.enemysfx.stop()
+
+        if (this.enemysfx.isPlaying === false) {
+          const audioChoice = Math.floor(Math.random() * 7)
+          if (audioChoice === 0) {
+            this.enemysfx.play('Rat Scream 1_1')
+          } else if (audioChoice === 1) {
+            this.enemysfx.play('Rat Scream 2_1')
+          } else if (audioChoice === 2) {
+            this.enemysfx.play('Rat Scream 3_1')
+          } else if (audioChoice === 3) {
+            this.enemysfx.play('Rat Scream 4_1')
+          } else if (audioChoice === 4) {
+            this.enemysfx.play('Rat Scream 5_2')
+          } else if (audioChoice === 5) {
+            this.enemysfx.play('Rat Scream 5')
+          } else if (audioChoice === 6) {
+            this.enemysfx.play('Rat Scream 6_1')
+          }
+        }
         this.tweens.pauseAll()
         this.tweens.killTweensOf(enemy)
         this.tweens.resumeAll()
@@ -238,18 +261,7 @@ class ExampleScene extends Phaser.Scene {
       collisionRange: 1000
     })
 
-    // this.time.addEvent({
-    //   delay: 5000,
-    //   loop: true,
-    //   callbackScope: this,
-    //   callback: this.player.setMana(1)
-    // })
-    // this.time.addEvent({
-    //   delay: 5000,
-    //   loop: true,
-    //   callbackScope: this,
-    //   callback: this.HUD.updateMana(this.player.getMana())
-    // })
+  
     this.ray.enablePhysics('matter')
     this.ray.setCollidesWith(targetsCategory)
 
@@ -553,6 +565,21 @@ class ExampleScene extends Phaser.Scene {
       tweens: tweens,
       onComplete: () => { enemy.updateState('GUARDING') }
     })
+  }
+
+  playRatHit() {
+    
+      const audioChoice = Math.floor(Math.random() * 4)
+      if (audioChoice === 0) {
+        this.enemysfx.play('Rat Hit 1_1')
+      } else if (audioChoice === 1) {
+        this.enemysfx.play('Rat Hit 1_1')
+      } else if (audioChoice === 2) {
+        this.enemysfx.play('Rat Hit 1_1')
+      } else if (audioChoice === 3) {
+        this.enemysfx.play('Rat Hit 1_1')
+      }
+    
   }
 
   // draw rays intersections
