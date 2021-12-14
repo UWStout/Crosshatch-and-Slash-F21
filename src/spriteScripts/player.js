@@ -250,6 +250,11 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
   }
 
   adjustHealth (newHealth) {
+    if (newHealth < 0) {
+      this.scene.cameras.main.shake(100, 0.0075)
+
+      this.setVelocity(10 * CONFIG.WALK_SPEED, 10 * CONFIG.WALK_SPEED)
+    }
     this.currentHealth += newHealth
     this.hud.updateHealth(this.currentHealth)
   }
