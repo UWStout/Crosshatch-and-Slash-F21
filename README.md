@@ -9,11 +9,17 @@ Crosshatch and Slash follows the story of a being created by the Arch Lich, a be
 ## Controls
 
 -W: Up
+
 -S: Backward
+
 -A: Left
+
 -D: Right
+
 -Left Click: Physical Attack with your Sword
+
 -Right Click: Magical Attack with a Fireball
+
 -E: Interact
 
 ## Mechanics
