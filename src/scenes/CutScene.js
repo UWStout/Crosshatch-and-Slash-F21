@@ -88,14 +88,13 @@ class CutScene extends Phaser.Scene {
     }, 5000)
 
     this.cameras.main.on(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-      console.log(Frame)
-      if (Frame === 38) {
+      
+      if (this.currentFrame === 38) {
         this.scene.start('ExampleScene')
         this.scene.stop('StartScene')
       }
       this.currentFrame++
       Frame = 'Frame' + this.currentFrame
-      console.log(Frame)
       startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, Frame)
       startScreen.setScale(
         CONFIG.DEFAULT_WIDTH / startScreen.width,
@@ -104,10 +103,10 @@ class CutScene extends Phaser.Scene {
       this.cameras.main.fadeIn(1000, 0, 0, 0)
     })
 
-    this.cameras.main.on(Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE, () => {
+    this.cameras.main.on(Phaser.Cameras.Scedne2D.Events.FADE_IN_COMPLETE, () => {
       setTimeout(() => {
         this.cameras.main.fadeOut(1000, 0, 0, 0)
-      }, 5000)
+      }, 7500)
     })
     // Add background image
     let startScreen = this.add.image(CONFIG.DEFAULT_WIDTH / 2, CONFIG.DEFAULT_HEIGHT / 2, Frame)
