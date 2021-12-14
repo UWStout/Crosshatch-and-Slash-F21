@@ -31,10 +31,15 @@ Crosshatch and Slash follows the story of a being created by the Arch Lich, a be
 
 ## Created by
 -Maxwell Willman: Project Lead, Music Artist, Artist
+
 -Charles Heikkila: Enemy Designer, Protagonist Designer, Artist
+
 -Mags Marcinkiewicz: Character Designer, Artist
+
 -Brady Bogucki: AI Programmer, Coder
+
 -Kyle Christensen: UI Programmer, Coder
+
 -Artur Pilatovs: SFX Artist
 
 ## License
