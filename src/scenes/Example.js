@@ -185,7 +185,7 @@ class ExampleScene extends Phaser.Scene {
         enemy.updateState('DYING')
         this.enemysfx.stop()
 
-        if (this.enemysfx.isPlaying === false) {
+        if (this.enemysfx.isPlaying === false && this.sfxBool) {
           const audioChoice = Math.floor(Math.random() * 7)
           if (audioChoice === 0) {
             this.enemysfx.play('Rat Scream 1_1')
@@ -230,19 +230,22 @@ class ExampleScene extends Phaser.Scene {
     this.fightSong.setVolume(0)
     this.fightSong.loop = true
 
+    this.sfxRunnning = this.sound.addAudioSprite('gameAudio')
+    this.sfxRunnning.play('prevail')
+    this.sfxRunnning.setVolume(0)
+    this.sfxRunnning.loop = true
+
     // Create a sound instance for sfx
     this.Gamesfx = this.sound.addAudioSprite('gameAudio')
     this.Playersfx = this.sound.addAudioSprite('gameAudio')
     this.enemysfx = this.sound.addAudioSprite('gameAudio')
     this.menusfx = this.sound.addAudioSprite('gameAudio')
 
-    this.GamesfxBool = true
-    this.PlayersfxBool = true
-    this.enemysfxBool = true
+    this.sfxBool = true
 
 
     // Set the HUD for the game
-    this.scene.run('HUDScene', { music: this.music, sfx: this.GamesfxBool, fightSong: this.fightSong, playersfx: this.PlayersfxBool, enemysfx: this.enemysfxBool, menusfx: this.menusfx })
+    this.scene.run('HUDScene', { music: this.music, sfx: this.sfxRunnning, fightSong: this.fightSong, menusfx: this.menusfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
 
@@ -276,7 +279,7 @@ class ExampleScene extends Phaser.Scene {
       this.activeEnemiesCounter++
       const target = collisionInfo.bodyA.label === 'phaser-raycaster-ray-body' ? collisionInfo.bodyB.gameObject : collisionInfo.bodyA.gameObject
       target.updateState('PURSUING')
-      if (this.enemysfxBool) {
+      if (this.sfxBool) {
         const audioChoice = Math.floor(Math.random() * 6)
         if (audioChoice === 0) {
           this.enemysfx.play('Rat Chatter 1_1')
@@ -393,6 +396,13 @@ class ExampleScene extends Phaser.Scene {
       this.scene.stop()
       this.scene.start('GameOverScene')
     }
+
+    if (this.sfxRunnning.isPaused) {
+      this.sfxBool = false
+    } else if (this.sfxRunnning.isPlaying) {
+      this.sfxBool = true
+    }
+
     if (this.fightSong.isPlaying === true) {
       if (this.activeEnemiesCounter > 0 && this.AttackAudioIsPlaying === false) {
         this.tweens.add({
@@ -430,7 +440,7 @@ class ExampleScene extends Phaser.Scene {
     this.player.updateHealth(deltaTime / 1000)
 
     if (Math.abs(directon.x) > 0 || Math.abs(directon.y) > 0) {
-      if (this.Playersfx.isPlaying === false && this.PlayersfxBool) {
+      if (this.Playersfx.isPlaying === false && this.sfxBool) {
         const audioChoice = Math.floor(Math.random() * 12)
         if (audioChoice === 0) {
           this.Playersfx.play('Footsteps 1_1')
@@ -500,7 +510,7 @@ class ExampleScene extends Phaser.Scene {
     this.chestArray.forEach((chest) => {
       if (Phaser.Math.Distance.Between(this.player.x, this.player.y, chest.x, chest.y) <= 270 && !chest.isOpen()) {
         chest.onOpen()
-        if (this.GamesfxBool) {
+        if (this.sfxBool) {
           const audioChoice = Math.floor(Math.random() * 3)
           this.Gamesfx.stop()
           if (audioChoice === 0) {
@@ -579,7 +589,7 @@ class ExampleScene extends Phaser.Scene {
   }
 
   playRatHit () {
-    if (!this.enemysfx.isPlaying) {
+    if (!this.enemysfx.isPlaying && this.sfxBool) {
       const audioChoice = Math.floor(Math.random() * 4)
       if (audioChoice === 0) {
         this.enemysfx.play('Rat Hit 1_1')

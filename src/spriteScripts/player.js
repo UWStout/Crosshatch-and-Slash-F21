@@ -147,7 +147,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
     }
 
     this.anims.play('playerAttackPhysical', true)
-    if (!this.PlayerSfx.isPaused) {
+    if (this.scene.sfxBool) {
       this.PlayerSfx.stop()
       const audioChoice = Math.floor(Math.random() * 12)
       if (audioChoice === 0) {
@@ -262,7 +262,7 @@ class PlayerClass extends Phaser.Physics.Matter.Sprite {
 
       this.canMove = false
       this.anims.play('playerAttackMagical', true)
-      if (!this.PlayerSfx.isPaused) {
+      if (this.scene.sfxBool) {
         this.PlayerSfx.stop()
         const audioChoice = Math.floor(Math.random() * 5)
         if (audioChoice === 0) {

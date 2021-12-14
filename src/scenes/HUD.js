@@ -14,8 +14,6 @@ class HUDScene extends Phaser.Scene {
     this.music = data?.music || null
     this.fightSong = data?.fightSong || null
     this.sfx = data?.sfx || null
-    this.playersfx = data?.playersfx || null
-    this.enemysfx = data?.enemysfx || null
     this.menusfx = data?.menusfx || null
 
     const dungeon = this.scene.get('ExampleScene')
@@ -146,16 +144,12 @@ class HUDScene extends Phaser.Scene {
 
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)
-
-        this.sfx = false
-        this.playersfx = false
-        this.enemysfx = false
+        this.sfx.pause()
+        
       } else {
         soundButtonIcon.setVisible(true)
 
-        this.sfx = true
-        this.playersfx = true
-        this.enemysfx = true
+        this.sfx.resume()
       }
     }, this)
 
