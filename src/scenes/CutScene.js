@@ -103,7 +103,7 @@ class CutScene extends Phaser.Scene {
       this.cameras.main.fadeIn(1000, 0, 0, 0)
     })
 
-    this.cameras.main.on(Phaser.Cameras.Scedne2D.Events.FADE_IN_COMPLETE, () => {
+    this.cameras.main.on(Phaser.Cameras.Scene2D.Events.FADE_IN_COMPLETE, () => {
       setTimeout(() => {
         this.cameras.main.fadeOut(1000, 0, 0, 0)
       }, 7500)
