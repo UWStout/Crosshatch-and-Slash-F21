@@ -3,8 +3,8 @@
     {
      "export":
         {
-         "format":"tmx",
-         "target":"rm_dungeon01.tmx"
+         "format":"json",
+         "target":"rm_dungeon01.json"
         }
     },
  "height":50,
@@ -62,7 +62,7 @@
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.7.2",
+ "tiledversion":"1.6.0",
  "tileheight":300,
  "tilesets":[
         {
@@ -542,7 +542,7 @@
          "imageheight":1200,
          "imagewidth":3000,
          "margin":0,
-         "name":"til_set_dungeon01",
+         "name":"til_set_dungeon02",
          "spacing":0,
          "tilecount":40,
          "tileheight":300,

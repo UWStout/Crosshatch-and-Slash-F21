@@ -18,25 +18,18 @@ class ExampleScene extends Phaser.Scene {
       this.enemysfx.stop()
     })
     this.input.mouse.disableContextMenu()
-    this.input.setDefaultCursor('url(assets/sprites/cur_mouse.cur), pointer')
+    this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
     const map = this.make.tilemap({ key: 'tutorialRoom' })
     const dungeon = map.addTilesetImage('til_set_dungeon01', 'dungeon')
-    // const room = map.addTilesetImage('spr_tile_wall', 'wallTexture')
-    // const bones = map.addTilesetImage('til_bones', 'bones')
-    // const crates = map.addTilesetImage('til_crates, crates')
-    // const crackedFloor = map.addTilesetImage('crackFloor')
+    const dungeon2 = map.addTilesetImage('til_set_dungeon02', 'dungeon')
+
     // Setup variables with world bounds
     const worldWidth = CONFIG.DEFAULT_WIDTH * 16
     const worldHeight = CONFIG.DEFAULT_HEIGHT * 2
-    const backLayer = map.createLayer('collision', dungeon)
-    const visualLayer = map.createLayer('visual', dungeon)
-    const visualLayer2 = map.createLayer('visual2', dungeon)
-    // const visualLayer = map.createLayer('visual', dungeon)
-    // const collisionLayer = map.createLayer('collision', { bones, crates, room })
-
-    // backLayer.setVisible(false)
-    // spawnLayer.setVisible(false)
-
+    const backLayer = map.createLayer('collision', [dungeon, dungeon2])
+    const visualLayer = map.createLayer('visual', [dungeon, dungeon2])
+    const visualLayer2 = map.createLayer('visual2', [dungeon, dungeon2])
+    
     backLayer.setCollision([6, 7, 8, 9, 10, 16, 17, 18, 19, 20])
     this.matter.world.convertTilemapLayer(backLayer)
     this.tilemapBodies = this.fixFlippedColliders(backLayer)
@@ -174,7 +167,6 @@ class ExampleScene extends Phaser.Scene {
     this.enemies.forEach(enemy => {
       enemy.setCollisionCategory(targetsCategory)
       enemy.canRotate = true
-      // enemy.setOriginXY(enemy.x, enemy.y)
 
       enemy.on('destroy', () => {
         const index = this.enemies.findIndex((item) => (item === enemy))
@@ -208,9 +200,6 @@ class ExampleScene extends Phaser.Scene {
         this.tweens.resumeAll()
       }, this)
     })
-    // this.enemies.push(this.enemy)
-
-    // this.enemy.setCollisionCategory(targetsCategory)
 
     this.matter.world.on('worldbounds', () => { this.sfx.play('hitSound') }, this)
 
@@ -248,10 +237,6 @@ class ExampleScene extends Phaser.Scene {
     this.scene.run('HUDScene', { music: this.music, sfx: this.sfxRunnning, fightSong: this.fightSong, menusfx: this.menusfx })
     this.HUD = this.scene.get('HUDScene')
     this.activeTileBodies = this.matter.query.region(this.tilemapBodies, this.cameraBody.bounds)
-
-    // for (const wall of this.activeTileBodies) {
-    //   this.activeWallGroup.add(wall)
-    // }
 
     // EasyStar Pathfinding
     this.finder = new EasyStar.js()
@@ -326,7 +311,6 @@ class ExampleScene extends Phaser.Scene {
     this.input.on('pointermove', function (pointer) {
       // Copy world position of pointer and center on character
       this.point.set(pointer.worldX, pointer.worldY)
-      // console.log('x: ' + (this.point.x) + ' Y: ' + this.point.y)
       this.point.x -= this.player.x
       this.point.y -= this.player.y
 

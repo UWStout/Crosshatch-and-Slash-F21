@@ -9,7 +9,7 @@ class HUDScene extends Phaser.Scene {
 
   create (data) {
     this.maxMana = 10
-    this.input.setDefaultCursor('url(assets/sprites/cur_mouse.cur), pointer')
+    this.input.setDefaultCursor('url(assets/cursors/spr_UI_cursor.cur), pointer')
     // this.music = this.sound.addAudioSprite('gameAudio')
     this.music = data?.music || null
     this.fightSong = data?.fightSong || null
