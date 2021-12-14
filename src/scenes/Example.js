@@ -36,7 +36,7 @@ class ExampleScene extends Phaser.Scene {
 
     // Create the chests
     this.chestArray = []
-    this.chest1 = new Chest(this, 4033, 14246, Chest.SIDE_CHEST, 'sword3', false)
+    this.chest1 = new Chest(this, 4033, 14246, Chest.SIDE_CHEST, 'sword2', false)
     this.chest2 = new Chest(this, 3761, 10095, Chest.FRONT_CHEST, 'sword1', true)
     this.chest3 = new Chest(this, 1945, 10944, Chest.SIDE_CHEST, 'sword2', false)
     this.chest4 = new Chest(this, 1974, 8277, Chest.SIDE_CHEST, 'sword3', true)
