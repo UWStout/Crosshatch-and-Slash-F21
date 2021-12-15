@@ -7,28 +7,38 @@
   "media": [
       {
           "title": "Game Trailer",
-          "vimeoID": "",
+          "vimeoID": "657078336",
           "alt": "Crosshatch & Slash SGX Trailer"
       },
       {
           "title": "Screenshot 1",
-          "link": "WebsiteData/Screenshot1.png",
+          "link": "WebsiteData/ScreenShot1.png",
           "alt": "Crosshatch & Slash Screenshot"
       },
       {
           "title": "Screenshot 2",
-          "link": "WebsiteData/Screenshot2.png",
+          "link": "WebsiteData/ScreenShot2.png",
           "alt": "Crosshatch & Slash Screenshot"
       },
       {
           "title": "Screenshot 3",
-          "link": "WebsiteData/Screenshot3.png",
+          "link": "WebsiteData/ScreenShot 3.png",
           "alt": "Crosshatch & Slash Screenshot"
       },
       {
           "title": "Screenshot 4",
-          "link": "WebsiteData/Screenshot4.png",
+          "link": "WebsiteData/ScreenShot4.png",
           "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Screenshot 5",
+          "link": "WebsiteData/ScreenShot5.png",
+          "alt": "Crosshatch & Slash Screenshot"
+      },
+      {
+          "title": "Gameplay / Let's Play Video",
+          "vimeoID": "",
+          "alt": "A quick playthrough video from the game's creators"
       },
       {
           "title": "Source Code Evolution",
