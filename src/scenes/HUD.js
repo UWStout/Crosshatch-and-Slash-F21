@@ -145,7 +145,6 @@ class HUDScene extends Phaser.Scene {
       if (soundButtonIcon.visible) {
         soundButtonIcon.setVisible(false)
         this.sfx.pause()
-        
       } else {
         soundButtonIcon.setVisible(true)
 
@@ -182,11 +181,11 @@ class HUDScene extends Phaser.Scene {
       this.player.getDataManager().setInt(1)
       this.maxMana = this.player.getDataManager().getInt()
       console.log(this.player.getDataManager().getInt())
-        this.scene.resume('ExampleScene')
-        this.pausedIcon.setVisible(false)
-        this.levelUpIcon.setVisible(false)
-        this.manaButton.setVisible(false)
-        this.strengthButton.setVisible(false)
+      this.scene.resume('ExampleScene')
+      this.pausedIcon.setVisible(false)
+      this.levelUpIcon.setVisible(false)
+      this.manaButton.setVisible(false)
+      this.strengthButton.setVisible(false)
     })
 
     this.strengthButton = this.add.image(CONFIG.DEFAULT_WIDTH / 2 + 25, CONFIG.DEFAULT_HEIGHT / 2 - 180, 'levelUpStrengthButton')
@@ -243,10 +242,10 @@ class HUDScene extends Phaser.Scene {
 
   levelUpStats () {
     this.scene.pause('ExampleScene')
-      this.pausedIcon.setVisible(true)
-      this.levelUpIcon.setVisible(true)
-      this.manaButton.setVisible(true)
-      this.strengthButton.setVisible(true)
+    this.pausedIcon.setVisible(true)
+    this.levelUpIcon.setVisible(true)
+    this.manaButton.setVisible(true)
+    this.strengthButton.setVisible(true)
   }
 
   getSword () {
