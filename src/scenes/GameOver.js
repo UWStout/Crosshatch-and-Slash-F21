@@ -3,7 +3,7 @@ import CONFIG from '../config'
 
 class GameOverScene extends Phaser.Scene {
   preload () {
-    this.load.image('restartButton', 'assets/sprites/buttons/spr_UI_buttonRestart.png')
+    this.load.image('restartButton', 'assets/sprites/Buttons/spr_UI_buttonRestart.png')
   }
 
   create () {

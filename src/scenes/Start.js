@@ -22,7 +22,6 @@ class StartScene extends Phaser.Scene {
     this.load.image('pointer', 'assets/cursors/spr_UI_cursor.cur')
     this.load.image('StartScreen', 'assets/StartScreenLogo.png')
     this.load.image('wallTexture', 'assets/tilemaps/spr_tile_wall.png')
-    this.load.image('crates', 'assets/tilemaps/til_crates.png')
     this.load.image('bones', 'assets/tilemaps/til_bones.png')
     this.load.image('dungeon', 'assets/tilemaps/til_dungeon01.png')
     this.load.image('startButton', 'assets/sprites/Buttons/spr_UI_buttonStart.png')
@@ -86,7 +85,6 @@ class StartScene extends Phaser.Scene {
     this.load.spritesheet('playerAttack', 'assets/sprites/KnightAttackSpreadsheet.png', { frameWidth: 500, frameHeight: 500 })
     this.load.spritesheet('RatWalkAttack', 'assets/sprites/RatAnimsSpritesheet300x300.png', { frameWidth: 300, frameHeight: 300 })
     this.load.spritesheet('Fire', 'assets/sprites/FireEffect.png', { frameWidth: 200, frameHeight: 200 })
-    // this.load.spritesheet('spawners', 'assets/tilemaps/til_spawners.png')
     // Pre-load the entire audio sprite
     this.load.audioSprite('gameAudio', 'assets/audio/gameAudioSprite.json', [
       'assets/audio/gameAudioSprite.ogg',
